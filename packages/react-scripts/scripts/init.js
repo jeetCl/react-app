@@ -349,6 +349,14 @@ module.exports = function(
   const displayedCommand = useYarn ? 'yarn' : 'npm';
 
   console.log();
+  console.log(chalk.red('*** Call-Em-All ***'));
+  console.log(
+    chalk.yellow(
+      '  This is a custom version of react scripts used by Call-Em-All for the R2D2 project.'
+    )
+  );
+  console.log(chalk.red('*** Call-Em-All ***'));
+  console.log();
   console.log(`Success! Created ${appName} at ${appPath}`);
   console.log('Inside that directory, you can run several commands:');
   console.log();

@@ -160,6 +160,35 @@ function build(previousFileSizes) {
 
   console.log('Creating an optimized production build...');
 
+  if (process.env.WEBPACK_BUNDLE_ANALYZER_FILE) {
+    const file = process.env.WEBPACK_BUNDLE_ANALYZER_FILE + '.json';
+    console.log(
+      chalk.yellow(
+        "Bundle statistics will be generated in build folder, file = '" +
+          file +
+          "'"
+      )
+    );
+  } else {
+    console.log(
+      chalk.yellow(
+        'In order to produce statistics for webpack bundle analyzer, add this to your .env file:'
+      )
+    );
+    console.log(chalk.yellow('   WEBPACK_BUNDLE_ANALYZER_FILE=statistics'));
+    console.log(
+      chalk.yellow(
+        'When a client build is performed, the file statistics.json will be created in the'
+      )
+    );
+    console.log(
+      chalk.yellow(
+        "client/build folder and you can launch the interactive bundle analyzer with the tool's CLI."
+      )
+    );
+  }
+  console.log();
+
   const compiler = webpack(config);
   return new Promise((resolve, reject) => {
     compiler.run((err, stats) => {

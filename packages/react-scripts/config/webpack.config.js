@@ -66,11 +66,155 @@ const cssModuleRegex = /\.module\.css$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
 
+// *** Call-Em-All R2D2
+const entrypointTemplate = path.join(
+  paths.appSrc,
+  'entrypoint-script-template.js'
+);
+
+// Generates an HTML file with the <script> injected for every R2D2 entry point.
+const makeHtmlPluginEntryForPage = (
+  entryPoint,
+  templatePath,
+  filename,
+  minifyOptions
+) =>
+  new HtmlWebpackPlugin(
+    Object.assign(
+      {},
+      {
+        inject: true,
+        chunks: [entryPoint],
+        template: templatePath,
+        filename,
+      },
+      minifyOptions
+    )
+  );
+// Generates a monolithic javascript file with the contents of all dependant chunks
+// for every R2D2 entry point. These are made available to external apps to load R2D2
+// bundles - such as legacy and forms.
+const makeHtmlPluginEntryForBundle = (entryPoint, filename) =>
+  new HtmlWebpackPlugin({
+    inject: false,
+    chunks: [entryPoint],
+    template: entrypointTemplate,
+    filename: filename,
+    minify: false,
+    cache: false,
+  });
+// *** Call-Em-All R2D2
+
 // This is the production and development configuration.
 // It is focused on developer experience, fast rebuilds, and a minimal bundle.
 module.exports = function(webpackEnv) {
   const isEnvDevelopment = webpackEnv === 'development';
   const isEnvProduction = webpackEnv === 'production';
+
+  // *** Call-Em-All R2D2 ***
+  const envEntryPoints = process.env.ENTRY_POINTS || '';
+  const entryPointsList = envEntryPoints.split(',');
+
+  const conditionalHotDevClient =
+    isEnvDevelopment && require.resolve('react-dev-utils/webpackHotDevClient');
+
+  const r2d2EntryPoints = {
+    bundle: [
+      // Include an alternative client for WebpackDevServer. A client's job is to
+      // connect to WebpackDevServer by a socket and get notified about changes.
+      // When you save a file, the client will either apply hot updates (in case
+      // of CSS changes), or refresh the page (in case of JS changes). When you
+      // make a syntax error, this client will display a syntax error overlay.
+      // Note: instead of the default WebpackDevServer client, we use a custom one
+      // to bring better experience for Create React App users. You can replace
+      // the line below with these two lines if you prefer the stock client:
+      // require.resolve('webpack-dev-server/client') + '?/',
+      // require.resolve('webpack/hot/dev-server'),
+      conditionalHotDevClient,
+      // Finally, this is your app's code:
+      // We include the app code last so that if there is a runtime error during
+      // initialization, it doesn't blow up the WebpackDevServer client, and
+      // changing JS code would still trigger a refresh.
+      paths.appIndexJs,
+    ].filter(Boolean),
+    login: [conditionalHotDevClient, paths.appLoginIndexJs].filter(Boolean),
+    onboarding: [conditionalHotDevClient, paths.appOnboardingIndexJs].filter(
+      Boolean
+    ),
+    /* legacy: [conditionalHotDevClient, paths.appLegacyIndexJs].filter(Boolean), */
+  };
+  // Allow excluding entry points from build based on environment variable ENTRY_POINTS.
+  // If the env variable is defined and an entry point is not included, remove it from
+  // the webpack entry points.
+  if (isEnvDevelopment && envEntryPoints) {
+    if (!entryPointsList.includes('bundle')) {
+      delete r2d2EntryPoints.bundle;
+    }
+    if (!entryPointsList.includes('login')) {
+      delete r2d2EntryPoints.login;
+    }
+    if (!entryPointsList.includes('onboarding')) {
+      delete r2d2EntryPoints.onboarding;
+    }
+  }
+  // Adding the legacy entry point breaks hot/live reloading so only add it for prod builds.
+  if (!isEnvDevelopment) {
+    r2d2EntryPoints.legacy = [paths.appLegacyIndexJs];
+  }
+
+  const minifyOptions = isEnvProduction
+    ? {
+        minify: {
+          removeComments: true,
+          collapseWhitespace: true,
+          removeRedundantAttributes: true,
+          useShortDoctype: true,
+          removeEmptyAttributes: true,
+          removeStyleLinkTypeAttributes: true,
+          keepClosingSlash: true,
+          minifyJS: true,
+          minifyCSS: true,
+          minifyURLs: true,
+        },
+      }
+    : undefined;
+
+  const r2d2HtmlPlugins = [
+    makeHtmlPluginEntryForPage(
+      'bundle',
+      paths.appHtml,
+      'index.html',
+      minifyOptions
+    ),
+    makeHtmlPluginEntryForPage(
+      'login',
+      paths.appLoginHtml,
+      'login.html',
+      minifyOptions
+    ),
+    makeHtmlPluginEntryForPage(
+      'onboarding',
+      paths.appOnboardingHtml,
+      'onboarding.html',
+      minifyOptions
+    ),
+    makeHtmlPluginEntryForPage(
+      'verify-email',
+      paths.appVerifyEmailHtml,
+      'verify-email.html',
+      minifyOptions
+    ),
+
+    makeHtmlPluginEntryForBundle('bundle', 'static/js/bundle.js'),
+    makeHtmlPluginEntryForBundle('login', 'static/js/login.js'),
+    makeHtmlPluginEntryForBundle('onboarding', 'static/js/onboarding.js'),
+  ];
+  if (!isEnvDevelopment) {
+    r2d2HtmlPlugins.push(
+      makeHtmlPluginEntryForBundle('legacy', 'static/js/legacy.js')
+    );
+  }
+  // *** Call-Em-All R2D2 ***
 
   // Variable used for enabling profiling in Production
   // passed into alias object. Uses a flag if passed into the build command
@@ -157,28 +301,29 @@ module.exports = function(webpackEnv) {
       : isEnvDevelopment && 'cheap-module-source-map',
     // These are the "entry points" to our application.
     // This means they will be the "root" imports that are included in JS bundle.
-    entry: [
-      // Include an alternative client for WebpackDevServer. A client's job is to
-      // connect to WebpackDevServer by a socket and get notified about changes.
-      // When you save a file, the client will either apply hot updates (in case
-      // of CSS changes), or refresh the page (in case of JS changes). When you
-      // make a syntax error, this client will display a syntax error overlay.
-      // Note: instead of the default WebpackDevServer client, we use a custom one
-      // to bring better experience for Create React App users. You can replace
-      // the line below with these two lines if you prefer the stock client:
-      //
-      // require.resolve('webpack-dev-server/client') + '?/',
-      // require.resolve('webpack/hot/dev-server'),
-      //
-      // When using the experimental react-refresh integration,
-      // the webpack plugin takes care of injecting the dev client for us.
-      isEnvDevelopment && !shouldUseReactRefresh && webpackDevClientEntry,
-      // Finally, this is your app's code:
-      paths.appIndexJs,
-      // We include the app code last so that if there is a runtime error during
-      // initialization, it doesn't blow up the WebpackDevServer client, and
-      // changing JS code would still trigger a refresh.
-    ].filter(Boolean),
+    entry: r2d2EntryPoints, // *** Call-Em-All R2D2
+    // entry: [
+    // Include an alternative client for WebpackDevServer. A client's job is to
+    // connect to WebpackDevServer by a socket and get notified about changes.
+    // When you save a file, the client will either apply hot updates (in case
+    // of CSS changes), or refresh the page (in case of JS changes). When you
+    // make a syntax error, this client will display a syntax error overlay.
+    // Note: instead of the default WebpackDevServer client, we use a custom one
+    // to bring better experience for Create React App users. You can replace
+    // the line below with these two lines if you prefer the stock client:
+    //
+    // require.resolve('webpack-dev-server/client') + '?/',
+    // require.resolve('webpack/hot/dev-server'),
+    //
+    // When using the experimental react-refresh integration,
+    // the webpack plugin takes care of injecting the dev client for us.
+    // isEnvDevelopment && !shouldUseReactRefresh && webpackDevClientEntry,
+    // Finally, this is your app's code:
+    // paths.appIndexJs,
+    // We include the app code last so that if there is a runtime error during
+    // initialization, it doesn't blow up the WebpackDevServer client, and
+    // changing JS code would still trigger a refresh.
+    // ].filter(Boolean),
     output: {
       // The build folder.
       path: isEnvProduction ? paths.appBuild : undefined,
@@ -188,7 +333,8 @@ module.exports = function(webpackEnv) {
       // In development, it does not produce real files.
       filename: isEnvProduction
         ? 'static/js/[name].[contenthash:8].js'
-        : isEnvDevelopment && 'static/js/bundle.js',
+        : //   : isEnvDevelopment && 'static/js/bundle.js',
+          isEnvDevelopment && 'static/js/[name].js', // *** Call-Em-All R2D2
       // TODO: remove this when upgrading to webpack 5
       futureEmitAssets: true,
       // There are also additional JS chunk files if you use code splitting.
@@ -288,9 +434,10 @@ module.exports = function(webpackEnv) {
       // Keep the runtime chunk separated to enable long term caching
       // https://twitter.com/wSokra/status/969679223278505985
       // https://github.com/facebook/create-react-app/issues/5358
-      runtimeChunk: {
-        name: entrypoint => `runtime-${entrypoint.name}`,
-      },
+      // runtimeChunk: {
+      //   name: entrypoint => `runtime-${entrypoint.name}`,
+      // },
+      runtimeChunk: 'single', // *** Call-Em-All R2D2, was true,
     },
     resolve: {
       // This allows you to set a fallback for where webpack should look for modules.
@@ -572,32 +719,33 @@ module.exports = function(webpackEnv) {
       ],
     },
     plugins: [
+      ...r2d2HtmlPlugins, // *** Call-Em-All R2D2
       // Generates an `index.html` file with the <script> injected.
-      new HtmlWebpackPlugin(
-        Object.assign(
-          {},
-          {
-            inject: true,
-            template: paths.appHtml,
-          },
-          isEnvProduction
-            ? {
-                minify: {
-                  removeComments: true,
-                  collapseWhitespace: true,
-                  removeRedundantAttributes: true,
-                  useShortDoctype: true,
-                  removeEmptyAttributes: true,
-                  removeStyleLinkTypeAttributes: true,
-                  keepClosingSlash: true,
-                  minifyJS: true,
-                  minifyCSS: true,
-                  minifyURLs: true,
-                },
-              }
-            : undefined
-        )
-      ),
+      // new HtmlWebpackPlugin(
+      //   Object.assign(
+      //     {},
+      //     {
+      //       inject: true,
+      //       template: paths.appHtml,
+      //     },
+      //     isEnvProduction
+      //       ? {
+      //           minify: {
+      //             removeComments: true,
+      //             collapseWhitespace: true,
+      //             removeRedundantAttributes: true,
+      //             useShortDoctype: true,
+      //             removeEmptyAttributes: true,
+      //             removeStyleLinkTypeAttributes: true,
+      //             keepClosingSlash: true,
+      //             minifyJS: true,
+      //             minifyCSS: true,
+      //             minifyURLs: true,
+      //           },
+      //         }
+      //       : undefined
+      //   )
+      // ),
       // Inlines the webpack runtime script. This script is too small to warrant
       // a network request.
       // https://github.com/facebook/create-react-app/issues/5358
@@ -723,6 +871,21 @@ module.exports = function(webpackEnv) {
           silent: true,
           // The formatter is invoked directly in WebpackDevServerUtils during development
           formatter: isEnvProduction ? typescriptFormatter : undefined,
+        }),
+      // *** Call-Em-All R2D2 ***
+      // Support for webpack-bundle-analyzer
+      //   (https://github.com/webpack-contrib/webpack-bundle-analyzer)
+      // In order to produce statistics for webpack bundle analyzer, add this to your .env file:
+      //   WEBPACK_BUNDLE_ANALYZER_FILE=statistics
+      // When a client build is performed, the file statistics.json will be created in the
+      // client/build folder and you can launch the interactive bundle analyzer with the tool's CLI.
+      isEnvProduction &&
+        process.env.WEBPACK_BUNDLE_ANALYZER_FILE &&
+        new BundleAnalyzerPlugin({
+          analyzerMode: 'disabled',
+          generateStatsFile: true,
+          statsFilename:
+            './' + process.env.WEBPACK_BUNDLE_ANALYZER_FILE + '.json',
         }),
     ].filter(Boolean),
     // Some libraries import Node modules but don't use them in the browser.

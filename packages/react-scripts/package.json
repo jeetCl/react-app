@@ -1,10 +1,10 @@
 {
   "name": "cea-react-scripts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Used by CEA, Custom Configuration and scripts for Create React App, based on version 3.4.1.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/facebook/create-react-app.git",
+    "url": "https://github.com/callemall/create-react-app.git",
     "directory": "packages/react-scripts"
   },
   "license": "MIT",
@@ -12,7 +12,7 @@
     "node": ">=8.10"
   },
   "bugs": {
-    "url": "https://github.com/facebook/create-react-app/issues"
+    "url": "https://github.com/callemall/create-react-app/issues"
   },
   "files": [
     "bin",
@@ -79,6 +79,7 @@
     "ts-pnp": "1.1.6",
     "url-loader": "2.3.0",
     "webpack": "4.42.0",
+    "webpack-bundle-analyzer": "3.3.2",
     "webpack-dev-server": "3.10.3",
     "webpack-manifest-plugin": "2.2.0",
     "workbox-webpack-plugin": "4.3.1"
