@@ -1,3 +1,7 @@
+## Note: This is part of a fork of CRA used by CEA
+
+This is a customized react-scripts package.
+
 # react-scripts
 
 This package includes scripts and configuration used by [Create React App](https://github.com/facebook/create-react-app).<br>
