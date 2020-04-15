@@ -105,9 +105,10 @@ const makeManifestPluginForBundle = entryPoint =>
         manifest[file.name] = file.path;
         return manifest;
       }, seed);
-      const entrypointFiles = entrypoints[entryPoint].filter(
-        fileName => !fileName.endsWith('.map')
-      );
+      const entryPointItem = entrypoints[entryPoint] || entrypoints.main;
+      const entrypointFiles = entryPointItem
+        ? entryPointItem.filter(fileName => !fileName.endsWith('.map'))
+        : [];
 
       return {
         files: manifestFiles,
