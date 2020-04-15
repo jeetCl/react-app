@@ -69,6 +69,8 @@ const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
 
 // *** Call-Em-All R2D2
+const shouldDisableManifestGeneration = process.env.DISABLE_MANIFEST === 'true';
+const shouldDisableWebStatsGeneration = process.env.DISABLE_WEBSTATS === 'true';
 const entrypointTemplate = path.join(
   paths.appSrc,
   'entrypoint-script-template.js'
@@ -240,11 +242,13 @@ module.exports = function(webpackEnv) {
       makeHtmlPluginEntryForBundle('legacy', 'static/js/legacy.js')
     );
   }
-  const r2d2ManifestPlugins = [
-    makeManifestPluginForBundle('bundle'),
-    makeManifestPluginForBundle('login'),
-    makeManifestPluginForBundle('onboarding'),
-  ];
+  const r2d2ManifestPlugins = shouldDisableManifestGeneration
+    ? []
+    : [
+        makeManifestPluginForBundle('bundle'),
+        makeManifestPluginForBundle('login'),
+        makeManifestPluginForBundle('onboarding'),
+      ];
   // *** Call-Em-All R2D2 ***
 
   // Variable used for enabling profiling in Production
@@ -847,6 +851,7 @@ module.exports = function(webpackEnv) {
       // When a client build is performed, the file statistics.json will be created in the
       // client/build folder and you can launch the interactive bundle analyzer with the tool's CLI.
       isEnvProduction &&
+        !shouldDisableWebStatsGeneration &&
         process.env.WEBPACK_BUNDLE_ANALYZER_FILE &&
         new BundleAnalyzerPlugin({
           analyzerMode: 'disabled',
