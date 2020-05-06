@@ -39,6 +39,7 @@ const getCacheIdentifier = require('react-dev-utils/getCacheIdentifier');
 const postcssNormalize = require('postcss-normalize');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
+const UnusedFilesWebpackPlugin = require('unused-files-webpack-plugin').default;
 
 const appPackageJson = require(paths.appPackageJson);
 
@@ -71,6 +72,7 @@ const sassModuleRegex = /\.module\.(scss|sass)$/;
 // *** Call-Em-All R2D2
 const shouldDisableManifestGeneration = process.env.DISABLE_MANIFEST === 'true';
 const shouldDisableWebStatsGeneration = process.env.DISABLE_WEBSTATS === 'true';
+const shouldEnableDeadFileOutput = process.env.ENABLE_DEADFILE_OUTPUT;
 const entrypointTemplate = path.join(
   paths.appSrc,
   'entrypoint-script-template.js'
@@ -858,6 +860,25 @@ module.exports = function(webpackEnv) {
           generateStatsFile: true,
           statsFilename:
             './' + process.env.WEBPACK_BUNDLE_ANALYZER_FILE + '.json',
+        }),
+      //Checks for unused files
+      !isEnvProduction &&
+        shouldEnableDeadFileOutput &&
+        new UnusedFilesWebpackPlugin({
+          failOnUnused: false,
+          pattern: 'src/**/*.*',
+          globOptions: {
+            ignore: [
+              '**/helpers/jest-matchers.js',
+              '**/__json-mocks__/**/*.*',
+              '**/__mocks__/**/*.*',
+              '**/__tests__/**/*.*',
+              '**/state/api-response.js',
+              '**/*.md',
+              '**/registerServiceWorker.js',
+              '**/style-guide-wrapper.js',
+            ],
+          },
         }),
     ].filter(Boolean),
     // Some libraries import Node modules but don't use them in the browser.
