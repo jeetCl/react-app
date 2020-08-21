@@ -123,7 +123,7 @@ const makeManifestPluginForBundle = entryPoint =>
 
 // Generates a monolithic javascript file with the contents of all dependant chunks
 // for every R2D2 entry point. These are made available to external apps to load R2D2
-// bundles - such as legacy and forms.
+// bundles - such as forms.
 const makeHtmlPluginEntryForBundle = (entryPoint, filename) =>
   new HtmlWebpackPlugin({
     inject: false,
@@ -171,7 +171,6 @@ module.exports = function(webpackEnv) {
     onboarding: [conditionalHotDevClient, paths.appOnboardingIndexJs].filter(
       Boolean
     ),
-    /* legacy: [conditionalHotDevClient, paths.appLegacyIndexJs].filter(Boolean), */
   };
   // Allow excluding entry points from build based on environment variable ENTRY_POINTS.
   // If the env variable is defined and an entry point is not included, remove it from
@@ -186,10 +185,6 @@ module.exports = function(webpackEnv) {
     if (!entryPointsList.includes('onboarding')) {
       delete r2d2EntryPoints.onboarding;
     }
-  }
-  // Adding the legacy entry point breaks hot/live reloading so only add it for prod builds.
-  if (!isEnvDevelopment) {
-    r2d2EntryPoints.legacy = [paths.appLegacyIndexJs];
   }
 
   const minifyOptions = isEnvProduction
@@ -239,11 +234,6 @@ module.exports = function(webpackEnv) {
     makeHtmlPluginEntryForBundle('login', 'static/js/login.js'),
     makeHtmlPluginEntryForBundle('onboarding', 'static/js/onboarding.js'),
   ];
-  if (!isEnvDevelopment) {
-    r2d2HtmlPlugins.push(
-      makeHtmlPluginEntryForBundle('legacy', 'static/js/legacy.js')
-    );
-  }
   const r2d2ManifestPlugins = shouldDisableManifestGeneration
     ? []
     : [
@@ -869,18 +859,21 @@ module.exports = function(webpackEnv) {
           pattern: 'src/**/*.*',
           globOptions: {
             ignore: [
-              '**/helpers/jest-matchers.js',
               '**/__json-mocks__/**/*.*',
               '**/__mocks__/**/*.*',
               '**/__tests__/**/*.*',
-              '**/state/api-response.js',
               '**/*.md',
-              '**/registerServiceWorker.js',
-              '**/style-guide-wrapper.js',
+              '**/*.test.js',
+              '**/helpers/jest-matchers.js',
               '**/helpers/test-helpers.js',
-              '**/setupTests.js',
+              '**/registerServiceWorker.js',
+              '**/setup-tests.js',
               '**/setupProxy.js',
-              '**/legacy-app/*',
+              '**/setupTests.js',
+              '**/state/api-response.js',
+              '**/state/progress/actions.js',
+              '**/style-guide-wrapper.js',
+              '**/test-utils.js',
             ],
           },
         }),
