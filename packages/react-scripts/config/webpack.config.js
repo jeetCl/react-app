@@ -427,7 +427,7 @@ module.exports = function (webpackEnv) {
             // load locale files
             {
               test: /locales/,
-              loader: '@alienfast/i18next-loader',
+              loader: require.resolve('../per-lang-loader'),
               options: {
                 debug: false,
                 basenameAsNamespace: true,
