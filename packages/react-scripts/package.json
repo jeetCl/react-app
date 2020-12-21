@@ -29,7 +29,8 @@
     "template",
     "template-typescript",
     "utils",
-    "polyfills.js"
+    "polyfills.js",
+    "per-lang-loader"
   ],
   "bin": {
     "react-scripts": "./bin/react-scripts.js"
