@@ -4,7 +4,6 @@ const path = require('path');
 const fs = require('fs');
 const globAll = require('glob-all');
 const loaderUtils = require('loader-utils');
-const yaml = require('js-yaml');
 
 function enumerateLangs(dir) {
   return fs.readdirSync(dir).filter(function(file) {
@@ -17,8 +16,34 @@ function findAll(globs, cwd) {
   const globArray = Array.isArray(globs) ? globs : [globs];
   return globAll.sync(globArray, { cwd, realpath: true });
 }
+const i18nextImport = 'import i18n from "i18next";';
+const mainExport = 'export default {}';
+const createDynamicImport = ns =>
+  `
+    i18n.on('languageChanged', function(lng) {
+      import(\`./\${lng}/${ns}\`)
+        .then(({ default: d }) => {
+          i18n.addResources(lng, "${ns}", d)
+        })
+        .catch(e =>
+          console.error(
+            \`failed to load translation - \${lng}" + "${ns}"\`
+          )
+        );
 
-module.exports = function() {
+      import(\`./en/${ns}\`)
+        .then(({ default: d }) => {
+          i18n.addResources("en", "${ns}", d)
+        })
+        .catch(e => {
+          console.error("failed to load translation - en" + "${ns}")});
+    });`;
+
+module.exports = function(source) {
+  if (this.resource.endsWith('.json')) {
+    return source;
+  }
+
   this.cacheable && this.cacheable();
   const options = loaderUtils.getOptions(this) || {};
 
@@ -38,7 +63,7 @@ module.exports = function() {
         this.resource
     );
   }
-  let appResBundle = {};
+
   if (options.debug) {
     console.info(
       'Bundling locales from ' +
@@ -46,7 +71,7 @@ module.exports = function() {
         ' (ordered least specific to most):'
     );
   }
-
+  const namespaces = [];
   // needs to be ordered in least specialized to most e.g. lib locale -> app locale
   const moduleLocalesDirs = options.overrides.map(override => {
     if (path.isAbsolute(override)) {
@@ -75,14 +100,7 @@ module.exports = function() {
           console.info('\t' + fullPath);
         }
 
-        const fileContent = fs.readFileSync(fullPath);
         const extname = path.extname(fullPath);
-        let parsedContent;
-        if (extname === '.yaml' || extname === '.yml') {
-          parsedContent = yaml.safeLoad(fileContent);
-        } else {
-          parsedContent = JSON.parse(fileContent);
-        }
 
         let namespace = 'translation';
         if (options.basenameAsNamespace || options.relativePathAsNamespace) {
@@ -95,19 +113,15 @@ module.exports = function() {
           } else if (options.basenameAsNamespace) {
             namespaceFilepath = path.basename(fullPath);
           }
-          namespace = namespaceFilepath.replace(extname, '').split(path.sep);
-
-          // namespace = [lang].concat(namespaceParts).join(".");
+          namespace = namespaceFilepath.replace(extname, '').split(path.sep)[0];
+          namespaces.push(namespace);
         }
-        this.addLocales({ lang, content: parsedContent, namespace });
       }
     }
   });
-  const bundle = JSON.stringify(appResBundle);
-  if (options.debug) {
-    console.info('Final locales bundle: \n' + bundle);
-  }
-  // return "module.exports = " + bundle;
+  const returnSource = [...new Set(namespaces)].map(ns =>
+    createDynamicImport(ns)
+  );
 
-  return '{}';
+  return i18nextImport + returnSource.join('') + mainExport;
 };
