@@ -1,4 +1,6 @@
 'use strict';
+// This file is mostly copied from https://github.com/alienfast/i18next-loader/blob/develop/index.js
+// and adjusted to our needs for per-lang Bundling
 
 const path = require('path');
 const fs = require('fs');
@@ -16,35 +18,46 @@ function findAll(globs, cwd) {
   const globArray = Array.isArray(globs) ? globs : [globs];
   return globAll.sync(globArray, { cwd, realpath: true });
 }
-const i18nextImport = 'import i18n from "i18next";';
+
+const i18nextImport = `
+import i18n from "i18next";
+
+const handleLoadLocale = (locale, namespace, localeStrings) => {
+  i18n.addResources(locale, namespace, localeStrings)
+}
+const handleError = (locale, namespace) => {
+  console.error(\`failed to load translation - \${locale}" + "\${namespace}"\`)
+}
+const importLocale = (locale, namespace) => {
+  import(\`./\${locale}/\${namespace}\`)
+    .then(({ default: localeStrings }) => handleLoadLocale(locale, namespace, localeStrings))
+    .catch(() => handleError(locale, namespace))
+}
+
+`;
 const mainExport = 'export default {}';
 const createDynamicImport = ns =>
   `
-    i18n.on('languageChanged', function(lng) {
-      import(\`./\${lng}/${ns}\`)
-        .then(({ default: d }) => {
-          i18n.addResources(lng, "${ns}", d)
-        })
-        .catch(e =>
-          console.error(
-            \`failed to load translation - \${lng}" + "${ns}"\`
-          )
-        );
+if(i18n.language){
+  importLocale(i18n.language, '${ns}');
+} else {
+  i18n.on('languageChanged', locale => {
+    importLocale(locale, '${ns}')
+  });
+}
 
-      import(\`./en/${ns}\`)
-        .then(({ default: d }) => {
-          i18n.addResources("en", "${ns}", d)
-        })
-        .catch(e => {
-          console.error("failed to load translation - en" + "${ns}")});
-    });`;
+// Always load english translations for backup.
+importLocale('en', '${ns}');
+`;
 
 module.exports = function(source) {
+  this.cacheable && this.cacheable();
+
+  // if json file, just load it
   if (this.resource.endsWith('.json')) {
     return source;
   }
 
-  this.cacheable && this.cacheable();
   const options = loaderUtils.getOptions(this) || {};
 
   if (!options.include) {
@@ -102,7 +115,6 @@ module.exports = function(source) {
 
         const extname = path.extname(fullPath);
 
-        let namespace = 'translation';
         if (options.basenameAsNamespace || options.relativePathAsNamespace) {
           let namespaceFilepath;
           if (options.relativePathAsNamespace) {
@@ -113,8 +125,9 @@ module.exports = function(source) {
           } else if (options.basenameAsNamespace) {
             namespaceFilepath = path.basename(fullPath);
           }
-          namespace = namespaceFilepath.replace(extname, '').split(path.sep)[0];
-          namespaces.push(namespace);
+          namespaces.push(
+            namespaceFilepath.replace(extname, '').split(path.sep)[0]
+          );
         }
       }
     }
