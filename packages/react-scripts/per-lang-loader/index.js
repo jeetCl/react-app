@@ -35,7 +35,12 @@ const importLocale = (locale, namespace) => {
 }
 
 `;
+
+// the mainExport is just for backwards compatability.
+// Files call import translations from './locales'. Without
+// a default export, that breaks.
 const mainExport = 'export default {}';
+
 const createDynamicImport = ns =>
   `
 if(i18n.language){
@@ -48,6 +53,7 @@ if(i18n.language){
 
 // Always load english translations for backup.
 importLocale('en', '${ns}');
+
 `;
 
 module.exports = function(source) {
