@@ -430,6 +430,7 @@ module.exports = function (webpackEnv) {
               loader: require.resolve('../per-lang-loader'),
               options: {
                 debug: false,
+                include: ['**/+(translation|common-ui).json'], // only include translation and common-ui namespaces
                 basenameAsNamespace: true,
               },
             },

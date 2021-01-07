@@ -135,6 +135,9 @@ module.exports = function(source) {
   const returnSource = [...new Set(namespaces)].map(ns =>
     createDynamicImport(ns)
   );
-
-  return i18nextImport + returnSource.join('') + mainExport;
+  const dynamicImports = i18nextImport + returnSource.join('') + mainExport;
+  if (options.debug) {
+    console.info('\t' + dynamicImports);
+  }
+  return dynamicImports;
 };
