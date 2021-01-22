@@ -20,17 +20,15 @@ function findAll(globs, cwd) {
 }
 
 const i18nextImport = `
-import i18n from "i18next";
+import i18n from 'i18next'
+import { addTranslations } from "@fs/zion-locale";
 
-const handleLoadLocale = (locale, namespace, localeStrings) => {
-  i18n.addResources(locale, namespace, localeStrings)
-}
 const handleError = (locale, namespace) => {
   console.error(\`failed to load translation - \${locale}" + "\${namespace}"\`)
 }
 const importLocale = (locale, namespace) => {
   import(\`./\${locale}/\${namespace}\`)
-    .then(({ default: localeStrings }) => handleLoadLocale(locale, namespace, localeStrings))
+    .then(({ default: localeStrings }) => addTranslations({[locale]: {[namespace]: localeStrings}}))
     .catch(() => handleError(locale, namespace))
 }
 
@@ -56,13 +54,8 @@ importLocale('en', '${ns}');
 
 `;
 
-module.exports = function(source) {
+module.exports = function() {
   this.cacheable && this.cacheable();
-
-  // if json file, just load it
-  if (this.resource.endsWith('.json')) {
-    return source;
-  }
 
   const options = loaderUtils.getOptions(this) || {};
 

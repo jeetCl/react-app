@@ -426,7 +426,7 @@ module.exports = function (webpackEnv) {
             },
             // load locale files
             {
-              test: /locales/,
+              test: /locales.index\.js$/,
               loader: require.resolve('../per-lang-loader'),
               options: {
                 debug: false,
