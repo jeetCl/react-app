@@ -1,1 +1,1 @@
-# Per Lang Bundling
+# Language-specific loading
