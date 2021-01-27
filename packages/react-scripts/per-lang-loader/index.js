@@ -27,7 +27,7 @@ const handleError = (locale, namespace) => {
   console.error(\`failed to load translation - \${locale}" + "\${namespace}"\`)
 }
 const importLocale = (locale, namespace) => {
-  import(\`./\${locale}/\${namespace}\`)
+  import(/* webpackChunkName: "locales-[request]-[index]" */ \`./\${locale}/\${namespace}\`)
     .then(({ default: localeStrings }) => addTranslations({[locale]: {[namespace]: localeStrings}}))
     .catch(() => handleError(locale, namespace))
 }
