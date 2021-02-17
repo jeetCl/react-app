@@ -27,7 +27,7 @@ const handleError = (locale, namespace) => {
   console.error(\`failed to load translation - \${locale}" + "\${namespace}"\`)
 }
 const importLocale = (locale, namespace) => {
-  import(/* webpackChunkName: "locales-[request]-[index]" */ \`./\${locale}/\${namespace}\`)
+  import(/* webpackChunkName: "locales-[request]-[index]" */ \`../builtLocales/\${locale}/\${namespace}\`)
     .then(({ default: localeStrings }) => addTranslations({[locale]: {[namespace]: localeStrings}}))
     .catch(() => handleError(locale, namespace))
 }
@@ -53,7 +53,7 @@ if(i18n.language){
 importLocale('en', '${ns}');
 
 `;
-
+let first = false
 module.exports = function() {
   this.cacheable && this.cacheable();
 
@@ -131,6 +131,10 @@ module.exports = function() {
       }
     }
   });
+  if(first){
+    return `export default {}`
+  }
+  first = true
   const returnSource = [...new Set(namespaces)].map(ns =>
     createDynamicImport(ns)
   );
