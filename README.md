@@ -1,6 +1,25 @@
-## Note: This is a fork of CRA used by CEA
+# Note: This is a fork of CRA used by CEA
 
-This fork is used to create a customized react-scripts package.
+This fork is used to create a customized `react-scripts` package.
+
+## Clone this repo
+
+1. Clone this repository - `git clone` and then copy/paste from the GitHub UI
+1. `cd create-react-app/packages/react-scripts`
+
+## To update `react-scripts`
+
+1. `cd packages/react-scripts`
+1. `yarn install`
+1. Find the relevant updates from the upstream `facebook/create-react-app` repository and change them in the `react-scripts` package here.
+1. Commit your work, push to our fork, make a pull request.
+1. When that is merged to "production", then we should publish to npm so our `cea-desktop` project can use this updated code.
+
+## Publish to npm
+
+1. TODO
+
+---
 
 # Create React App [![Build Status](https://dev.azure.com/facebook/create-react-app/_apis/build/status/facebook.create-react-app?branchName=master)](https://dev.azure.com/facebook/create-react-app/_build/latest?definitionId=1&branchName=master) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg)](https://github.com/facebook/create-react-app/blob/master/CONTRIBUTING.md)
 
