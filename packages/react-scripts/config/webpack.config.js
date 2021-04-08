@@ -832,7 +832,7 @@ module.exports = function (webpackEnv) {
           extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
           formatter: require.resolve('react-dev-utils/eslintFormatter'),
           eslintPath: require.resolve('eslint'),
-          failOnError: !(isEnvDevelopment && emitErrorsAsWarnings),
+          failOnError: false,
           context: paths.appSrc,
           cache: true,
           cacheLocation: path.resolve(
@@ -843,7 +843,10 @@ module.exports = function (webpackEnv) {
           cwd: paths.appPath,
           resolvePluginsRelativeTo: __dirname,
           baseConfig: {
-            extends: [require.resolve('eslint-config-react-app/base')],
+            extends: [
+              require.resolve('@fs/eslint-config-frontier-react'),
+              useTypeScript && require.resolve('@fs/eslint-config-frontier-react').replace('index.js', 'typescript.js'),
+            ].filter(Boolean),
             rules: {
               ...(!hasJsxRuntime && {
                 'react/react-in-jsx-scope': 'error',
