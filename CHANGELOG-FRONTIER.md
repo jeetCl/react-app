@@ -1,3 +1,8 @@
+## 6.0.0-charlie.5
+
+Fixed the pathing to manifest.json so it doesn't just point to familysearch.org/manifest.json.
+Prepend appPath to /manifest.json now.
+
 ## 6.0.0-charlie.4
 
 Put manifest link in head in the layout.ejs file
