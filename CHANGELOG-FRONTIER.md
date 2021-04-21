@@ -1,3 +1,7 @@
+## 6.0.0-charlie.6
+
+Updated InjectManifest to exclude _index.html in the injecting (like for precache part of service-worker)
+
 ## 6.0.0-charlie.5
 
 Fixed the pathing to manifest.json so it doesn't just point to familysearch.org/manifest.json.

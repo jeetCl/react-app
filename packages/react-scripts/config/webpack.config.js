@@ -778,7 +778,7 @@ module.exports = function (webpackEnv) {
         new WorkboxWebpackPlugin.InjectManifest({
           swSrc,
           dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
-          exclude: [/\.map$/, /asset-manifest\.json$/, /LICENSE/],
+          exclude: [/\.map$/, /asset-manifest\.json$/, /LICENSE/, /_index\.html$/],
           additionalManifestEntries: [{url: 'offline.html', revision: null}],
           // Bump up the default maximum size (2mb) that's precached,
           // to make lazy-loading failure scenarios less likely.
