@@ -1,3 +1,7 @@
+## 6.0.0-charlie.4
+
+Put manifest link in head in the layout.ejs file
+
 ## 6.0.0-charlie.2
 
 Updated the proxies.js file to have "/service/" so the proxy won't intercept service-worker urls
