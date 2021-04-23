@@ -1,3 +1,8 @@
+## 6.0.0-charlie.7
+
+Remove "offline.html" from the additionalManifestEntries since we figured out how to precache the
+landing page in cra-template/service-worker.js
+
 ## 6.0.0-charlie.6
 
 Updated InjectManifest to exclude _index.html in the injecting (like for precache part of service-worker)
