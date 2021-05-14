@@ -1,6 +1,6 @@
 {
   "name": "@fs/react-scripts",
-  "version": "6.0.0-charlie.8",
+  "version": "6.0.0-charlie.9",
   "upstreamVersion": "4.0.3",
   "description": "Configuration and scripts for Create React App.",
   "repository": {
@@ -73,7 +73,7 @@
     "eslint-config-react-app": "^6.0.0",
     "eslint-loader": "3.0.3",
     "eslint-plugin-flowtype": "^5.2.0",
-    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-import": "2.22.1",
     "eslint-plugin-jest": "^24.1.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.21.5",
