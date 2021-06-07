@@ -14,6 +14,7 @@ const webpack = require('webpack');
 const resolve = require('resolve');
 const PnpWebpackPlugin = require('pnp-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const IndexRevisionReplaceWebpackPlugin = require('./index-revision-replace.js')
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -784,6 +785,10 @@ module.exports = function (webpackEnv) {
           // See https://github.com/cra-template/pwa/issues/13#issuecomment-722667270
           maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         }),
+      // set the revision for the REACT_APP_APP_PATH _index file
+      isEnvProduction &&
+        fs.existsSync(swSrc) &&
+        new IndexRevisionReplaceWebpackPlugin(),
       // Retry failed chunks - for users on slow networks and older computers
       new RetryChunkLoadPlugin({
         // optional stringified function to get the cache busting query string appended to the script src
