@@ -1,6 +1,6 @@
 'use strict';
 // This file is mostly copied from https://github.com/alienfast/i18next-loader/blob/develop/index.js
-// and adjusted to our needs for per-lang Bundling
+// and adjusted to our needs for per-locale Bundling
 
 const path = require('path');
 const fs = require('fs');

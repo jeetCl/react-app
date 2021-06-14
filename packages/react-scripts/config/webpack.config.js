@@ -428,7 +428,7 @@ module.exports = function (webpackEnv) {
             {
               test: /locales\/index\.js$/,
               loader: isEnvProduction
-                ? require.resolve('../per-lang-loader')
+                ? require.resolve('../per-locale-loader')
                 : require.resolve('@alienfast/i18next-loader'),
               options: {
                 debug: false,

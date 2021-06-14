@@ -30,7 +30,7 @@
     "template-typescript",
     "utils",
     "polyfills.js",
-    "per-lang-loader"
+    "per-locale-loader"
   ],
   "bin": {
     "react-scripts": "./bin/react-scripts.js"

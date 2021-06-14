@@ -44,8 +44,8 @@ const printHostingInstructions = require('react-dev-utils/printHostingInstructio
 const FileSizeReporter = require('react-dev-utils/FileSizeReporter');
 const printBuildError = require('react-dev-utils/printBuildError');
 // frontier
-// coalesce per-lang locales for speedier intl perf scaling
-const perlang = require('./coalesceLocales');
+// coalesce per-locale locales for speedier intl perf scaling
+const coalesceLocales = require('./coalesceLocales');
 // /frontier
 
 const measureFileSizesBeforeBuild = FileSizeReporter.measureFileSizesBeforeBuild;
@@ -150,11 +150,11 @@ function build(previousFileSizes) {
   const compiler = webpack(config);
   return new Promise((resolve, reject) => {
     // frontier
-    // coalesce per-lang locales for speedier intl perf scaling
-    compiler.hooks.beforeRun.tap('perlang', () => {
-      console.time('per-lang coalesce');
-      perlang(process.cwd());
-      console.timeEnd('per-lang coalesce');
+    // coalesce per-locale locales for speedier intl perf scaling
+    compiler.hooks.beforeRun.tap('perlocale', () => {
+      console.time('per-locale coalesce');
+      coalesceLocales(process.cwd());
+      console.timeEnd('per-locale coalesce');
     });
     // /frontier
     compiler.run((err, stats) => {
