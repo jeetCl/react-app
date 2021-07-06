@@ -779,7 +779,19 @@ module.exports = function (webpackEnv) {
         new WorkboxWebpackPlugin.InjectManifest({
           swSrc,
           dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
-          exclude: [/\.map$/, /asset-manifest\.json$/, /LICENSE/, /_index\.html$/],
+          exclude: [
+            /\.map$/,
+            /asset-manifest\.json$/,
+            /LICENSE/,
+            /_index\.html$/,
+            // this stops pre-caching all language of logos and translations
+            /media\/lds-logo/,
+            /static\/js\/locales-/,
+            // no need to pre-cache all different fonts and fallback fonts
+            /MuseoCyrl.*?(ttf|svg|woff)/,
+            // the [^2] will allow the woff2 to get pre-cached, which is what we want
+            /museo_slab.*?(ttf|woff)[^2]/
+          ],
           // Bump up the default maximum size (2mb) that's precached,
           // to make lazy-loading failure scenarios less likely.
           // See https://github.com/cra-template/pwa/issues/13#issuecomment-722667270
