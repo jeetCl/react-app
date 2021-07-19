@@ -1,4 +1,4 @@
-## Note: This is part of a fork of CRA used by CEA
+## Note: This is part of a fork of `Create React App` used by Text-Em-All
 
 This is a customized react-scripts package.
 
