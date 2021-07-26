@@ -155,7 +155,7 @@ const hasJsxRuntime = (() => {
 
 // This is the production and development configuration.
 // It is focused on developer experience, fast rebuilds, and a minimal bundle.
-module.exports = function (webpackEnv) {
+module.exports = function(webpackEnv) {
   const isEnvDevelopment = webpackEnv === 'development';
   const isEnvProduction = webpackEnv === 'production';
 
@@ -860,7 +860,7 @@ module.exports = function (webpackEnv) {
       // In order to produce statistics for webpack bundle analyzer, add this to your .env file:
       //   WEBPACK_BUNDLE_ANALYZER_FILE=statistics
       // When a client build is performed, the file statistics.json will be created in the
-      // client/build folder and you can launch the interactive bundle analyzer with the tool's CLI.
+      //  client/build folder. You can launch the interactive bundle analyzer with the tool's CLI.
       isEnvProduction &&
         !shouldDisableWebStatsGeneration &&
         process.env.WEBPACK_BUNDLE_ANALYZER_FILE &&
@@ -870,7 +870,7 @@ module.exports = function (webpackEnv) {
           statsFilename:
             './' + process.env.WEBPACK_BUNDLE_ANALYZER_FILE + '.json',
         }),
-      //Checks for unused files
+      // Check for unused files
       !isEnvProduction &&
         shouldEnableDeadFileOutput &&
         new UnusedFilesWebpackPlugin({
