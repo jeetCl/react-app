@@ -7,17 +7,47 @@ This fork is used to create a customized `react-scripts` package.
 1. Clone this repository - `git clone` and then copy/paste from the GitHub UI
 1. `cd create-react-app/packages/react-scripts`
 
+## Set up upstream and origin remotes
+
+1. `git add upstream {url_of_CRA_repo}`
+1. `git add origin {url_of_TEA_fork_of_CRA_repo}`
+1. `git remote -v` should show both "origin" and "upstream" urls
+
 ## To update `react-scripts`
 
+1. `git fetch upstream`
+    - This will bring in all updates from the upstream `facebook/create-react-app` repository.
 1. `cd packages/react-scripts`
 1. `yarn install`
-1. Find the relevant updates from the upstream `facebook/create-react-app` repository and change them in the `react-scripts` package here.
-1. Commit your work, push to our fork, make a pull request.
+    - These handy commands might be needed to _really_ install new packages:
+      - `yarn cache clean`
+      - `rm -rf node_modules`
+      - `yarn install --force` (this will force `yarn` to use the network to install packages instead of the cache)
+1. `git merge {name_of_tag}` i.e., `git merge v4.0.1`
+    - This will probably only produce merge conflicts in the `react-scripts/package.json`.
+1. Dismiss the CRA merge conflict update and keep our custom description. Make sure to update the "based on version number" in the description so we know which version we are on in relation to future updates.
+    - If you have more merge conflicts, then you might need to pull up the upstream CRA conflicting files and compare them to the `callemall/cea-react-scripts` versions to find out how to move forward.
+    - Also, inspecting the [release notes](https://github.com/facebook/create-react-app/releases) for the upstream Facebook CRA project will likely help.
+1. Update the version number in the `react-scripts/package.json` so we can publish to npm with a new version. The Text-Em-All R2D2 Web App uses this custom version number.
+
+## Testing in `cea-desktop`
+
+1. In the `client/package.json`, find the line with `cea-react-scripts` and change it to this, replacing the path with your machine's special location for the app:
+```sh
+"cea-react-scripts": "file:../../create-react-app/packages/react-scripts",
+```
+1. Run `yarn` (or possibly `yarn install --force`) in the `client` folder.
+1. Run `yarn start` from the root of the project to kick off the node server and start the `react-scripts` for testing
+
+## Finishing up
+
+1. Commit your work, push to our custom `cea-react-scripts` fork, make a pull request.
 1. When that is merged to "production", then we should publish to npm so our `cea-desktop` project can use this updated code.
 
 ## Publish to npm
 
-1. TODO
+0. For now, ask @daveham to take care of this
+1. TODO: Make a process for anyone to update this package
 
 ---
 
