@@ -1,8 +1,62 @@
-## Note: This is a fork of CRA used by CEA
+# Note: This is a fork of CRA used by CEA
 
-This fork is used to create a customized react-scripts package.
+This fork is used to create a customized `react-scripts` package.
+
+## Clone this repo
+
+1. Clone this repository - `git clone` and then copy/paste from the GitHub UI
+1. `cd create-react-app/packages/react-scripts`
+
+## Set up upstream and origin remotes
+
+1. `git add upstream {url_of_CRA_repo}`
+1. `git add origin {url_of_TEA_fork_of_CRA_repo}`
+1. `git remote -v` should show both "origin" and "upstream" urls
+
+## To update `react-scripts`
+
+1. `git fetch upstream`
+   - This will bring in all updates from the upstream `facebook/create-react-app` repository.
+1. `cd packages/react-scripts`
+1. `yarn install`
+   - These handy commands might be needed to _really_ install new packages:
+     - `yarn cache clean`
+     - `rm -rf node_modules`
+     - `yarn install --force` (this will force `yarn` to use the network to install packages instead of the cache)
+1. `git merge {name_of_tag}` i.e., `git merge v4.0.1`
+   - This will probably only produce merge conflicts in the `react-scripts/package.json`.
+1. Dismiss the CRA merge conflict update and keep our custom description. Make sure to update the "based on version number" in the description so we know which version we are on in relation to future updates.
+   - If you have more merge conflicts, then you might need to pull up the upstream CRA conflicting files and compare them to the `callemall/cea-react-scripts` versions to find out how to move forward.
+   - Also, inspecting the [release notes](https://github.com/facebook/create-react-app/releases) for the upstream Facebook CRA project will likely help.
+1. Update the version number in the `react-scripts/package.json` so we can publish to npm with a new version. The Text-Em-All R2D2 Web App uses this custom version number.
+
+## Testing in `cea-desktop`
+
+1. In the `client/package.json`, find the line with `cea-react-scripts` and change it to this, replacing the path with your machine's special location for the app:
+
+```sh
+"cea-react-scripts": "file:../../create-react-app/packages/react-scripts",
+```
+
+1. Run `yarn` (or possibly `yarn install --force`) in the `client` folder.
+1. Run `yarn start` from the root of the project to kick off the node server and start the `react-scripts` for testing
+1. Run all unit tests against these changes — `yarn testonly`
+
+## Finishing up
+
+1. Commit your work, push to our custom `cea-react-scripts` fork, make a pull request.
+1. When that is merged to "production", then we should publish to npm so our `cea-desktop` project can use this updated code.
+
+## Publish to npm
+
+0. For now, ask @daveham to take care of this
+1. TODO: Make a process for anyone to update this package
+
+---
 
 # Create React App [![Build Status](https://dev.azure.com/facebook/create-react-app/_apis/build/status/facebook.create-react-app?branchName=master)](https://dev.azure.com/facebook/create-react-app/_build/latest?definitionId=1&branchName=master) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg)](https://github.com/facebook/create-react-app/blob/master/CONTRIBUTING.md)
+
+<img alt="Logo" align="right" src="https://create-react-app.dev/img/logo.svg" width="20%" />
 
 Create React apps with no build configuration.
 
@@ -11,7 +65,7 @@ Create React apps with no build configuration.
 
 Create React App works on macOS, Windows, and Linux.<br>
 If something doesn’t work, please [file an issue](https://github.com/facebook/create-react-app/issues/new).<br>
-If you have questions or need help, please ask in our [Spectrum](https://spectrum.chat/create-react-app) community.
+If you have questions or need help, please ask in [GitHub Discussions](https://github.com/facebook/create-react-app/discussions).
 
 ## Quick Overview
 
@@ -21,7 +75,7 @@ cd my-app
 npm start
 ```
 
-If you've previously installed `create-react-app` globally via `npm install -g create-react-app`, we recommend you uninstall the package using `npm uninstall -g create-react-app` to ensure that npx always uses the latest version.
+If you've previously installed `create-react-app` globally via `npm install -g create-react-app`, we recommend you uninstall the package using `npm uninstall -g create-react-app` or `yarn global remove create-react-app` to ensure that npx always uses the latest version.
 
 _([npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b) comes with npm 5.2+ and higher, see [instructions for older npm versions](https://gist.github.com/gaearon/4064d3c23a77c74a3614c498a8bb1c5f))_
 
@@ -41,7 +95,7 @@ Create a project, and you’re good to go.
 
 ## Creating an App
 
-**You’ll need to have Node 8.16.0 or Node 10.16.0 or later version on your local development machine** (but it’s not required on the server). You can use [nvm](https://github.com/creationix/nvm#installation) (macOS/Linux) or [nvm-windows](https://github.com/coreybutler/nvm-windows#node-version-manager-nvm-for-windows) to switch Node versions between different projects.
+**You’ll need to have Node 10.16.0 or later version on your local development machine** (but it’s not required on the server). We recommend using the latest LTS version. You can use [nvm](https://github.com/creationix/nvm#installation) (macOS/Linux) or [nvm-windows](https://github.com/coreybutler/nvm-windows#node-version-manager-nvm-for-windows) to switch Node versions between different projects.
 
 To create a new app, you may choose one of the following methods:
 
@@ -179,9 +233,9 @@ Here are a few common cases where you might want to try something else:
 
 - If you need to **publish a React component**, [nwb](https://github.com/insin/nwb) can [also do this](https://github.com/insin/nwb#react-components-and-libraries), as well as [Neutrino's react-components preset](https://neutrino.js.org/packages/react-components/).
 
-- If you want to do **server rendering** with React and Node.js, check out [Next.js](https://github.com/zeit/next.js/) or [Razzle](https://github.com/jaredpalmer/razzle). Create React App is agnostic of the backend, and only produces static HTML/JS/CSS bundles.
+- If you want to do **server rendering** with React and Node.js, check out [Next.js](https://nextjs.org/) or [Razzle](https://github.com/jaredpalmer/razzle). Create React App is agnostic of the backend, and only produces static HTML/JS/CSS bundles.
 
-- If your website is **mostly static** (for example, a portfolio or a blog), consider using [Gatsby](https://www.gatsbyjs.org/) instead. Unlike Create React App, it pre-renders the website into HTML at the build time.
+- If your website is **mostly static** (for example, a portfolio or a blog), consider using [Gatsby](https://www.gatsbyjs.org/) or [Next.js](https://nextjs.org/). Unlike Create React App, Gatsby pre-renders the website into HTML at build time. Next.js supports both server rendering and pre-rendering.
 
 - Finally, if you need **more customization**, check out [Neutrino](https://neutrino.js.org/) and its [React preset](https://neutrino.js.org/packages/react/).
 
@@ -197,6 +251,10 @@ Check out [Expo CLI](https://github.com/expo/expo-cli).
 ## Contributing
 
 We'd love to have your helping hand on `create-react-app`! See [CONTRIBUTING.md](CONTRIBUTING.md) for more information on what we're looking for and how to get started.
+
+## Supporting Create React App
+
+Create React App is a community maintained project and all contributors are volunteers. If you'd like to support the future development of Create React App then please consider donating to our [Open Collective](https://opencollective.com/create-react-app).
 
 ## Credits
 
@@ -215,4 +273,4 @@ We are grateful to the authors of existing related projects for their ideas and 
 
 ## License
 
-Create React App is open source software [licensed as MIT](https://github.com/facebook/create-react-app/blob/master/LICENSE).
+Create React App is open source software [licensed as MIT](https://github.com/facebook/create-react-app/blob/master/LICENSE). The Create React App logo is licensed under a [Creative Commons Attribution 4.0 International license](https://creativecommons.org/licenses/by/4.0/).
