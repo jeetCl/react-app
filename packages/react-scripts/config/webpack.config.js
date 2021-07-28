@@ -14,6 +14,7 @@ const webpack = require('webpack');
 const resolve = require('resolve');
 const PnpWebpackPlugin = require('pnp-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const IndexRevisionReplaceWebpackPlugin = require('./index-revision-replace.js')
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -778,12 +779,28 @@ module.exports = function (webpackEnv) {
         new WorkboxWebpackPlugin.InjectManifest({
           swSrc,
           dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
-          exclude: [/\.map$/, /asset-manifest\.json$/, /LICENSE/],
+          exclude: [
+            /\.map$/,
+            /asset-manifest\.json$/,
+            /LICENSE/,
+            /_index\.html$/,
+            // this stops pre-caching all language of logos and translations
+            /media\/lds-logo/,
+            /static\/js\/locales-/,
+            // no need to pre-cache all different fonts and fallback fonts
+            /MuseoCyrl.*?(ttf|svg|woff)/,
+            // the [^2] will allow the woff2 to get pre-cached, which is what we want
+            /museo_slab.*?(ttf|woff)[^2]/
+          ],
           // Bump up the default maximum size (2mb) that's precached,
           // to make lazy-loading failure scenarios less likely.
           // See https://github.com/cra-template/pwa/issues/13#issuecomment-722667270
           maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         }),
+      // set the revision for the REACT_APP_APP_PATH _index file
+      isEnvProduction &&
+        fs.existsSync(swSrc) &&
+        new IndexRevisionReplaceWebpackPlugin(),
       // Retry failed chunks - for users on slow networks and older computers
       new RetryChunkLoadPlugin({
         // optional stringified function to get the cache busting query string appended to the script src

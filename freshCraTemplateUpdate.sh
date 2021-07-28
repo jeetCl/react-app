@@ -19,7 +19,6 @@ echo "NEW_CRA_VERSION: $NEW_CRA_VERSION"
 json -I -f package.json -e "this.dependencies[\"@fs/react-scripts\"]=\"$NEW_CRA_VERSION\""
 
 rm blueprint.yml.bak
-rm package-lock.json
 rm .npmrc
 
 # Commit and push to the existing fs-webdev/fresh-cra-template repo on github

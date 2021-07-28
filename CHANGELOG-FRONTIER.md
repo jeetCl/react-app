@@ -1,3 +1,25 @@
+## 6.0.0-charlie.8
+
+CodeCoverage ignore the service-worker and serviceWorkerRegistration files
+
+## 6.0.0-charlie.7
+
+Remove "offline.html" from the additionalManifestEntries since we figured out how to precache the
+landing page in cra-template/service-worker.js
+
+## 6.0.0-charlie.6
+
+Updated InjectManifest to exclude _index.html in the injecting (like for precache part of service-worker)
+
+## 6.0.0-charlie.5
+
+Fixed the pathing to manifest.json so it doesn't just point to familysearch.org/manifest.json.
+Prepend appPath to /manifest.json now.
+
+## 6.0.0-charlie.4
+
+Put manifest link in head in the layout.ejs file
+
 ## 6.0.0-charlie.2
 
 Updated the proxies.js file to have "/service/" so the proxy won't intercept service-worker urls
