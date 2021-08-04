@@ -356,11 +356,6 @@ module.exports = function (webpackEnv) {
         // Support React Native Web
         // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
         'react-native': 'react-native-web',
-        // Allows for better profiling with ReactDevTools
-        ...(isEnvProductionProfile && {
-          'react-dom$': 'react-dom/profiling',
-          'scheduler/tracing': 'scheduler/tracing-profiling',
-        }),
         react: require.resolve('react'),
         'react-dom': require.resolve('react-dom'),
         i18next: require.resolve('i18next'),
@@ -369,6 +364,11 @@ module.exports = function (webpackEnv) {
         // TODO FamilySearch - do we need to change this to linaria when the time comes?
         '@emotion/core': require.resolve('@emotion/core'),
         ...(modules.webpackAliases || {}),
+        // Allows for better profiling with ReactDevTools
+        ...(isEnvProductionProfile && {
+          'react-dom$': 'react-dom/profiling',
+          'scheduler/tracing': 'scheduler/tracing-profiling',
+        }),
       },
       plugins: [
         // Adds support for installing with Plug'n'Play, leading to faster installs and adding
