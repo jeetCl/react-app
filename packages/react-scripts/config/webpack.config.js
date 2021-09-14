@@ -368,6 +368,7 @@ module.exports = function (webpackEnv) {
         'react-router': require.resolve('react-router'),
         // TODO FamilySearch - do we need to change this to linaria when the time comes?
         '@emotion/core': require.resolve('@emotion/core'),
+        '/coalesced-locales': path.resolve(path.join(paths.appSrc, 'locales/')),
         ...(modules.webpackAliases || {}),
       },
       plugins: [
@@ -427,14 +428,7 @@ module.exports = function (webpackEnv) {
             // load locale files
             {
               test: /locales\/index\.js$/,
-              loader: isEnvProduction
-                ? require.resolve('../per-locale-loader')
-                : require.resolve('@alienfast/i18next-loader'),
-              options: {
-                debug: false,
-                include: ['**/+(translation|common-ui).json'], // only include translation and common-ui namespaces
-                basenameAsNamespace: true,
-              },
+              loader: require.resolve('../per-locale-loader'),
             },
             // Process application JS with Babel.
             // The preset includes JSX, Flow, TypeScript, and some ESnext features.

@@ -62,6 +62,7 @@
     "bfj": "^7.0.2",
     "camelcase": "^6.1.0",
     "case-sensitive-paths-webpack-plugin": "2.3.0",
+    "chokidar": "^3.5.2",
     "connect-base": "^0.1.7",
     "connect-metric": "^1.0.1",
     "cookie-parser": "^1.4.4",

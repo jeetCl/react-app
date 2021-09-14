@@ -4,16 +4,19 @@ const jsonfile = require('jsonfile');
 const path = require('path');
 const fs = require('fs');
 const rimraf = require('rimraf');
+const chokidar = require('chokidar');
 
-module.exports = function coalesceLocales(appDir) {
-  const builtLocalesDir = `${appDir}/src/locales/dist`;
+exports.coalesceLocales = paths => {
+  console.time('per-locale coalesce');
+
+  const builtLocalesDir = `${paths.appSrc}/locales/dist`;
   if (fs.existsSync(builtLocalesDir)) {
     rimraf.sync(builtLocalesDir);
   }
   fs.mkdirSync(builtLocalesDir);
   const list = dependencyTree.toList({
-    filename: `${process.cwd()}/src/index.js`,
-    directory: process.cwd(),
+    filename: `${paths.appSrc}/index.js`,
+    directory: paths.appPath,
     nodeModulesConfig: {
       entry: 'module',
     },
@@ -47,4 +50,26 @@ module.exports = function coalesceLocales(appDir) {
       );
     });
   });
+
+  console.timeEnd('per-locale coalesce');
+};
+
+exports.watchCoalesce = paths => {
+  const watcher = chokidar.watch(
+    `${path.join(paths.appSrc, 'locales')}/!(dist)/*`,
+    {
+      ignored: 'dist',
+    }
+  );
+  watcher.on('all', () => {
+    console.log('Detected change to locales, recoalescing...');
+    exports.coalesceLocales(paths);
+  });
+  ['SIGINT', 'SIGTERM'].forEach(function (sig) {
+    process.on(sig, function () {
+      watcher.close();
+    });
+  });
+
+  exports.coalesceLocales(paths);
 };
