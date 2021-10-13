@@ -1,3 +1,7 @@
+## 6.1.0
+
+Added polyfills for IntersectionObserver and ResizeObserver
+
 ## 6.0.0-charlie.8
 
 CodeCoverage ignore the service-worker and serviceWorkerRegistration files
