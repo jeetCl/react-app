@@ -433,6 +433,12 @@ module.exports = function (webpackEnv) {
                 basenameAsNamespace: true,
               },
             },
+            // Process .graphql/.gql files
+            {
+              test: /\.(graphql|gql)$/,
+              exclude: /node_modules/,
+              loader: 'graphql-tag/loader',
+            },
             // Process application JS with Babel.
             // The preset includes JSX, Flow, TypeScript, and some ESnext features.
             {
