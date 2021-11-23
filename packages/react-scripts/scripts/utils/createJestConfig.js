@@ -51,6 +51,7 @@ module.exports = (resolve, rootDir, isEjecting) => {
     testEnvironment: 'jsdom',
     testRunner: require.resolve('jest-circus/runner'),
     transform: {
+      "\\.(gql|graphql)$": "jest-transform-graphql",
       '^.+\\.(js|jsx|mjs|cjs|ts|tsx)$': resolve(
         'config/jest/babelTransform.js'
       ),
