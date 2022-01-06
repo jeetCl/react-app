@@ -1,3 +1,12 @@
+## 6.2.0
+
+Added support for .gql files
+Hard pin react-error-overlay to 6.0.9 to fix this issue: https://github.com/facebook/create-react-app/issues/11773
+
+## 6.1.0
+
+Added polyfills for IntersectionObserver and ResizeObserver
+
 ## 6.0.0-charlie.8
 
 CodeCoverage ignore the service-worker and serviceWorkerRegistration files

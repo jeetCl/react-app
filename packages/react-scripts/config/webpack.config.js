@@ -356,11 +356,6 @@ module.exports = function (webpackEnv) {
         // Support React Native Web
         // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
         'react-native': 'react-native-web',
-        // Allows for better profiling with ReactDevTools
-        ...(isEnvProductionProfile && {
-          'react-dom$': 'react-dom/profiling',
-          'scheduler/tracing': 'scheduler/tracing-profiling',
-        }),
         react: require.resolve('react'),
         'react-dom': require.resolve('react-dom'),
         i18next: require.resolve('i18next'),
@@ -370,6 +365,11 @@ module.exports = function (webpackEnv) {
         '@emotion/core': require.resolve('@emotion/core'),
         '/coalesced-locales': path.resolve(path.join(paths.appSrc, 'locales/')),
         ...(modules.webpackAliases || {}),
+        // Allows for better profiling with ReactDevTools
+        ...(isEnvProductionProfile && {
+          'react-dom$': 'react-dom/profiling',
+          'scheduler/tracing': 'scheduler/tracing-profiling',
+        }),
       },
       plugins: [
         // Adds support for installing with Plug'n'Play, leading to faster installs and adding
@@ -429,6 +429,12 @@ module.exports = function (webpackEnv) {
             {
               test: /locales\/index\.js$/,
               loader: require.resolve('../per-locale-loader'),
+            },
+            // Process .graphql/.gql files
+            {
+              test: /\.(graphql|gql)$/,
+              exclude: /node_modules/,
+              loader: 'graphql-tag/loader',
             },
             // Process application JS with Babel.
             // The preset includes JSX, Flow, TypeScript, and some ESnext features.
@@ -776,7 +782,19 @@ module.exports = function (webpackEnv) {
         new WorkboxWebpackPlugin.InjectManifest({
           swSrc,
           dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
-          exclude: [/\.map$/, /asset-manifest\.json$/, /LICENSE/, /_index\.html$/],
+          exclude: [
+            /\.map$/,
+            /asset-manifest\.json$/,
+            /LICENSE/,
+            /_index\.html$/,
+            // this stops pre-caching all language of logos and translations
+            /media\/lds-logo/,
+            /static\/js\/locales-/,
+            // no need to pre-cache all different fonts and fallback fonts
+            /MuseoCyrl.*?(ttf|svg|woff)/,
+            // the [^2] will allow the woff2 to get pre-cached, which is what we want
+            /museo_slab.*?(ttf|woff)[^2]/
+          ],
           // Bump up the default maximum size (2mb) that's precached,
           // to make lazy-loading failure scenarios less likely.
           // See https://github.com/cra-template/pwa/issues/13#issuecomment-722667270
