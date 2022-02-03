@@ -66,6 +66,8 @@ const imageInlineSizeLimit = parseInt(
   process.env.IMAGE_INLINE_SIZE_LIMIT || '10000'
 );
 
+const maxWebpackChunkSize = parseInt(process.env.MAX_WEBPACK_CHUNK_SIZE || '0');
+
 // Check if TypeScript is setup
 const useTypeScript = fs.existsSync(paths.appTsConfig);
 
@@ -221,14 +223,14 @@ module.exports = function (webpackEnv) {
       // There will be one main bundle, and one file per asynchronous chunk.
       // In development, it does not produce real files.
       filename: isEnvProduction
-        ? 'static/js/[name].[contenthash:8].js'
+        ? 'static/js/[name].[contenthash:16].js'
         : isEnvDevelopment && 'static/js/bundle.js',
       // TODO: remove this when upgrading to webpack 5
       // FS - writeToDisk and futureEmitAssets are not compatible, so defaulting back to false: https://github.com/webpack/webpack/pull/8642#issuecomment-455342804
       futureEmitAssets: false,
       // There are also additional JS chunk files if you use code splitting.
       chunkFilename: isEnvProduction
-        ? 'static/js/[name].[contenthash:8].chunk.js'
+        ? 'static/js/[name].[contenthash:16].chunk.js'
         : isEnvDevelopment && 'static/js/[name].chunk.js',
       // webpack uses `publicPath` to determine where the app is being served from.
       // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -326,6 +328,7 @@ module.exports = function (webpackEnv) {
             chunks: 'all',
           },
         },
+        maxSize: maxWebpackChunkSize,
         chunks: 'all',
         name: isEnvDevelopment,
       },
@@ -410,7 +413,7 @@ module.exports = function (webpackEnv) {
               options: {
                 limit: imageInlineSizeLimit,
                 mimetype: 'image/avif',
-                name: 'static/media/[name].[hash:8].[ext]',
+                name: 'static/media/[name].[hash:16].[ext]',
               },
             },
             // "url" loader works like "file" loader except that it embeds assets
@@ -421,7 +424,7 @@ module.exports = function (webpackEnv) {
               loader: require.resolve('url-loader'),
               options: {
                 limit: imageInlineSizeLimit,
-                name: 'static/media/[name].[hash:8].[ext]',
+                name: 'static/media/[name].[hash:16].[ext]',
               },
             },
             // load locale files
@@ -643,7 +646,7 @@ module.exports = function (webpackEnv) {
               // by webpacks internal loaders.
               exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
               options: {
-                name: 'static/media/[name].[hash:8].[ext]',
+                name: 'static/media/[name].[hash:16].[ext]',
               },
             },
             // ** STOP ** Are you adding a new loader?
@@ -745,8 +748,8 @@ module.exports = function (webpackEnv) {
         new MiniCssExtractPlugin({
           // Options similar to the same options in webpackOptions.output
           // both options are optional
-          filename: 'static/css/[name].[contenthash:8].css',
-          chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
+          filename: 'static/css/[name].[contenthash:16].css',
+          chunkFilename: 'static/css/[name].[contenthash:16].chunk.css',
         }),
       // Generate an asset manifest file with the following content:
       // - "files" key: Mapping of all asset filenames to their corresponding
