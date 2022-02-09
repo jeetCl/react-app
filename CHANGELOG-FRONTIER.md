@@ -1,3 +1,8 @@
+## 6.3.0-alpha.0
+
+- Adding an envvar to read maxSize for chunks in webpack
+- 16 bit hashes in names to decrease chance of collision 
+
 ## 6.2.0
 
 Added support for .gql files
