@@ -750,6 +750,8 @@ module.exports = function (webpackEnv) {
           // both options are optional
           filename: 'static/css/[name].[contenthash:16].css',
           chunkFilename: 'static/css/[name].[contenthash:16].chunk.css',
+          // https://webpack.js.org/plugins/mini-css-extract-plugin/#remove-order-warnings
+          ignoreOrder: true,
         }),
       // Generate an asset manifest file with the following content:
       // - "files" key: Mapping of all asset filenames to their corresponding
