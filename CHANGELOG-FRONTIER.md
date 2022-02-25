@@ -1,3 +1,8 @@
+## 6.3.0
+- The changes from 6.3.0-alpha.0
+- Telling the mini-css-extract-plugin to remove order warnings
+  - https://webpack.js.org/plugins/mini-css-extract-plugin/#remove-order-warnings
+
 ## 6.3.0-alpha.0
 
 - Adding an envvar to read maxSize for chunks in webpack
