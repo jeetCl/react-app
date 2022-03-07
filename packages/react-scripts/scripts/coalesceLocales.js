@@ -14,9 +14,14 @@ exports.coalesceLocales = paths => {
     rimraf.sync(builtLocalesDir);
   }
   fs.mkdirSync(builtLocalesDir);
+  
+  const index = fs.existsSync(`${paths.appSrc}/index.tsx`) ? `${paths.appSrc}/index.tsx` : `${paths.appSrc}/index.js`
+  
   const list = dependencyTree.toList({
-    filename: `${paths.appSrc}/index.js`,
+    filename: index,
     directory: paths.appPath,
+    tsConfig: index.includes('.tsx') && `${paths.appPath}/tsconfig.json`,
+    noTypeDefinitions: true, // optional
     nodeModulesConfig: {
       entry: 'module',
     },
