@@ -5,5 +5,5 @@ require('core-js/modules/es.array.flat-map')
 require('core-js/modules/es.object.from-entries')
 require('core-js/modules/es.promise.all-settled')
 require('core-js/modules/es.promise.finally')
-require('intersection-observer-polyfill/dist/IntersectionObserver.global')
+require('intersection-observer');
 require('resize-observer-polyfill/dist/ResizeObserver.global')
