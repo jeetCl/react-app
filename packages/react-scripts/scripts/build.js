@@ -144,7 +144,7 @@ function build(previousFileSizes) {
   console.log('Creating an optimized production build...');
 
   if (process.env.WEBPACK_BUNDLE_ANALYZER_FILE) {
-    const file = process.env.WEBPACK_BUNDLE_ANALYZER_FILE + '.json';
+    const file = process.env.WEBPACK_BUNDLE_ANALYZER_FILE + '.html';
     console.log(
       chalk.yellow(
         "Bundle statistics will be generated in build folder, file = '" +
@@ -161,7 +161,7 @@ function build(previousFileSizes) {
     console.log(chalk.yellow('   WEBPACK_BUNDLE_ANALYZER_FILE=statistics'));
     console.log(
       chalk.yellow(
-        'When a client build is performed, the file statistics.json will be created in the'
+        'When a client build is performed, the file statistics.html will be created in the'
       )
     );
     console.log(

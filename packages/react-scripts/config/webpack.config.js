@@ -36,13 +36,13 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 // @remove-on-eject-begin
 const getCacheIdentifier = require('react-dev-utils/getCacheIdentifier');
 // @remove-on-eject-end
-const postcssNormalize = require('postcss-normalize');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-  .BundleAnalyzerPlugin;
-const UnusedFilesWebpackPlugin = require('unused-files-webpack-plugin').default;
 
-const appPackageJson = require(paths.appPackageJson);
 const createEnvironmentHash = require('./webpack/persistentCache/createEnvironmentHash');
+
+// *** Text-Em-All Web App dependencies
+const BundleAnalyzerPlugin =
+  require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const UnusedFilesWebpackPlugin = require('unused-files-webpack-plugin').default;
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
@@ -120,7 +120,7 @@ const makeHtmlPluginEntryForPage = (
 // Generates a manifest plugin for the specified bundle/entrypoint
 //  to be written at the indicated path.
 const makeManifestPluginForBundle = entryPoint =>
-  new ManifestPlugin({
+  new WebpackManifestPlugin({
     fileName: `asset-manifest-${entryPoint}.json`,
     publicPath: paths.publicUrlOrPath,
     generate: (seed, files, entrypoints) => {
@@ -169,7 +169,7 @@ const hasJsxRuntime = (() => {
 
 // This is the production and development configuration.
 // It is focused on developer experience, fast rebuilds, and a minimal bundle.
-module.exports = function(webpackEnv) {
+module.exports = function (webpackEnv) {
   const isEnvDevelopment = webpackEnv === 'development';
   const isEnvProduction = webpackEnv === 'production';
 
@@ -479,17 +479,18 @@ module.exports = function(webpackEnv) {
       // Automatically split vendor and commons
       // https://twitter.com/wSokra/status/969633336732905474
       // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
-      splitChunks: {
-        chunks: 'all',
-        name: isEnvDevelopment,
-      },
+      // splitChunks: {
+      //   chunks: 'all',
+      //   name: isEnvDevelopment,
+      // },
       // Keep the runtime chunk separated to enable long term caching
       // https://twitter.com/wSokra/status/969679223278505985
       // https://github.com/facebook/create-react-app/issues/5358
       // runtimeChunk: {
       //   name: entrypoint => `runtime-${entrypoint.name}`,
       // },
-      runtimeChunk: 'single', // *** Text-Em-All Web App, was true,
+      // This setting causes the error: Multiple assets emit different content to the same filename
+      // runtimeChunk: 'single', // *** Text-Em-All Web App, was true,
     },
     resolve: {
       // This allows you to set a fallback for where webpack should look for modules.
@@ -922,37 +923,39 @@ module.exports = function(webpackEnv) {
         !shouldDisableWebStatsGeneration &&
         process.env.WEBPACK_BUNDLE_ANALYZER_FILE &&
         new BundleAnalyzerPlugin({
-          analyzerMode: 'disabled',
-          generateStatsFile: true,
-          statsFilename:
-            './' + process.env.WEBPACK_BUNDLE_ANALYZER_FILE + '.json',
+          analyzerMode: 'static',
+          reportFilename:
+            './' + process.env.WEBPACK_BUNDLE_ANALYZER_FILE + '.html',
+          // Don't open at build time,
+          // To view results, run `yarn analyze`
+          openAnalyzer: false,
         }),
       // Check for unused files
-      !isEnvProduction &&
-        shouldEnableDeadFileOutput &&
-        new UnusedFilesWebpackPlugin({
-          failOnUnused: false,
-          pattern: 'src/**/*.*',
-          globOptions: {
-            ignore: [
-              '**/__json-mocks__/**/*.*',
-              '**/__mocks__/**/*.*',
-              '**/__tests__/**/*.*',
-              '**/*.md',
-              '**/*.test.js',
-              '**/helpers/jest-matchers.js',
-              '**/helpers/test-helpers.js',
-              '**/registerServiceWorker.js',
-              '**/setup-tests.js',
-              '**/setupProxy.js',
-              '**/setupTests.js',
-              '**/state/api-response.js',
-              '**/state/progress/actions.js',
-              '**/style-guide-wrapper.js',
-              '**/test-utils.js',
-            ],
-          },
-        }),
+      // !isEnvProduction &&
+      //   shouldEnableDeadFileOutput &&
+      //   new UnusedFilesWebpackPlugin({
+      //     failOnUnused: false,
+      //     pattern: 'src/**/*.*',
+      //     globOptions: {
+      //       ignore: [
+      //         '**/__json-mocks__/**/*.*',
+      //         '**/__mocks__/**/*.*',
+      //         '**/__tests__/**/*.*',
+      //         '**/*.md',
+      //         '**/*.test.js',
+      //         '**/helpers/jest-matchers.js',
+      //         '**/helpers/test-helpers.js',
+      //         '**/registerServiceWorker.js',
+      //         '**/setup-tests.js',
+      //         '**/setupProxy.js',
+      //         '**/setupTests.js',
+      //         '**/state/api-response.js',
+      //         '**/state/progress/actions.js',
+      //         '**/style-guide-wrapper.js',
+      //         '**/test-utils.js',
+      //       ],
+      //     },
+      //   }),
       // *** Text-Em-All Web App ***
       !disableESLintPlugin &&
         new ESLintPlugin({
