@@ -794,6 +794,7 @@ module.exports = function (webpackEnv) {
             /_index\.html$/,
             // this stops pre-caching all language of logos and translations
             /media\/lds-logo/,
+            /church-logo_/,
             /static\/js\/locales-/,
             // no need to pre-cache all different fonts and fallback fonts
             /MuseoCyrl.*?(ttf|svg|woff)/,

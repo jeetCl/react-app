@@ -1,3 +1,6 @@
+## 6.4.0-beta.0
+- Utilize a different intersection-observer polyfill
+
 ## 6.3.0
 - The changes from 6.3.0-alpha.0
 - Telling the mini-css-extract-plugin to remove order warnings
