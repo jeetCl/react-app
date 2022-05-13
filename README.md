@@ -32,7 +32,7 @@ This fork is used to create a customized `react-scripts` package.
 
 ## Testing in `cea-desktop`
 
-1. In the `client/package.json`, find the line with `tea-react-scripts` and change it to this, replacing the path with your machine's special location for the app:
+1. In the `client/package.json`, find the line with `tea-react-scripts` and change it to this, replacing the path with your machine's specific location for the app:
 
 ```sh
 "tea-react-scripts": "file:../../create-react-app/packages/react-scripts",
