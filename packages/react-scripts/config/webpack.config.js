@@ -67,6 +67,12 @@ const shouldInlineRuntimeChunk = process.env.INLINE_RUNTIME_CHUNK !== 'false';
 const emitErrorsAsWarnings = process.env.ESLINT_NO_DEV_ERRORS === 'true';
 const disableESLintPlugin = process.env.DISABLE_ESLINT_PLUGIN === 'true';
 
+// Added by Text-Em-All
+// Cache the resolution of module requests.
+// Allow faster recompile times, though normally not recommended.
+// This was enabled by default on Webpack 4, but turned off in Webpack 5
+const enableUnsafeCache = process.env.ENABLE_UNSAFE_CACHE !== 'false';
+
 const imageInlineSizeLimit = parseInt(
   process.env.IMAGE_INLINE_SIZE_LIMIT || '10000'
 );
@@ -537,6 +543,7 @@ module.exports = function (webpackEnv) {
       ],
     },
     module: {
+      unsafeCache: enableUnsafeCache, // Text-Em-All Web App
       strictExportPresence: true,
       rules: [
         // Handle node_modules packages that contain sourcemaps
