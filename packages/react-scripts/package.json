@@ -1,6 +1,6 @@
 {
   "name": "@fs/react-scripts",
-  "version": "6.4.0",
+  "version": "7.0.0-rc.0",
   "upstreamVersion": "4.0.3",
   "description": "Configuration and scripts for Create React App.",
   "repository": {
@@ -29,7 +29,8 @@
     "template",
     "template-typescript",
     "utils",
-    "polyfills.js"
+    "polyfills.js",
+    "per-locale-loader"
   ],
   "bin": {
     "react-scripts": "./bin/react-scripts.js"
@@ -62,12 +63,14 @@
     "bfj": "^7.0.2",
     "camelcase": "^6.1.0",
     "case-sensitive-paths-webpack-plugin": "2.3.0",
+    "chokidar": "^3.5.2",
     "connect-base": "^0.1.7",
     "connect-metric": "^1.0.1",
     "cookie-parser": "^1.4.4",
     "copy-webpack-plugin": "^4.6.0",
     "core-js": "^3.6.4",
     "css-loader": "4.3.0",
+    "dependency-tree": "^8.1.1",
     "dotenv": "8.2.0",
     "dotenv-expand": "5.1.0",
     "eslint": "^7.11.0",
@@ -94,6 +97,7 @@
     "jest-resolve": "26.6.0",
     "jest-transform-graphql": "^2.1.0",
     "jest-watch-typeahead": "0.6.1",
+    "jsonfile": "^6.1.0",
     "mini-css-extract-plugin": "0.11.3",
     "optimize-css-assets-webpack-plugin": "5.0.4",
     "pnp-webpack-plugin": "1.6.4",
@@ -111,6 +115,7 @@
     "resize-observer-polyfill": "^1.5.1",
     "resolve": "1.18.1",
     "resolve-url-loader": "^3.1.2",
+    "rimraf": "^3.0.2",
     "sass-loader": "^10.0.5",
     "semver": "7.3.2",
     "style-loader": "1.3.0",
@@ -162,6 +167,6 @@
     ]
   },
   "publishConfig": {
-    "registry": "https://familysearch.jfrog.io/familysearch/api/npm/fs-npm-prod-virtual/"
+    "registry": "https://familysearch.jfrog.io/artifactory/api/npm/fs-npm-prod-virtual/"
   }
 }

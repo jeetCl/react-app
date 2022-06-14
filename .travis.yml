@@ -2,6 +2,7 @@ language: node_js
 node_js:
   - "14"
 before_install:
+  - git config --global url."https://git@".insteadOf git://
   - echo -e "machine github.com\n  login $CI_USER_TOKEN" > ~/.netrc
   - echo "//familysearch.jfrog.io/familysearch/api/npm/fs-npm-prod-virtual/:_authToken=${NPM_PUBLISH_TOKEN}" >> ~/.npmrc
   - echo "@fs:registry=https://familysearch.jfrog.io/familysearch/api/npm/fs-npm-prod-virtual/" >> ~/.npmrc
@@ -33,6 +34,13 @@ deploy:
     on:
       branch: frontierMaster
   - provider: script
+    edge: true
+    cleanup: false
+    script: npm run publish
+    on:
+      branch: coalesce-frontierMaster
+  - provider: script
+    skip_cleanup: true
     edge: true
     cleanup: false
     script: cd ${TRAVIS_BUILD_DIR} && ./freshCraTemplateUpdate.sh

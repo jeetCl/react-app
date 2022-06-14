@@ -366,6 +366,7 @@ module.exports = function (webpackEnv) {
         'react-router': require.resolve('react-router'),
         // TODO FamilySearch - do we need to change this to linaria when the time comes?
         '@emotion/core': require.resolve('@emotion/core'),
+        '/coalesced-locales': path.resolve(path.join(paths.appSrc, 'locales/')),
         ...(modules.webpackAliases || {}),
         // Allows for better profiling with ReactDevTools
         ...(isEnvProductionProfile && {
@@ -429,12 +430,8 @@ module.exports = function (webpackEnv) {
             },
             // load locale files
             {
-              test: /locales/,
-              loader: '@alienfast/i18next-loader',
-              options: {
-                debug: false,
-                basenameAsNamespace: true,
-              },
+              test: /locales\/index\.js$/,
+              loader: require.resolve('../per-locale-loader'),
             },
             // Process .graphql/.gql files
             {
@@ -874,7 +871,10 @@ module.exports = function (webpackEnv) {
           baseConfig: {
             extends: [
               require.resolve('@fs/eslint-config-frontier-react'),
-              useTypeScript && require.resolve('@fs/eslint-config-frontier-react').replace('index.js', 'typescript.js'),
+              useTypeScript &&
+                require
+                  .resolve('@fs/eslint-config-frontier-react')
+                  .replace('index.js', 'typescript.js'),
             ].filter(Boolean),
             rules: {
               ...(!hasJsxRuntime && {
