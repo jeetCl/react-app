@@ -69,7 +69,7 @@ module.exports = (resolve, rootDir, isEjecting) => {
     moduleNameMapper: {
       '^react-native$': 'react-native-web',
       '^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy',
-      '/coalesced-locales': path.resolve(path.join(paths.appSrc, 'locales')), // frontier
+      '/coalesced-locales': path.resolve(path.join(__dirname, 'jest.RawLoaderStub.js')), // frontier
       ...(modules.jestAliases || {}),
     },
     moduleFileExtensions: [...paths.moduleFileExtensions, 'node'].filter(
