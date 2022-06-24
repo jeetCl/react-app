@@ -121,6 +121,7 @@ exports.watchCoalesce = paths => {
   ['SIGINT', 'SIGTERM'].forEach(function (sig) {
     process.on(sig, function () {
       watcher.close();
+      process.exit();
     });
   });
 
