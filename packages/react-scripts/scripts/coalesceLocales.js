@@ -114,10 +114,12 @@ exports.watchCoalesce = paths => {
       ignored: 'dist',
     }
   );
-  watcher.on('all', () => {
+
+  watcher.on('all', _.debounce(() => {
     console.log('Detected change to locales, recoalescing...');
     exports.coalesceLocales(paths);
-  });
+  }, 250));
+
   ['SIGINT', 'SIGTERM'].forEach(function (sig) {
     process.on(sig, function () {
       watcher.close();
