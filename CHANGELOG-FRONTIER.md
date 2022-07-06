@@ -1,3 +1,15 @@
+## 7.0.3
+- Add debounce of 250 to the coalesce-locales watch function (same as zion does it)
+
+## 7.0.2
+- Tweaked coalesce-locale watch to use process.exit() on SIGINT to actually kill the process. Otherwise Ctrl-c left zombie processes of storybook
+
+## 7.0.1
+- Fixed the jest config moduleNameMapper to resolve /coalesced-locales correctly
+
+## 7.0.0
+- Add the coalesce-locales functionality
+
 ## 6.4.0-beta.0
 - Utilize a different intersection-observer polyfill
 
