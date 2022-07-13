@@ -36,8 +36,8 @@ If you have cloned this repo and made changes locally and want to test them befo
 
 When we are ready to pull in changes from Facebook, here are the steps
 
-1. Make a PR from facebook's master into our fork's master. This url SHOULD be what you want... please verify before blindly doing anything
-   - https://github.com/fs-webdev/create-react-app/compare/master...facebook:master
+1. Make a PR from facebook's master (main) into our fork's master. This url SHOULD be what you want... please verify before blindly doing anything
+   - https://github.com/fs-webdev/create-react-app/compare/master...facebook:main
    - DO NOT SQUASH THE COMMITS when merging the PR. We need to be able to checkout a specific commit later in our steps
 2. Locally, check out the master branch and do a `git pull`
 3. Find facebook's latest release https://github.com/facebook/create-react-app/releases
