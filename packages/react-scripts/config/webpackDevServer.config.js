@@ -16,6 +16,7 @@ const redirectServedPath = require('react-dev-utils/redirectServedPathMiddleware
 const paths = require('./paths');
 const getHttpsConfig = require('./getHttpsConfig');
 const path = require('path');
+console.log('JOEY in webpack.dev.server')
 
 const host = process.env.HOST || '0.0.0.0';
 const sockHost = process.env.WDS_SOCKET_HOST;
@@ -100,6 +101,9 @@ module.exports = function (proxy, allowedHost) {
       // from the root.
       // remove last slash so user can land on `/test` instead of `/test/`
       publicPath: paths.publicUrlOrPath.slice(0, -1),
+      // FS - write to disk so that snow can serve assets
+      // looking them up with the manifestMap provided by hf
+      writeToDisk: isSnow,
     },
 
     https: getHttpsConfig(),
@@ -134,8 +138,5 @@ module.exports = function (proxy, allowedHost) {
       // https://github.com/facebook/create-react-app/issues/2272#issuecomment-302832432
       devServer.app.use(noopServiceWorkerMiddleware(paths.publicUrlOrPath));
     },
-    // FS - write to disk so that snow can serve assets
-    // looking them up with the manifestMap provided by hf
-    writeToDisk: isSnow,
   };
 };

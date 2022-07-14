@@ -36,6 +36,7 @@ const ForkTsCheckerWebpackPlugin =
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { RetryChunkLoadPlugin } = require('webpack-retry-chunk-load-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+console.log('JOEY in webpack.config')
 
 // @remove-on-eject-begin
 const getCacheIdentifier = require('react-dev-utils/getCacheIdentifier');
@@ -311,24 +312,23 @@ module.exports = function (webpackEnv) {
         // This is only used in production mode
         new CssMinimizerPlugin(),
       ],
-      // TODO: JOEY - CRA 5 REMOVED splitChunks completly
-      // Automatically split vendor and commons
-      // https://twitter.com/wSokra/status/969633336732905474
-      // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
-      splitChunks: {
-        // put react and react-dom into a single commonVendor chunk that can be reused by all pages on familysearch.org
-        // https://webpack.js.org/plugins/split-chunks-plugin/#split-chunks-example-3
-        cacheGroups: {
-          commonVendor: {
-            test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
-            name: 'commonVendor',
-            chunks: 'all',
-          },
-        },
-        maxSize: maxWebpackChunkSize,
-        chunks: 'all',
-        name: isEnvDevelopment,
-      }
+      // // TODO: JOEY - CRA 5 REMOVED splitChunks completly
+      // // Automatically split vendor and commons
+      // // https://twitter.com/wSokra/status/969633336732905474
+      // // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
+      // splitChunks: {
+      //   // put react and react-dom into a single commonVendor chunk that can be reused by all pages on familysearch.org
+      //   // https://webpack.js.org/plugins/split-chunks-plugin/#split-chunks-example-3
+      //   cacheGroups: {
+      //     commonVendor: {
+      //       test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+      //       name: 'commonVendor',
+      //       chunks: 'all',
+      //     },
+      //   },
+      //   maxSize: maxWebpackChunkSize,
+      //   chunks: 'all',
+      // }
     },
     // TODO: JOEY - end of CRA 5 REMOVED splitChunks object
     resolve: {
@@ -534,6 +534,7 @@ module.exports = function (webpackEnv) {
                         { helpers: true },
                       ],
                     ],
+                    // TODO: JOEY, did we add this and need it? or did CRA5 remove it?
                     plugins: [
                       [
                         require.resolve('babel-plugin-bundled-import-meta'),
