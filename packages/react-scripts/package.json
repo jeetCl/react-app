@@ -1,6 +1,6 @@
 {
   "name": "@fs/react-scripts",
-  "version": "8.0.0-alpha.1",
+  "version": "8.0.0-alpha.2",
   "upstreamVersion": "5.0.1",
   "description": "Configuration and scripts for Create React App.",
   "repository": {
@@ -38,11 +38,15 @@
   "types": "./lib/react-app.d.ts",
   "notes about dependencies and updates": {
     "postcss": "Joey, do we want to add this in? ^8.4.4",
-    "css-minimizer-webpack-plugin": "Joey, do we want to add this in? ^3.2.0",
     "browserslist": "Joey, do we want to add this back? cra 5 has it... ^4.18.1",
     "dependency-tree": "Joey, do we still need this dep?",
     "@fs/auth-middleware": "snow can't handle auth-middleware at v3 yet.",
-    "copy-webpack-plugin": "careful when updating this, the api HAS changed. npm run build in an app will show that there is an issue"
+    "copy-webpack-plugin": "careful when updating this, the api HAS changed. npm run build in an app will show that there is an issue",
+    "@alienfast/i18next-loader": "Logan: I don't think we need this anymore with per-locale?",
+    "babel-core": "Logan: CRA doesn't have this, do we need it?",
+    "babel-plugin-bundled-import-meta": "Logan: I remember we need this for something, still needed?",
+    "core-js": "Logan: I remember we need this for something, still needed?",
+    "@fs/webpack-wci18n": "Logan: I don't think we use it, remove it, or put it behind a flag?"
   },
   "dependencies": {
     "@alienfast/i18next-loader": "^1.0.18",
@@ -68,6 +72,7 @@
     "copy-webpack-plugin": "^4.6.0",
     "core-js": "^3.6.4",
     "css-loader": "^6.5.1",
+    "css-minimizer-webpack-plugin": "^3.2.0",
     "dependency-tree": "^8.1.1",
     "dotenv": "^10.0.0",
     "dotenv-expand": "^5.1.0",

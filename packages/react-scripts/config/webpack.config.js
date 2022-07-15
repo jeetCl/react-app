@@ -50,7 +50,7 @@ const reactRefreshRuntimeEntry = require.resolve('react-refresh/runtime');
 const reactRefreshWebpackPluginRuntimeEntry = require.resolve(
   '@pmmmwh/react-refresh-webpack-plugin'
 );
-const babelRuntimeEntry = require.resolve('babel-preset-react-app');
+const babelRuntimeEntry = require.resolve('@fs/babel-preset-frontier');
 const babelRuntimeEntryHelpers = require.resolve(
   '@babel/runtime/helpers/esm/assertThisInitialized',
   { paths: [babelRuntimeEntry] }
@@ -352,13 +352,13 @@ module.exports = function (webpackEnv) {
         // Support React Native Web
         // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
         'react-native': 'react-native-web',
-        react: require.resolve('react'),
-        'react-dom': require.resolve('react-dom'),
-        i18next: require.resolve('i18next'),
-        'react-i18next': require.resolve('react-i18next'),
-        'react-router': require.resolve('react-router'),
+        // react: require.resolve('react'),
+        // 'react-dom': require.resolve('react-dom'),
+        // i18next: require.resolve('i18next'),
+        // 'react-i18next': require.resolve('react-i18next'),
+        // 'react-router': require.resolve('react-router'),
         // TODO FamilySearch - do we need to change this to linaria when the time comes?
-        '@emotion/core': require.resolve('@emotion/core'),
+        // '@emotion/core': require.resolve('@emotion/core'),
         '/coalesced-locales': path.resolve(path.join(paths.appSrc, 'locales/')),
         ...(modules.webpackAliases || {}),
         // Allows for better profiling with ReactDevTools
