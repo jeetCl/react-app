@@ -404,8 +404,8 @@ module.exports = function (webpackEnv) {
           isEnvDevelopment && 'static/js/[name].js', // *** Text-Em-All Web App
       // There are also additional JS chunk files if you use code splitting.
       chunkFilename: isEnvProduction
-        ? 'static/js/[name].[contenthash:8].chunk.js'
-        : isEnvDevelopment && 'static/js/[name].chunk.js',
+        ? 'static/js/[id].[contenthash:8].chunk.js'
+        : isEnvDevelopment && 'static/js/[id].[contenthash:8].chunk.js',
       assetModuleFilename: 'static/media/[name].[hash][ext]',
       // webpack uses `publicPath` to determine where the app is being served from.
       // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -485,10 +485,17 @@ module.exports = function (webpackEnv) {
       // Automatically split vendor and commons
       // https://twitter.com/wSokra/status/969633336732905474
       // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
-      // splitChunks: {
-      //   chunks: 'all',
-      //   name: isEnvDevelopment,
-      // },
+      splitChunks: {
+        chunks: 'all',
+        name: isEnvDevelopment ? (module, chunks, cacheGroupKey) => {
+          const moduleFileName = module
+            .identifier()
+            .split('/')
+            .reduceRight((item) => item);
+          const allChunksNames = chunks.map((item) => item.name).join('~');
+          return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
+        } : false,
+      },
       // Keep the runtime chunk separated to enable long term caching
       // https://twitter.com/wSokra/status/969679223278505985
       // https://github.com/facebook/create-react-app/issues/5358
