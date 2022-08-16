@@ -403,6 +403,8 @@ module.exports = function (webpackEnv) {
         : //   : isEnvDevelopment && 'static/js/bundle.js',
           isEnvDevelopment && 'static/js/[name].js', // *** Text-Em-All Web App
       // There are also additional JS chunk files if you use code splitting.
+      // Fix Conflict: Multiple assets emit to the same filename
+      // https://stackoverflow.com/a/43028918/15194069
       chunkFilename: isEnvProduction
         ? 'static/js/[id].[contenthash:8].chunk.js'
         : isEnvDevelopment && 'static/js/[id].[contenthash:8].chunk.js',
@@ -487,14 +489,19 @@ module.exports = function (webpackEnv) {
       // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
       splitChunks: {
         chunks: 'all',
-        name: isEnvDevelopment ? (module, chunks, cacheGroupKey) => {
-          const moduleFileName = module
-            .identifier()
-            .split('/')
-            .reduceRight((item) => item);
-          const allChunksNames = chunks.map((item) => item.name).join('~');
-          return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
-        } : false,
+        name: isEnvDevelopment
+          ? // Copied directly from Webpack docs
+            // https://webpack.js.org/plugins/split-chunks-plugin/#splitchunksname
+            (module, chunks, cacheGroupKey) => {
+              const moduleFileName = module
+                .identifier()
+                .split('/')
+                .reduceRight(item => item);
+              const allChunksNames = chunks.map(item => item.name).join('~');
+              return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
+            }
+          : // false is the recommend value for production since it will keep the same names
+            false,
       },
       // Keep the runtime chunk separated to enable long term caching
       // https://twitter.com/wSokra/status/969679223278505985
