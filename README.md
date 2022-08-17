@@ -49,8 +49,15 @@ This fork is used to create a customized `react-scripts` package.
 
 ## Publish to npm
 
-0. For now, ask @daveham to take care of this
-1. TODO: Make a process for anyone to update this package
+1. Get access to the callemall organization on npmjs.com. Hai is the admin and can add you.
+1. Run `npm login` and sign in to your account that's in the the organization
+1. Increment the version number in the package.json and make a PR to `master`
+1. Once that's merged, checkout `master` and pull the latest
+1. Run `cd packages/react-scripts`
+1. You may have to run `nvm use 14`
+1. Run `yarn` to install dependencies
+1. Now run `npm publish`
+1. Make a PR to cea-desktop with the updated version on `tea-react-scripts`
 
 ---
 
