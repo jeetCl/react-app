@@ -1,6 +1,6 @@
 <%
 const CONFIG_PREFIX = 'FS_CLIENT_APP_'
-let clientConfig = JSON.stringify(Object.keys(process.env)
+let clientAppConfig = JSON.stringify(Object.keys(process.env)
     .filter((key)=>key.startsWith(CONFIG_PREFIX))
     .reduce((prev, curr) => ({
         ...prev, 
@@ -8,4 +8,4 @@ let clientConfig = JSON.stringify(Object.keys(process.env)
     }), {}))
 %>
 
-SERVER_DATA.clientConfig = JSON.parse('<%- clientConfig %>');
+SERVER_DATA.clientAppConfig = JSON.parse('<%- clientAppConfig %>');
