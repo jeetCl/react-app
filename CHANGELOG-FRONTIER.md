@@ -5,6 +5,9 @@
 ## 7.0.4-alpha.0
 - Bumped eslint-config-frontier-react dependency
 
+## 7.0.4
+- Don't run the IndexRevisionReplace webpack plugin if we are running storybook
+
 ## 7.0.3
 - Add debounce of 250 to the coalesce-locales watch function (same as zion does it)
 

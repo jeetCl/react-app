@@ -811,6 +811,7 @@ module.exports = function (webpackEnv) {
       // set the revision for the REACT_APP_APP_PATH _index file
       isEnvProduction &&
         fs.existsSync(swSrc) &&
+          !process.env.STORYBOOK &&
         new IndexRevisionReplaceWebpackPlugin(),
       // TODO: JOEY - I think CRA 5 removed RetryChunkLoadPlugin completely...
       // Retry failed chunks - for users on slow networks and older computers
