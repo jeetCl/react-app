@@ -36,7 +36,7 @@ const ForkTsCheckerWebpackPlugin =
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { RetryChunkLoadPlugin } = require('webpack-retry-chunk-load-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-console.log('JOEY in webpack.config')
+console.log('JOEY in webpack.config from 8.0.0-alpha.4')
 
 // @remove-on-eject-begin
 const getCacheIdentifier = require('react-dev-utils/getCacheIdentifier');
@@ -69,7 +69,8 @@ const imageInlineSizeLimit = parseInt(
   process.env.IMAGE_INLINE_SIZE_LIMIT || '10000'
 );
 
-const maxWebpackChunkSize = parseInt(process.env.MAX_WEBPACK_CHUNK_SIZE || '0');
+// TODO: JOEY put this back when we do chunkSize stuff I guess
+// const maxWebpackChunkSize = parseInt(process.env.MAX_WEBPACK_CHUNK_SIZE || '0');
 
 // Check if TypeScript is setup
 const useTypeScript = fs.existsSync(paths.appTsConfig);
@@ -813,8 +814,7 @@ module.exports = function (webpackEnv) {
         fs.existsSync(swSrc) &&
           !process.env.STORYBOOK &&
         new IndexRevisionReplaceWebpackPlugin(),
-      // TODO: JOEY - I think CRA 5 removed RetryChunkLoadPlugin completely...
-      // Retry failed chunks - for users on slow networks and older computers
+      // FS - Retry failed chunks - for users on slow networks and older computers
       new RetryChunkLoadPlugin({
         // optional stringified function to get the cache busting query string appended to the script src
         // if not set will default to appending the string `?cache-bust=true`
