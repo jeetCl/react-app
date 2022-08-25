@@ -329,6 +329,8 @@ module.exports = function (
     args = args.concat(['react', 'react-dom']);
   }
 
+  setupFrontier(appPath, appName);
+
   // Install template dependencies, and react and react-dom if missing.
   if ((!isReactInstalled(appPackage) || templateName) && args.length > 1) {
     console.log();
@@ -340,9 +342,6 @@ module.exports = function (
       return;
     }
   }
-
-
-  setupFrontier(appPath, appName);
 
   console.log('args: ', args)
   if (args.find(arg => arg.includes('typescript'))) {
