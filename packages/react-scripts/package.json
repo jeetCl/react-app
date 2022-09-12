@@ -73,6 +73,7 @@
     "core-js": "^3.6.4",
     "css-loader": "^6.5.1",
     "css-minimizer-webpack-plugin": "^3.2.0",
+    "debug": "^4.3.4",
     "dependency-tree": "^8.1.1",
     "dotenv": "^10.0.0",
     "dotenv-expand": "^5.1.0",
