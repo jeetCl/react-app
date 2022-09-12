@@ -18,7 +18,7 @@ script:
   - npm test
   # test that a new app can be created with these scripts
   - mkdir -p ${HOME}/tmp && cd ${HOME}/tmp
-  - npx create-react-app fresh-cra-template --use-npm --scripts-version file:${TRAVIS_BUILD_DIR}/packages/react-scripts/ --template @fs/cra-template
+  - npx create-react-app fresh-cra-template --use-npm --scripts-version file:${TRAVIS_BUILD_DIR}/packages/react-scripts/ --template @fs/cra-template@next
   - cd fresh-cra-template
   # this is necessary so we can do some additional npm installs in the freshCraTemplateUpdate.sh script
   - echo "//familysearch.jfrog.io/familysearch/api/npm/fs-npm-prod-virtual/:_authToken=${NPM_PUBLISH_TOKEN}" >> ${HOME}/tmp/fresh-cra-template/.npmrc
@@ -44,7 +44,7 @@ deploy:
     cleanup: false
     script: npm run publish
     on:
-      branch: coalesce-frontierMaster
+      branch: next
   - provider: script
     skip_cleanup: true
     edge: true
