@@ -331,6 +331,12 @@ module.exports = function (
 
   setupFrontier(appPath, appName);
 
+  // FamilySearch npm 8 has weird behavior. Deleting node_modules and package-lock ensure that we are building
+  // the new app in a predicatable manner. Specifically, this solves the issue of node_modules/.bin/react-scripts
+  // symlinking to ../react-scripts instead of ../@fs/react-scripts
+  fs.removeSync(path.join(appPath, 'node_modules'))
+  fs.removeSync(path.join(appPath, 'package-lock.json'))
+
   // Install template dependencies, and react and react-dom if missing.
   if ((!isReactInstalled(appPackage) || templateName) && args.length > 1) {
     console.log();
