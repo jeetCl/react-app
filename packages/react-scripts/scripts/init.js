@@ -335,6 +335,7 @@ module.exports = function (
   // the new app in a predicatable manner. Specifically, this solves the issue of node_modules/.bin/react-scripts
   // symlinking to ../react-scripts instead of ../@fs/react-scripts
   fs.removeSync(path.join(appPath, 'node_modules'))
+
   fs.removeSync(path.join(appPath, 'package-lock.json'))
 
   // Install template dependencies, and react and react-dom if missing.
