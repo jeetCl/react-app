@@ -18,7 +18,7 @@ script:
   - npm test
   # test that a new app can be created with these scripts
   - mkdir -p ${HOME}/tmp && cd ${HOME}/tmp
-  - | 
+  - >-
     npx create-react-app fresh-cra-template --use-npm
     --scripts-version file:${TRAVIS_BUILD_DIR}/packages/react-scripts/
     --template @fs/cra-template@next
