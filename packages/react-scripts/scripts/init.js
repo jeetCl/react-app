@@ -334,8 +334,9 @@ module.exports = function (
   // FamilySearch npm 8 has weird behavior. Deleting node_modules and package-lock ensure that we are building
   // the new app in a predicatable manner. Specifically, this solves the issue of node_modules/.bin/react-scripts
   // symlinking to ../react-scripts instead of ../@fs/react-scripts
+  console.log(`Removing node_modules and package-lock.json due to npm 8 hoisting issues. This should help
+    with making a clean node_modules as expected`)
   fs.removeSync(path.join(appPath, 'node_modules'))
-
   fs.removeSync(path.join(appPath, 'package-lock.json'))
 
   // Install template dependencies, and react and react-dom if missing.

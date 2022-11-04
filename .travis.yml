@@ -10,14 +10,15 @@ before_install:
   - echo "//familysearch.jfrog.io/familysearch/api/npm/fs-npm-prod-virtual/:_authToken=${NPM_PUBLISH_TOKEN}" >> packages/react-scripts/.npmrc
   - echo "@fs:registry=https://familysearch.jfrog.io/familysearch/api/npm/fs-npm-prod-virtual/" >> packages/react-scripts/.npmrc
 install:
-  - "npm i"
-  - "cd packages/react-scripts"
-  - "npm i"
-  - "cd ../../"
+  - npm install
+  - cd packages/react-scripts
+  - npm install
+  - cd ../../
 script:
   - npm test
   # test that a new app can be created with these scripts
   - mkdir -p ${HOME}/tmp && cd ${HOME}/tmp
+  - echo "***************** Creating fresh-cra-template ***************************** "
   - >-
     npx create-react-app fresh-cra-template --use-npm
     --scripts-version file:${TRAVIS_BUILD_DIR}/packages/react-scripts/
@@ -26,9 +27,10 @@ script:
   # this is necessary so we can do some additional npm installs in the freshCraTemplateUpdate.sh script
   - echo "//familysearch.jfrog.io/familysearch/api/npm/fs-npm-prod-virtual/:_authToken=${NPM_PUBLISH_TOKEN}" >> ${HOME}/tmp/fresh-cra-template/.npmrc
   - echo "@fs:registry=https://familysearch.jfrog.io/familysearch/api/npm/fs-npm-prod-virtual/" >> ${HOME}/tmp/fresh-cra-template/.npmrc
-  - rm -rf node_modules package-lock.json
-  - npm install
+
   - CI=true npm test
+    
+  # Building the app so freshCraTemplateUpdate.sh can publish it
   - npm run build
 before_deploy: "cd ${TRAVIS_BUILD_DIR}/packages/react-scripts"
 deploy:
