@@ -341,6 +341,8 @@ module.exports = function (
   // Install template dependencies, and react and react-dom if missing.
   if ((!isReactInstalled(appPackage) || templateName) && args.length > 1) {
     console.log();
+    console.log(`Template version that was installed: ${templateName}: ${appPackage.dependencies[templateName]} `)
+
     console.log(`Installing template dependencies using ${command}...`);
 
     const proc = spawn.sync(command, args, { stdio: 'inherit' });
@@ -359,6 +361,7 @@ module.exports = function (
 
   // Remove template
   console.log(`Removing template package using ${command}...`);
+  console.log(`Template version being removed: ${templateName}: ${appPackage.dependencies[templateName]} `)
   console.log();
 
   const proc = spawn.sync(command, [remove, templateName], {
