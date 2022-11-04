@@ -5,7 +5,7 @@ const os = require('os')
 const path = require('path')
 const osUtils = require('./osUtils')
 
-const { CI, TRAVIS_BUILD_DIR } = process.env
+const { CI, TRAVIS_BUILD_DIR, TRAVIS_REPO_SLUG } = process.env
 
 module.exports = {
   setupFrontier,
@@ -16,13 +16,13 @@ function setupFrontier(appPath, appName) {
   alterPackageJsonFile(appPath, appPackage => {
     const packageJson = { ...appPackage }
     delete packageJson.scripts.eject
+    console.log('TRAVIS_REPO_SLUG: ', TRAVIS_REPO_SLUG)
     if (CI && TRAVIS_BUILD_DIR) {
+      console.log('CI and TRAVIS_BUILD_DIR are set, so setting @fs/react-scripts to a local file: `file:${TRAVIS_BUILD_DIR}/packages/react-scripts/`')
       packageJson.dependencies['@fs/react-scripts'] = `file:${TRAVIS_BUILD_DIR}/packages/react-scripts/`
     }
     return packageJson
   })
-
-
 
   replaceStringInFile(appPath, './README.md', /\{GITHUB_REPO\}/g, appName)
   replaceStringInFile(appPath, './blueprint.yml', /\{\{APP_NAME\}\}/g, appName)

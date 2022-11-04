@@ -360,17 +360,26 @@ module.exports = function (
     verifyTypeScriptSetup();
   }
 
-  // Remove template
-  console.log(`Removing template package using ${command}...`);
-  console.log(`Template version being removed: ${templateName}: ${appPackage.dependencies[templateName]} `)
-  console.log();
+  const currentAppPackage = JSON.parse(fs.readFileSync(path.join(appPath, 'package.json'), {encoding: 'utf8'}))
+  console.log('currentAppPackage. I expect no @fs/cra-template to be in deps:\n', JSON.stringify(currentAppPackage, null, 2))
 
-  const proc = spawn.sync(command, [remove, templateName], {
-    stdio: 'inherit',
-  });
-  if (proc.status !== 0) {
-    console.error(`\`${command} ${args.join(' ')}\` failed`);
-    return;
+  if (currentAppPackage.dependencies[templateName]) {
+    
+    // Remove template
+    console.log(`Removing template package using ${command}...`);
+    console.log(`Template version being removed: ${templateName}: ${appPackage.dependencies[templateName]} `)
+    console.log();
+
+    const proc = spawn.sync(command, [remove, templateName], {
+      stdio: 'inherit',
+    });
+    if (proc.status !== 0) {
+      console.error(`\`${command} ${args.join(' ')}\` failed`);
+      return;
+    }
+  } else {
+    console.log("No cra-template defined in app's package.json, so no need to uninstall it")
+
   }
 
   // Create git commit if git repo was initialized
