@@ -3,23 +3,42 @@
 const fs = require('fs-extra')
 const os = require('os')
 const path = require('path')
+const semver = require('semver')
+
 const osUtils = require('./osUtils')
 
-const { CI, TRAVIS_BUILD_DIR, TRAVIS_REPO_SLUG } = process.env
+const { CI, TRAVIS_BUILD_DIR, TRAVIS_BUILD_NUMBER } = process.env
 
 module.exports = {
   setupFrontier,
+  alterPackageJsonFile,
+  getTravisPrereleaseVersion,
+}
+
+/**
+ * Strip of any existing prerelease info and make a travisPrelease based on the travis job number
+ *
+ */
+function getTravisPrereleaseVersion(originalVersion) {
+  const major = semver.major(originalVersion)
+  const minor = semver.minor(originalVersion)
+  const patch = semver.patch(originalVersion)
+
+  return `${major}.${minor}.${patch}-travisPrerelease.${TRAVIS_BUILD_NUMBER}`
 }
 
 function setupFrontier(appPath, appName) {
-
   alterPackageJsonFile(appPath, appPackage => {
     const packageJson = { ...appPackage }
     delete packageJson.scripts.eject
-    console.log('TRAVIS_REPO_SLUG: ', TRAVIS_REPO_SLUG)
+
     if (CI && TRAVIS_BUILD_DIR) {
-      console.log('CI and TRAVIS_BUILD_DIR are set, so setting @fs/react-scripts to a local file: `file:${TRAVIS_BUILD_DIR}/packages/react-scripts/`')
-      packageJson.dependencies['@fs/react-scripts'] = `file:${TRAVIS_BUILD_DIR}/packages/react-scripts/`
+      const reactScriptPackageJson = require(path.join(__dirname, '../../package.json'))
+      const travisPrereleaseVersion = getTravisPrereleaseVersion(reactScriptPackageJson.version)
+      console.log(
+        `CI and TRAVIS_BUILD_DIR are set, so setting @fs/react-scripts to Travis prerelease version "${travisPrereleaseVersion}"`
+      )
+      packageJson.dependencies['@fs/react-scripts'] = travisPrereleaseVersion
     }
     return packageJson
   })
@@ -30,7 +49,7 @@ function setupFrontier(appPath, appName) {
 
   createLocalEnvFile()
   // TODO: JOEY ask if they want it to be a pwa or not.
-  // if not, remove the 2 serviceworker files, all the workbox dependencies, and the tweak in index.js and the 
+  // if not, remove the 2 serviceworker files, all the workbox dependencies, and the tweak in index.js and the
   // manifest.json and the 2 logo.png files
 }
 

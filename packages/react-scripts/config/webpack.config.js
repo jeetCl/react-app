@@ -36,7 +36,8 @@ const ForkTsCheckerWebpackPlugin =
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { RetryChunkLoadPlugin } = require('webpack-retry-chunk-load-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-console.log('JOEY in webpack.config from 8.0.0-alpha.4')
+
+console.log(`JOEY in webpack.config from ${require('../package.json').version}`)
 
 // @remove-on-eject-begin
 const getCacheIdentifier = require('react-dev-utils/getCacheIdentifier');

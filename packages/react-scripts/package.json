@@ -17,7 +17,7 @@
   },
   "scripts": {
     "prettier": "npx prettier --arrow-parens always --single-quote --trailing-comma es5 --print-width 120 --no-semi --write \"template*/**/*.js\"",
-    "publish": "npmPublish"
+    "fs-publish": "npmPublish"
   },
   "files": [
     "bin",
