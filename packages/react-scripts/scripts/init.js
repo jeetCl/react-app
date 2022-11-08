@@ -91,6 +91,7 @@ module.exports = function (
 ) {
   const appPackage = require(path.join(appPath, 'package.json'));
   const useYarn = fs.existsSync(path.join(appPath, 'yarn.lock'));
+  const suppliedReactScriptsVersion = appPackage.dependencies['@fs/react-scripts']
 
   if (!templateName) {
     console.log('');
@@ -329,7 +330,7 @@ module.exports = function (
     args = args.concat(['react', 'react-dom']);
   }
 
-  setupFrontier(appPath, appName);
+  setupFrontier(appPath, appName, suppliedReactScriptsVersion);
 
   // FamilySearch npm 8 has weird behavior. Deleting node_modules and package-lock ensure that we are building
   // the new app in a predicatable manner. Specifically, this solves the issue of node_modules/.bin/react-scripts
