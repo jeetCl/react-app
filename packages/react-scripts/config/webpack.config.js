@@ -37,7 +37,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { RetryChunkLoadPlugin } = require('webpack-retry-chunk-load-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
-console.log(`JOEY in webpack.config from ${require('../package.json').version}`)
+console.log(`In webpack.config from version ${require('../package.json').version}`)
 
 // @remove-on-eject-begin
 const getCacheIdentifier = require('react-dev-utils/getCacheIdentifier');
@@ -70,8 +70,7 @@ const imageInlineSizeLimit = parseInt(
   process.env.IMAGE_INLINE_SIZE_LIMIT || '10000'
 );
 
-// TODO: JOEY put this back when we do chunkSize stuff I guess
-// const maxWebpackChunkSize = parseInt(process.env.MAX_WEBPACK_CHUNK_SIZE || '0');
+const maxWebpackChunkSize = parseInt(process.env.MAX_WEBPACK_CHUNK_SIZE || '0');
 
 // Check if TypeScript is setup
 const useTypeScript = fs.existsSync(paths.appTsConfig);
@@ -314,25 +313,24 @@ module.exports = function (webpackEnv) {
         // This is only used in production mode
         new CssMinimizerPlugin(),
       ],
-      // // TODO: JOEY - CRA 5 REMOVED splitChunks completly
-      // // Automatically split vendor and commons
-      // // https://twitter.com/wSokra/status/969633336732905474
-      // // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
-      // splitChunks: {
-      //   // put react and react-dom into a single commonVendor chunk that can be reused by all pages on familysearch.org
-      //   // https://webpack.js.org/plugins/split-chunks-plugin/#split-chunks-example-3
-      //   cacheGroups: {
-      //     commonVendor: {
-      //       test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
-      //       name: 'commonVendor',
-      //       chunks: 'all',
-      //     },
-      //   },
-      //   maxSize: maxWebpackChunkSize,
-      //   chunks: 'all',
-      // }
+      // Automatically split vendor and commons
+      // https://twitter.com/wSokra/status/969633336732905474
+      // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
+      // FS: see webpack5 recommendations here https://webpack.js.org/migrate/5/
+      splitChunks: {
+        // put react and react-dom into a single commonVendor chunk that can be reused by all pages on familysearch.org
+        // https://webpack.js.org/plugins/split-chunks-plugin/#split-chunks-example-3
+        cacheGroups: {
+          commonVendor: {
+            test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+            name: 'commonVendor',
+            chunks: 'all',
+          },
+        },
+        maxSize: maxWebpackChunkSize,
+        chunks: 'all',
+      }
     },
-    // TODO: JOEY - end of CRA 5 REMOVED splitChunks object
     resolve: {
       // This allows you to set a fallback for where webpack should look for modules.
       // We placed these paths second because we want `node_modules` to "win"
