@@ -24,7 +24,7 @@ function getTravisPrereleaseVersion(originalVersion) {
   const minor = semver.minor(originalVersion)
   const patch = semver.patch(originalVersion)
 
-  return `${major}.${minor}.${patch}-travisPrerelease.${TRAVIS_BUILD_NUMBER}`
+  return `${major}.${minor}.${patch}-TravisPrerelease.${TRAVIS_BUILD_NUMBER}`
 }
 
 function setupFrontier(appPath, appName) {

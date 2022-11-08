@@ -47,7 +47,7 @@ deploy:
   - provider: script
     edge: true
     cleanup: false
-    script: npm run fs-publish
+    script: npm run fs-publish -- --allow-earlier-version
     on:
       branch: next
   - provider: script
