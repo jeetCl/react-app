@@ -21,7 +21,7 @@ alterPackageJsonFile(reactScriptPath, packageJson => {
   return packageJson
 })
 
-runExternalCommandSync('npm', ['run', 'fs-publish', '--allow-earlier'], { cwd: reactScriptPath })
+runExternalCommandSync('npm', ['run', 'fs-publish', '--', '--allow-earlier-version'], { cwd: reactScriptPath })
 
 alterPackageJsonFile(reactScriptPath, packageJson => {
   packageJson.version = originalVersion
