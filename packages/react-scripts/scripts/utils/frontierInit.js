@@ -7,7 +7,7 @@ const semver = require('semver')
 
 const osUtils = require('./osUtils')
 
-const { CI, TRAVIS_BUILD_DIR, TRAVIS_BUILD_NUMBER } = process.env
+const { TRAVIS_REPO_SLUG, TRAVIS_BUILD_NUMBER } = process.env
 
 module.exports = {
   setupFrontier,
@@ -32,7 +32,7 @@ function setupFrontier(appPath, appName) {
     const packageJson = { ...appPackage }
     delete packageJson.scripts.eject
 
-    if (CI && TRAVIS_BUILD_DIR) {
+    if (TRAVIS_REPO_SLUG === 'fs-webdev/create-react-app') {
       const reactScriptPackageJson = require(path.join(__dirname, '../../package.json'))
       const travisPrereleaseVersion = getTravisPrereleaseVersion(reactScriptPackageJson.version)
       console.log(
