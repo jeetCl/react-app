@@ -1,6 +1,6 @@
 {
   "name": "@fs/react-scripts",
-  "version": "8.0.0-alpha.5",
+  "version": "8.0.0-alpha.6",
   "upstreamVersion": "5.0.1",
   "description": "Configuration and scripts for Create React App.",
   "repository": {
@@ -36,15 +36,13 @@
     "react-scripts": "./bin/react-scripts.js"
   },
   "types": "./lib/react-app.d.ts",
-  "notes about dependencies and updates": {
-    "postcss": "Joey, do we want to add this in? ^8.4.4",
-    "browserslist": "Joey, do we want to add this back? cra 5 has it... ^4.18.1",
-    "dependency-tree": "Joey, do we still need this dep?",
-    "@fs/auth-middleware": "snow can't handle auth-middleware at v3 yet.",
-    "copy-webpack-plugin": "careful when updating this, the api HAS changed. npm run build in an app will show that there is an issue",
-    "@alienfast/i18next-loader": "Logan: I don't think we need this anymore with per-locale?",
-    "babel-core": "Logan: CRA doesn't have this, do we need it?",
-    "babel-plugin-bundled-import-meta": "Logan: I remember we need this for something, still needed?",
+  "notes about deps": {
+    "dependency-tree": "used for coalesce-locales",
+    "copy-webpack-plugin": "careful when updating this, the api HAS changed. npm run build in an app will show that there is an issue"
+  },
+  "questions about dependencies": {
+    "@fs/auth-middleware": "IS THIS STILL TRUE? snow can't handle auth-middleware at v3 yet.",
+    "babel-plugin-bundled-import-meta": "Logan: I remember we need this for something, still needed? Joey: not sure",
     "core-js": "Logan: I remember we need this for something, still needed?",
     "@fs/webpack-wci18n": "Logan: I don't think we use it, remove it, or put it behind a flag?"
   },
@@ -57,12 +55,12 @@
     "@fs/webpack-wci18n": "^1.0.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@svgr/webpack": "^5.5.0",
-    "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^27.4.2",
     "babel-loader": "^8.2.3",
     "babel-plugin-bundled-import-meta": "^0.3.2",
     "babel-plugin-named-asset-import": "^0.3.8",
     "bfj": "^7.0.2",
+    "browserslist": "^4.18.1",
     "camelcase": "^6.2.1",
     "case-sensitive-paths-webpack-plugin": "^2.4.0",
     "chokidar": "^3.5.2",
@@ -92,11 +90,11 @@
     "jsonfile": "^6.1.0",
     "mini-css-extract-plugin": "^2.4.5",
     "pnp-webpack-plugin": "1.6.4",
+    "postcss": "^8.4.4",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-loader": "^6.2.1",
     "postcss-normalize": "^10.0.1",
     "postcss-preset-env": "^7.0.1",
-    "postcss-safe-parser": "5.0.2",
     "prompts": "^2.4.2",
     "react-app-polyfill": "^3.0.0",
     "react-dev-utils": "^12.0.1",

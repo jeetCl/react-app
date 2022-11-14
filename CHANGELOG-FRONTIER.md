@@ -1,3 +1,6 @@
+## 8.0.0-alpha.6
+- Tweaking/removing/adding a few deps
+
 ## 8.0.0-alpha.0
 - Merged upstream master from facebook 5.0.1
 - Making dependencies npm 8 compatible
