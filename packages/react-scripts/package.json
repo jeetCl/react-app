@@ -44,7 +44,7 @@
     "@fs/auth-middleware": "snow can't handle auth-middleware at v3 yet."
   },
   "questions about dependencies": {
-    "babel-plugin-bundled-import-meta": "Logan: I remember we need this for something, still needed? Gonna try commenting out",
+    "babel-plugin-bundled-import-meta": "Logan: I remember we need this for something, still needed? Gonna try commenting out"
   },
   "dependencies": {
     "@alienfast/i18next-loader": "^1.0.18",
