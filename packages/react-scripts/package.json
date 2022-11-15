@@ -1,6 +1,6 @@
 {
   "name": "@fs/react-scripts",
-  "version": "8.0.0-alpha.6",
+  "version": "8.0.0-alpha.7",
   "upstreamVersion": "5.0.1",
   "description": "Configuration and scripts for Create React App.",
   "repository": {
@@ -38,13 +38,13 @@
   "types": "./lib/react-app.d.ts",
   "notes about deps": {
     "dependency-tree": "used for coalesce-locales",
-    "copy-webpack-plugin": "careful when updating this, the api HAS changed. npm run build in an app will show that there is an issue"
+    "copy-webpack-plugin": "careful when updating this, the api HAS changed. npm run build in an app will show that there is an issue",
+    "core-js": "Using core-js v3 for usage in polyfills.js file",
+    "@fs/webpack-wci18n": "Likely not being utilized, but keeping behind a flag in case it is needed",
+    "@fs/auth-middleware": "snow can't handle auth-middleware at v3 yet."
   },
   "questions about dependencies": {
-    "@fs/auth-middleware": "IS THIS STILL TRUE? snow can't handle auth-middleware at v3 yet.",
-    "babel-plugin-bundled-import-meta": "Logan: I remember we need this for something, still needed? Joey: not sure",
-    "core-js": "Logan: I remember we need this for something, still needed?",
-    "@fs/webpack-wci18n": "Logan: I don't think we use it, remove it, or put it behind a flag?"
+    "babel-plugin-bundled-import-meta": "Logan: I remember we need this for something, still needed? Gonna try commenting out",
   },
   "dependencies": {
     "@alienfast/i18next-loader": "^1.0.18",

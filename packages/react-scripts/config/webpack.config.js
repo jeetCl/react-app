@@ -65,6 +65,7 @@ const babelRuntimeRegenerator = require.resolve('@babel/runtime/regenerator', {
 const shouldInlineRuntimeChunk = process.env.INLINE_RUNTIME_CHUNK !== 'false';
 
 const disableESLintPlugin = process.env.DISABLE_ESLINT_PLUGIN === 'true';
+const needsWci18nSupport = process.env.NEEDS_WCI18N_SUPPORT === 'true'
 
 const imageInlineSizeLimit = parseInt(
   process.env.IMAGE_INLINE_SIZE_LIMIT || '10000'
@@ -518,9 +519,10 @@ module.exports = function (webpackEnv) {
               test: /\.(js|mjs)$/,
               exclude: /@babel(?:\/|\\{1,2})runtime/,
               use: [
-                {
+                // FS: it seems unlikely that anyone is using the wci18n plugin here, keeping just in case
+                needsWci18nSupport ? {
                   loader: require.resolve('@fs/webpack-wci18n'),
-                },
+                } : undefined,
                 {
                   loader: require.resolve('babel-loader'),
                   options: {
@@ -536,12 +538,12 @@ module.exports = function (webpackEnv) {
                       ],
                     ],
                     // TODO: JOEY, did we add this and need it? or did CRA5 remove it?
-                    plugins: [
-                      [
-                        require.resolve('babel-plugin-bundled-import-meta'),
-                        { importStyle: 'iife' },
-                      ],
-                    ],
+                    // plugins: [
+                    //   [
+                    //     require.resolve('babel-plugin-bundled-import-meta'),
+                    //     { importStyle: 'iife' },
+                    //   ],
+                    // ],
                     cacheDirectory: true,
                     // See #6846 for context on why cacheCompression is disabled
                     cacheCompression: false,
@@ -565,7 +567,7 @@ module.exports = function (webpackEnv) {
                     inputSourceMap: shouldUseSourceMap,
                   },
                 },
-              ],
+              ].filter(Boolean),
             },
             // "postcss" loader applies autoprefixer to our CSS.
             // "css" loader resolves paths in CSS and adds assets as dependencies.
