@@ -1,5 +1,14 @@
+## 8.0.1-alpha.0
+- Sync with v7 latest commits, including dynatrace RUM
+
 ## 8.0.0
 - Bumping deps and releasing 8.0.0
+
+## 7.0.9
+- Update dynatrace RUM snippets to support multiple environments
+
+## 7.0.8
+- Add dynatrace RUM snippet behind feature flag
 
 ## 8.0.0-rc.3
 - CRA 5 changed the default behavior so both prod and dev builds go to the `build` dir, which breaks our Snow middleware, so restoring the CRA 4 behavior that prod goes to `build` and dev goes to `dist`. We may revisit this later
