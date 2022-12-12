@@ -506,6 +506,11 @@ module.exports = function (webpackEnv) {
       // runtimeChunk: 'single', // *** Text-Em-All Web App, was true,
     },
     resolve: {
+      // Webpack v5 stopped shipping with polyfills for node.js core modules.
+      fallback: {
+        url: require.resolve('url/'),
+      },
+
       // This allows you to set a fallback for where webpack should look for modules.
       // We placed these paths second because we want `node_modules` to "win"
       // if there are any conflicts. This matches Node resolution mechanism.
