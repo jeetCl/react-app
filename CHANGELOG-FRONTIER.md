@@ -1,3 +1,6 @@
+## 8.0.0-rc.1
+- Removing debugging console.logs
+
 ## 8.0.0-alpha.6
 - Tweaking/removing/adding a few deps
 

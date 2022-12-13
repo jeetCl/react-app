@@ -37,7 +37,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { RetryChunkLoadPlugin } = require('webpack-retry-chunk-load-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
-console.log(`In webpack.config from version ${require('../package.json').version}`)
+console.log(`In webpack.config from @fs/react-scripts version ${require('../package.json').version}`)
 
 // @remove-on-eject-begin
 const getCacheIdentifier = require('react-dev-utils/getCacheIdentifier');
