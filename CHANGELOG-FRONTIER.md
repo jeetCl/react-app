@@ -1,5 +1,8 @@
+## 8.0.0-rc.2
+- splitChunks was messing with output filename on development environment. Changing to use [file] instead of hardcoded filename
+
 ## 8.0.0-rc.1
-- Removing debugging console.logs
+- Removing console.logs
 
 ## 8.0.0-alpha.6
 - Tweaking/removing/adding a few deps

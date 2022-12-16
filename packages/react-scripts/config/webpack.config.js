@@ -234,7 +234,9 @@ module.exports = function (webpackEnv) {
       // In development, it does not produce real files.
       filename: isEnvProduction
         ? 'static/js/[name].[contenthash:16].js'
-        : isEnvDevelopment && 'static/js/bundle.js',
+      // Frontier: splitChunk's commonVendor and main were both outputting to "static/js/bundle.js". This gets us past that issue
+      // https://stackoverflow.com/questions/66453511/webpack-optimization-chunking-gives-conflict-multiple-chunks-emit-assets-to-t
+        : isEnvDevelopment && 'static/js/[name].js',
       // There are also additional JS chunk files if you use code splitting.
       chunkFilename: isEnvProduction
         ? 'static/js/[name].[contenthash:16].chunk.js'
