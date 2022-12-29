@@ -227,7 +227,8 @@ module.exports = function (webpackEnv) {
     entry: paths.appIndexJs,
     output: {
       // The build folder.
-      path: paths.appBuild,
+      // Frontier: restoring CRA 4 behavior to keep prod on `build` and dev on `dist` which is the default if undefined since it works better with Snow today
+      path: isEnvProduction ? paths.appBuild : undefined,
       // Add /* filename */ comments to generated require()s in the output.
       pathinfo: isEnvDevelopment,
       // There will be one main bundle, and one file per asynchronous chunk.
