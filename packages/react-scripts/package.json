@@ -1,6 +1,6 @@
 {
   "name": "@fs/react-scripts",
-  "version": "8.0.0-rc.3",
+  "version": "8.0.0",
   "upstreamVersion": "5.0.1",
   "description": "Configuration and scripts for Create React App.",
   "repository": {
@@ -50,8 +50,8 @@
     "@alienfast/i18next-loader": "^1.0.18",
     "@babel/core": "^7.16.0",
     "@fs/auth-middleware": "^2.0.1",
-    "@fs/babel-preset-frontier": "^5.0.0-alpha.0",
-    "@fs/eslint-config-frontier-react": "^10.0.0-alpha.1",
+    "@fs/babel-preset-frontier": "^5.0.0",
+    "@fs/eslint-config-frontier-react": "^10.0.0",
     "@fs/webpack-wci18n": "^1.0.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@svgr/webpack": "^5.5.0",
