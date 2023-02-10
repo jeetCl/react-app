@@ -17,8 +17,6 @@ if (typeof getFeatureFlag !== 'undefined') {
     prod: 'https://edge.fscdn.org/assets/components/hf/assets/js/monitoring/dynatrace-20221104-prod.min-44bb9345beec8a984c2fca40385b4f41.js'
   }
 
-  console.log('dynatrace partial', env, dynatraceFlag)
-
   if (dynatraceFlag.treatment === 'asyncCS-script') { %>
     <script type="text/javascript" src="<%= edgeUrls[env] %>" crossorigin="anonymous"></script>
     <% } else if (dynatraceFlag.treatment === 'asyncCS-inline') { %>

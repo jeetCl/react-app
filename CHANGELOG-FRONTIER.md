@@ -1,5 +1,5 @@
-## 8.0.1-alpha.0
-- Sync with v7 latest commits, including dynatrace RUM
+## 8.0.1
+- Sync with v7 latest commits, restoring/updating Dynatrace RUM
 
 ## 8.0.0
 - Bumping deps and releasing 8.0.0
