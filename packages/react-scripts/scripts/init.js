@@ -242,7 +242,7 @@ module.exports = function (
   console.log('templateDir: ', templateDir)
   if (fs.existsSync(templateDir)) {
     fs.copySync(templateDir, appPath, {filter: (src) => {
-      // FamilySearch - we don't copy over node_mouldes, build, and dist here in order for us to be able to
+      // FamilySearch - we don't copy over node_modules, build, and dist here in order for us to be able to
       // run npx create-react-app --template file:cra-template locally to test if things are working as expected
       return !directoriesToNotCopyOver.some(dirName => src.includes(`/template/${dirName}/`))
     }});

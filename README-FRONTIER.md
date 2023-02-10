@@ -22,15 +22,9 @@ If you have cloned this repo and made changes locally and want to test them befo
 
 ## Development and Cutting a Release
 
-- All development will be done from the develop branch
-  - Branch off of develop for any feature/bug fixes
-  - PRs will be made into the develop branch
-- When the develop branch is in a good state and ready for release follow these steps
-  1. Bump the version in `packages/react-scripts/package.json`
-  2. Make a PR from develop into frontierMaster
-     - Nice url to go straight to making a PR with the correct branches set
-       - https://github.com/fs-webdev/create-react-app/compare/frontierMaster...fs-webdev:develop?expand=1
-  3. At this point, Travis will pickup the change in frontierMaster and attempt to publish to artifactory
+- All development will be done from the frontierMaster branch
+  - Branch off of frontierMaster for any feature/bug fixes
+  - PRs will be made into the frontierMaster branch
 
 ## Merging Upstream changes from Facebook
 
