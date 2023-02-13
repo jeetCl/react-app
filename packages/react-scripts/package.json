@@ -1,6 +1,6 @@
 {
   "name": "@fs/react-scripts",
-  "version": "8.0.0",
+  "version": "8.0.1",
   "upstreamVersion": "5.0.1",
   "description": "Configuration and scripts for Create React App.",
   "repository": {
@@ -47,7 +47,6 @@
     "babel-plugin-bundled-import-meta": "Logan: I remember we need this for something, still needed? Gonna try commenting out"
   },
   "dependencies": {
-    "@alienfast/i18next-loader": "^1.0.18",
     "@babel/core": "^7.16.0",
     "@fs/auth-middleware": "^2.0.1",
     "@fs/babel-preset-frontier": "^5.0.0",
@@ -124,7 +123,7 @@
     "@fs/npm-publisher": "^1.0.15",
     "babel-plugin-react-docgen": "^3.0.0",
     "graphql-tag": "^2.12.6",
-    "i18next": "^19.0.3",
+    "i18next": "19.8.7",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-i18next": "^11.0.1",
