@@ -1,3 +1,6 @@
+## 8.0.2
+- allow fullySpecified: false for mjs files
+
 ## 8.0.1
 - Sync with v7 latest commits, restoring/updating Dynatrace RUM
 

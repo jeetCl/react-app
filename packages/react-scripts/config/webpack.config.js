@@ -520,6 +520,9 @@ module.exports = function (webpackEnv) {
             // Unlike the application JS, we only compile the standard ES features.
             {
               test: /\.(js|mjs)$/,
+              resolve: {
+                fullySpecified: false,
+              },
               exclude: /@babel(?:\/|\\{1,2})runtime/,
               use: [
                 // FS: it seems unlikely that anyone is using the wci18n plugin here, keeping just in case
