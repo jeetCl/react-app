@@ -1,5 +1,10 @@
 ## 8.0.2
 - allow fullySpecified: false for mjs files
+  - Brought about because of this issue we had with @react-spring.
+  - https://github.com/pmndrs/react-spring/issues/2097
+  - https://github.com/pmndrs/react-spring/issues/2097#issuecomment-1443347565
+  - It looks like @react-spring may be attempting to change their usage to not necesitate the fullySpecified: false
+  - we should look at removing this in the near-ish future
 
 ## 8.0.1
 - Sync with v7 latest commits, restoring/updating Dynatrace RUM

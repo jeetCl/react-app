@@ -520,6 +520,8 @@ module.exports = function (webpackEnv) {
             // Unlike the application JS, we only compile the standard ES features.
             {
               test: /\.(js|mjs)$/,
+              // FS: we may be able to remove this resolve: fullySpecified stuff if react-spring updates their usage of specifying extensions
+              // https://github.com/pmndrs/react-spring/issues/2097
               resolve: {
                 fullySpecified: false,
               },
