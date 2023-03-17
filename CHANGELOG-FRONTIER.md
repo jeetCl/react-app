@@ -1,3 +1,7 @@
+## 8.1.0
+- adding `dir` property to html element in layout.ejs
+  - `dir` is set with `languageDir` defined in snow's res-locals.js middleware
+
 ## 8.0.2
 - allow fullySpecified: false for mjs files
   - Brought about because of this issue we had with @react-spring.
