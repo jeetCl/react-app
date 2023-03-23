@@ -1,6 +1,6 @@
 {
   "name": "@fs/react-scripts",
-  "version": "8.1.0",
+  "version": "8.1.1",
   "upstreamVersion": "5.0.1",
   "description": "Configuration and scripts for Create React App.",
   "repository": {
@@ -111,7 +111,7 @@
     "ts-pnp": "1.2.0",
     "url-loader": "4.1.1",
     "webpack": "^5.64.4",
-    "webpack-dev-server": "^4.6.0",
+    "webpack-dev-server": "^4.13.0",
     "webpack-manifest-plugin": "^4.0.2",
     "webpack-merge": "^4.2.1",
     "webpack-node-externals": "^1.7.2",
