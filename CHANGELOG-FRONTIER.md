@@ -1,3 +1,8 @@
+## 8.1.1
+- disable new `runtimeErrors` property in webpack-dev-server
+  - this causes constant errors with ResizeObserver
+  - requires webpack-dev-server 4.13.0
+
 ## 8.1.0
 - adding `dir` property to html element in layout.ejs
   - `dir` is set with `languageDir` defined in snow's res-locals.js middleware
