@@ -24,9 +24,7 @@ exports.coalesceLocales = paths => {
   const list = dependencyTree.toList({
     filename: index,
     directory: paths.appPath,
-    tsConfig:
-      (index.includes('.tsx') || fs.existsSync(paths.appTsConfig)) &&
-      paths.appTsConfig,
+    tsConfig: fs.existsSync(paths.appTsConfig) && paths.appTsConfig,
     noTypeDefinitions: true, // optional
     detective: { es6: { mixedImports: true } },
     nodeModulesConfig: { entry: 'module' },
