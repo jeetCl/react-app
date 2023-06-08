@@ -20,6 +20,10 @@
     <!-- Resource Hints -->
     <link rel="preconnect" href="https://edge.fscdn.org" crossorigin />
 
+    <% typeof foundryUrls !== 'undefined' && foundryUrls.forEach((foundryUrl) => { %>
+    <link rel="stylesheet" href="<%= foundryUrl %> ">
+    <% }) %>
+
     <% if (process.env.NODE_ENV === 'production') { %>
       <% include partials/dynatrace %>
     <% } %>
