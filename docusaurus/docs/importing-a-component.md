@@ -50,7 +50,16 @@ Learn more about ES6 modules:
 - [Exploring ES6: Modules](https://exploringjs.com/es6/ch_modules.html)
 - [Understanding ES6: Modules](https://leanpub.com/understandinges6/read#leanpub-auto-encapsulating-code-with-modules)
 
-## Absolute Imports
+
+## DON'T USE Absolute Imports
+
+### Frontier Architecture Working Group Decision
+
+We've decided that we don't want apps to use absolute imports. There is too much "magic" behind it, and supporting it has a cost. We'll forever have
+to be thinking about them in relation to scripts, (like coalesceLocales) and tooling that the frontier-core team maintains.
+We've decided it isn't worth the time and effort at this point.
+
+### Keeping these absolute import docs for posterity, but please don't use it
 
 You can configure your application to support importing modules using absolute paths. This can be done by configuring a `jsconfig.json` or `tsconfig.json` file in the root of your project. If you're using TypeScript in your project, you will already have a `tsconfig.json` file.
 
