@@ -1,7 +1,7 @@
 ## 8.3.0
 
-- Adding a check in layout.ejs concerning process.env.MANIFEST_JSON in order to provide a way to ignore manifest.json from
-  being requested
+- Adding a check in layout.ejs concerning manifestJsonExists.
+  This will come from snow's res-locals middleware, which will look for the existence of the public/manifest.json file
 
 ## 8.2.0
 

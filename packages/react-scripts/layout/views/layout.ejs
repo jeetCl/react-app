@@ -16,7 +16,7 @@
     <link href="https://edge.fscdn.org/assets/docs/fs_logo_favicon_sq.png" rel="icon" type="image/x-icon" />
     <link rel="apple-touch-icon" href="https://edge.fscdn.org/assets/components/hf/assets/img/tree-touch-icon-11024a277f1fda5735de5a9f0f4f75ca.png" />
 
-    <% if (process.env.MANIFEST_JSON !== 'false') { %>
+    <% if (manifestJsonExists) { %>
       <link rel="manifest" href="<%= typeof appPathOverride !== 'undefined' ? appPathOverride : appPath('') %>/manifest.json" type="application/manifest+json" crossorigin="use-credentials" />
     <% } %>
 
