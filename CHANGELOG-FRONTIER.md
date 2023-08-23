@@ -1,3 +1,8 @@
+## 8.3.0
+
+- Adding a check in layout.ejs concerning process.env.MANIFEST_JSON in order to provide a way to ignore manifest.json from
+  being requested
+
 ## 8.2.0
 
 - adding `foundryUrls` as links into head of layout.ejs file
