@@ -1,3 +1,8 @@
+## 8.3.0
+
+- Adding a check in layout.ejs concerning manifestJsonExists.
+  This will come from snow's res-locals middleware, which will look for the existence of the public/manifest.json file
+
 ## 8.2.0
 
 - adding `foundryUrls` as links into head of layout.ejs file
