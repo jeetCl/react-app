@@ -106,8 +106,7 @@ exports.coalesceLocales = paths => {
   }
   if (collisionReport.collisions.length > 0) {
     console.error(
-      `ERROR: The following ${collisionReport.collisions.length} collisions were detected when coalescing locales:`,
-      collisionReport.collisions
+      `ERROR: There were ${collisionReport.collisions.length} collisions were detected when coalescing locales.`
     );
     collisionReport.collisions.forEach(
       ({ key, locale, ns, newValue, oldValue }) =>
