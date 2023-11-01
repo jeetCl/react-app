@@ -1,3 +1,7 @@
+## 8.3.2
+
+- Make @fs/eslint-config-frontier-react a peer dependency so that it is the same version as the app uses.
+
 ## 8.3.0
 
 - Adding a check in layout.ejs concerning manifestJsonExists.
