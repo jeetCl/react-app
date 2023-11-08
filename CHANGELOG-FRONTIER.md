@@ -1,3 +1,7 @@
+## 8.3.3
+
+- update the peerDependency of typescript to include ^5
+
 ## 8.3.2
 
 - Make @fs/eslint-config-frontier-react a peer dependency so that it is the same version as the app uses.
