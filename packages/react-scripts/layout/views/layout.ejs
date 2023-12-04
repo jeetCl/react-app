@@ -15,10 +15,17 @@
     <meta name="google-site-verification" content="VJlFQrAXTCBy0PqVi23EsGD-mpA5KaBhIt8LkrcRbP0" />
     <link href="https://edge.fscdn.org/assets/docs/fs_logo_favicon_sq.png" rel="icon" type="image/x-icon" />
     <link rel="apple-touch-icon" href="https://edge.fscdn.org/assets/components/hf/assets/img/tree-touch-icon-11024a277f1fda5735de5a9f0f4f75ca.png" />
-    <link rel="manifest" href="<%= typeof appPathOverride !== 'undefined' ? appPathOverride : appPath('') %>/manifest.json" type="application/manifest+json" crossorigin="use-credentials" />
+
+    <% if (typeof manifestJsonExists === 'undefined' || manifestJsonExists) { %>
+      <link rel="manifest" href="<%= typeof appPathOverride !== 'undefined' ? appPathOverride : appPath('') %>/manifest.json" type="application/manifest+json" crossorigin="use-credentials" />
+    <% } %>
 
     <!-- Resource Hints -->
     <link rel="preconnect" href="https://edge.fscdn.org" crossorigin />
+
+    <% typeof foundryUrls !== 'undefined' && foundryUrls.forEach((foundryUrl) => { %>
+    <link rel="stylesheet" href="<%= foundryUrl %> ">
+    <% }) %>
 
     <% if (process.env.NODE_ENV === 'production') { %>
       <% include partials/dynatrace %>
@@ -35,6 +42,11 @@
       <% include partials/experiments %>
       <% include partials/sentry %>
       <% include partials/clientAppConfig %>
+      if (window.dtrum) {
+        window.dtrum.enableManualPageDetection()
+        if (!window.dtinfo) window.dtinfo = {}
+        window.dtinfo.appName = SERVER_DATA.appName
+      }
     </script>
   </head>
   <body>

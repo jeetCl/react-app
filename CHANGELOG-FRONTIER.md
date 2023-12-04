@@ -1,13 +1,38 @@
+## 8.3.3
+
+- update the peerDependency of typescript to include ^5
+
+## 8.3.2
+
+- Make @fs/eslint-config-frontier-react a peer dependency so that it is the same version as the app uses.
+
+## 8.3.0
+
+- Adding a check in layout.ejs concerning manifestJsonExists.
+  This will come from snow's res-locals middleware, which will look for the existence of the public/manifest.json file
+
+## 8.2.0
+
+- adding `foundryUrls` as links into head of layout.ejs file
+  `foundryUrls` array is defined in snow's res.locals.js middleware based on the simpleLocale chosen by user
+
+## 8.1.2
+
+- add `window.dtinfo` with `appName` for Dynatrace integration
+
 ## 8.1.1
+
 - disable new `runtimeErrors` property in webpack-dev-server
   - this causes constant errors with ResizeObserver
   - requires webpack-dev-server 4.13.0
 
 ## 8.1.0
+
 - adding `dir` property to html element in layout.ejs
   - `dir` is set with `languageDir` defined in snow's res-locals.js middleware
 
 ## 8.0.2
+
 - allow fullySpecified: false for mjs files
   - Brought about because of this issue we had with @react-spring.
   - https://github.com/pmndrs/react-spring/issues/2097
@@ -16,55 +41,72 @@
   - we should look at removing this in the near-ish future
 
 ## 8.0.1
+
 - Sync with v7 latest commits, restoring/updating Dynatrace RUM
 
 ## 8.0.0
+
 - Bumping deps and releasing 8.0.0
 
 ## 7.0.9
+
 - Update dynatrace RUM snippets to support multiple environments
 
 ## 7.0.8
+
 - Add dynatrace RUM snippet behind feature flag
 
 ## 8.0.0-rc.3
+
 - CRA 5 changed the default behavior so both prod and dev builds go to the `build` dir, which breaks our Snow middleware, so restoring the CRA 4 behavior that prod goes to `build` and dev goes to `dist`. We may revisit this later
 
 ## 8.0.0-rc.2
+
 - splitChunks was messing with output filename on development environment. Changing to use [file] instead of hardcoded filename
 
 ## 8.0.0-rc.1
+
 - Removing console.logs
 
 ## 8.0.0-alpha.6
+
 - Tweaking/removing/adding a few deps
 
 ## 8.0.0-alpha.0
+
 - Merged upstream master from facebook 5.0.1
 - Making dependencies npm 8 compatible
 
 ## 7.0.4-alpha.0
+
 - Bumped eslint-config-frontier-react dependency
 
 ## 7.0.4
+
 - Don't run the IndexRevisionReplace webpack plugin if we are running storybook
 
 ## 7.0.3
+
 - Add debounce of 250 to the coalesce-locales watch function (same as zion does it)
 
 ## 7.0.2
+
 - Tweaked coalesce-locale watch to use process.exit() on SIGINT to actually kill the process. Otherwise Ctrl-c left zombie processes of storybook
 
 ## 7.0.1
+
 - Fixed the jest config moduleNameMapper to resolve /coalesced-locales correctly
 
 ## 7.0.0
+
 - Add the coalesce-locales functionality
 
 ## 6.4.0-beta.0
+
 - Utilize a different intersection-observer polyfill
 
 ## 6.3.0
+
 - The changes from 6.3.0-alpha.0
 - Telling the mini-css-extract-plugin to remove order warnings
   - https://webpack.js.org/plugins/mini-css-extract-plugin/#remove-order-warnings
@@ -72,7 +114,7 @@
 ## 6.3.0-alpha.0
 
 - Adding an envvar to read maxSize for chunks in webpack
-- 16 bit hashes in names to decrease chance of collision 
+- 16 bit hashes in names to decrease chance of collision
 
 ## 6.2.0
 
@@ -94,7 +136,7 @@ landing page in cra-template/service-worker.js
 
 ## 6.0.0-charlie.6
 
-Updated InjectManifest to exclude _index.html in the injecting (like for precache part of service-worker)
+Updated InjectManifest to exclude \_index.html in the injecting (like for precache part of service-worker)
 
 ## 6.0.0-charlie.5
 
@@ -114,6 +156,7 @@ Updated the proxies.js file to have "/service/" so the proxy won't intercept ser
 Merged upstream master to get cra v4 changes.
 
 ### Divergences from upstream master
+
 - we put resetMocks back to false in createJestConfig
 - we hard code eslint failOnError to false in webpack.config.js
 
