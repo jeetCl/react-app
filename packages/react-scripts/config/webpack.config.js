@@ -495,6 +495,7 @@ module.exports = function (webpackEnv) {
                     ? 'production'
                     : isEnvDevelopment && 'development',
                   [
+                    'babel-plugin-istanbul',
                     'babel-plugin-named-asset-import',
                     '@fs/babel-preset-frontier',
                     'react-dev-utils',
@@ -561,6 +562,7 @@ module.exports = function (webpackEnv) {
                         ? 'production'
                         : isEnvDevelopment && 'development',
                       [
+                        'babel-plugin-istanbul',
                         'babel-plugin-named-asset-import',
                         '@fs/babel-preset-frontier',
                         'react-dev-utils',
