@@ -1,3 +1,11 @@
+## 8.5.0
+
+- Add a check in the `test` script, if CI is set, then add `--coverage` for jest automatically
+
+## 8.4.0
+
+- Add some configuration to bust cache for cypress component tests
+
 ## 8.3.3
 
 - update the peerDependency of typescript to include ^5

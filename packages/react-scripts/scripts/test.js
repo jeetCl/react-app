@@ -123,6 +123,13 @@ if (!resolvedEnv) {
     // ignore
   }
 }
+
+// in theory if someone put CI=false, this would still get hit...but CRA already has that issue (likely a non-issue)
+// up above with their check to add --watch or not.
+if (process.env.CI) {
+  argv.push('--coverage')
+}
+
 const testEnvironment = resolvedEnv || env;
 argv.push('--env', testEnvironment);
 // @remove-on-eject-end
