@@ -41,7 +41,7 @@ runExternalCommandSync(
     '--scripts-version',
     `@fs/react-scripts@${newVersion}`,
     '--template',
-    '@fs/cra-template@next',
+    '@fs/cra-template',
   ],
   { cwd: tmpDir }
 )
