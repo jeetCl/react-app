@@ -7,6 +7,7 @@ const fs = require('fs');
 const rimraf = require('rimraf');
 const chokidar = require('chokidar');
 const _ = require('lodash');
+const glob = require('fast-glob')
 
 exports.coalesceLocales = paths => {
   console.time('per-locale coalesce');
@@ -21,16 +22,33 @@ exports.coalesceLocales = paths => {
     ? `${paths.appSrc}/index.tsx`
     : `${paths.appSrc}/index.js`;
 
+  const nonExistents = []
   const list = dependencyTree.toList({
     filename: index,
     directory: paths.appPath,
     tsConfig: fs.existsSync(paths.appTsConfig) && paths.appTsConfig,
     noTypeDefinitions: true, // optional
-    detective: { es6: { mixedImports: true } },
+    detective: { es6: { mixedImports: true }},
     nodeModulesConfig: { entry: 'module' },
-    filter: p => p.includes(paths.appSrc) || p.includes('@fs'),
-  });
-  const realList = list.filter(p => p.includes('locales/index.js'));
+    nonExistent: nonExistents,
+    filter: filePath => filePath.includes(paths.appSrc) || filePath.includes('@fs'),
+  }).sort();
+
+  // the nonExistents array is populated with any file that dependencyTree was unable to locate on the filesystem.
+  // Currently we have an issue if npm didn't flatten a dependency to node_modules/@fs/ then dependencyTree says that
+  // dependency is nonExistent. Specifically chinese-discovery-surname got into an issue once where zion-header wasn't
+  // flattened, and so they didn't get zion-header translations coalesced. We are adding this globbing logic to go 
+  // find the least nested path to the "nonExistent" module.
+  const hiddenNestedZionDeps = nonExistents.filter(filePath => filePath.startsWith('@fs/zion-'))
+  const hiddenNestedLocaleFiles = hiddenNestedZionDeps.map(filePath => {
+    const hiddenLocaleFiles = glob.sync([`node_modules/@fs/**/${filePath}/**/locales/index.js`], { absolute: true })
+      .filter(filePath => !filePath.includes('/cjs/'))
+    return _.sortBy(hiddenLocaleFiles, filePath => filePath.split('/').length)[0]
+  })
+
+  // adding this filter logic up in dependencyTree doesn't work as expected
+  const realList = [...list.filter(filePath => filePath.includes('locales/index.js')), ...hiddenNestedLocaleFiles]
+
   const allLocales = {};
   const collisionReport = {
     collisions: [],

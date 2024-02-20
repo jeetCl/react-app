@@ -1,3 +1,8 @@
+## 8.5.1
+
+- Updated coalesce-locale script to handle if a zion dep is only nested, and not flattened to node_modules/@fs/
+- Updated the dependency-tree package to v10, which seems to have sped up the traversal quite a bit
+
 ## 8.5.0
 
 - Add a check in the `test` script, if CI is set, then add `--coverage` for jest automatically
