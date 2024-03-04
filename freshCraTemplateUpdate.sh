@@ -18,10 +18,17 @@ NEW_CRA_VERSION=$(json -f ${TRAVIS_BUILD_DIR}/packages/react-scripts/package.jso
 echo "NEW_CRA_VERSION: $NEW_CRA_VERSION"
 json -I -f package.json -e "this.dependencies[\"@fs/react-scripts\"]=\"$NEW_CRA_VERSION\""
 
+rm package-lock.json
 rm blueprint.yml.bak
 rm .npmrc
 
 # Commit and push to the existing fs-webdev/fresh-cra-template repo on github
 git commit -a -m 'editing blueprint.yml, fixing @fs/react-scripts version'
 git remote add origin https://github.com/fs-webdev/fresh-cra-template.git
-git push --force origin master
+
+if [ "$1" == next ]; then
+	echo Is next branch, pushing to fresh-cra-template next branch
+	git push --force origin master:next
+else
+	git push --force origin master
+fi
