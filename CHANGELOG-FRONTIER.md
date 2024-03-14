@@ -1,3 +1,7 @@
+## 8.5.2
+
+- Ignore eslint warnings during the `build` script
+
 ## 8.5.1
 
 - Updated coalesce-locale script to handle if a zion dep is only nested, and not flattened to node_modules/@fs/

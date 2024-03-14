@@ -185,8 +185,9 @@ function build(previousFileSizes) {
         messages.warnings.length
       ) {
         // Ignore sourcemap warnings in CI builds. See #8227 for more info.
+        // Frontier Ignore eslint warnings as well
         const filteredWarnings = messages.warnings.filter(
-          w => !/Failed to parse source map/.test(w)
+          w => !/Failed to parse source map/.test(w) && !/\[eslint\]/.test(w)
         );
         if (filteredWarnings.length) {
           console.log(
