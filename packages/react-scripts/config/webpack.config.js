@@ -97,6 +97,7 @@ const sassModuleRegex = /\.module\.(scss|sass)$/;
 // *** Text-Em-All Web App
 const shouldDisableManifestGeneration = process.env.DISABLE_MANIFEST === 'true';
 const shouldDisableWebStatsGeneration = process.env.DISABLE_WEBSTATS === 'true';
+// *** Text-Em-All Web App
 
 const hasJsxRuntime = (() => {
   if (process.env.DISABLE_NEW_JSX_TRANSFORM === 'true') {
@@ -719,26 +720,25 @@ module.exports = function (webpackEnv) {
       //   `index.html`
       // - "entrypoints" key: Array of files which are included in `index.html`,
       //   can be used to reconstruct the HTML if necessary
-      shouldDisableManifestGeneration
-        ? []
-        : new WebpackManifestPlugin({
-            fileName: 'asset-manifest.json',
-            publicPath: paths.publicUrlOrPath,
-            generate: (seed, files, entrypoints) => {
-              const manifestFiles = files.reduce((manifest, file) => {
-                manifest[file.name] = file.path;
-                return manifest;
-              }, seed);
-              const entrypointFiles = entrypoints.main.filter(
-                fileName => !fileName.endsWith('.map')
-              );
+      !shouldDisableManifestGeneration &&
+        new WebpackManifestPlugin({
+          fileName: 'asset-manifest.json',
+          publicPath: paths.publicUrlOrPath,
+          generate: (seed, files, entrypoints) => {
+            const manifestFiles = files.reduce((manifest, file) => {
+              manifest[file.name] = file.path;
+              return manifest;
+            }, seed);
+            const entrypointFiles = entrypoints.main.filter(
+              fileName => !fileName.endsWith('.map')
+            );
 
-              return {
-                files: manifestFiles,
-                entrypoints: entrypointFiles,
-              };
-            },
-          }),
+            return {
+              files: manifestFiles,
+              entrypoints: entrypointFiles,
+            };
+          },
+        }),
       // Moment.js is an extremely popular library that bundles large locale files
       // by default due to how webpack interprets its code. This is a practical
       // solution that requires the user to opt into importing specific locales.
