@@ -97,68 +97,7 @@ const sassModuleRegex = /\.module\.(scss|sass)$/;
 // *** Text-Em-All Web App
 const shouldDisableManifestGeneration = process.env.DISABLE_MANIFEST === 'true';
 const shouldDisableWebStatsGeneration = process.env.DISABLE_WEBSTATS === 'true';
-const shouldEnableDeadFileOutput = process.env.ENABLE_DEADFILE_OUTPUT;
-const entrypointTemplate = path.join(
-  paths.appSrc,
-  'entrypoint-script-template.js'
-);
-
-// Generates an HTML file with the <script> injected for every Text-Em-All Web App entry point.
-const makeHtmlPluginEntryForPage = (
-  entryPoint,
-  templatePath,
-  filename,
-  minifyOptions
-) =>
-  new HtmlWebpackPlugin(
-    Object.assign(
-      {},
-      {
-        inject: true,
-        chunks: [entryPoint],
-        template: templatePath,
-        filename,
-      },
-      minifyOptions
-    )
-  );
-
-// Generates a manifest plugin for the specified bundle/entrypoint
-//  to be written at the indicated path.
-const makeManifestPluginForBundle = entryPoint =>
-  new WebpackManifestPlugin({
-    fileName: `asset-manifest-${entryPoint}.json`,
-    publicPath: paths.publicUrlOrPath,
-    generate: (seed, files, entrypoints) => {
-      const manifestFiles = files.reduce((manifest, file) => {
-        manifest[file.name] = file.path;
-        return manifest;
-      }, seed);
-      const entryPointItem = entrypoints[entryPoint] || entrypoints.main;
-      const entrypointFiles = entryPointItem
-        ? entryPointItem.filter(fileName => !fileName.endsWith('.map'))
-        : [];
-
-      return {
-        files: manifestFiles,
-        entrypoints: entrypointFiles,
-      };
-    },
-  });
-
-// Generates a monolithic javascript file with the contents of all dependant chunks
-//  for every Text-Em-All Web App entry point. These are made available to external
-//  apps to load Text-Em-All Web App bundles - such as forms.
-const makeHtmlPluginEntryForBundle = (entryPoint, filename) =>
-  new HtmlWebpackPlugin({
-    inject: false,
-    chunks: [entryPoint],
-    template: entrypointTemplate,
-    filename: filename,
-    minify: false,
-    cache: false,
-  });
-// *** Call-Em-All Text-Em-All Web App
+// *** Text-Em-All Web App
 
 const hasJsxRuntime = (() => {
   if (process.env.DISABLE_NEW_JSX_TRANSFORM === 'true') {
@@ -178,108 +117,6 @@ const hasJsxRuntime = (() => {
 module.exports = function (webpackEnv) {
   const isEnvDevelopment = webpackEnv === 'development';
   const isEnvProduction = webpackEnv === 'production';
-
-  // *** Text-Em-All Web App ***
-  const envEntryPoints = process.env.ENTRY_POINTS || '';
-  const entryPointsList = envEntryPoints.split(',');
-
-  const conditionalHotDevClient =
-    isEnvDevelopment && require.resolve('react-dev-utils/webpackHotDevClient');
-
-  const teaWebAppEntryPoints = {
-    bundle: [
-      // Include an alternative client for WebpackDevServer. A client's job is to
-      // connect to WebpackDevServer by a socket and get notified about changes.
-      // When you save a file, the client will either apply hot updates (in case
-      // of CSS changes), or refresh the page (in case of JS changes). When you
-      // make a syntax error, this client will display a syntax error overlay.
-      // Note: instead of the default WebpackDevServer client, we use a custom one
-      // to bring better experience for Create React App users. You can replace
-      // the line below with these two lines if you prefer the stock client:
-      // require.resolve('webpack-dev-server/client') + '?/',
-      // require.resolve('webpack/hot/dev-server'),
-      conditionalHotDevClient,
-      // Finally, this is your app's code:
-      // We include the app code last so that if there is a runtime error during
-      // initialization, it doesn't blow up the WebpackDevServer client, and
-      // changing JS code would still trigger a refresh.
-      paths.appIndexJs,
-    ].filter(Boolean),
-    login: [conditionalHotDevClient, paths.appLoginIndexJs].filter(Boolean),
-    onboarding: [conditionalHotDevClient, paths.appOnboardingIndexJs].filter(
-      Boolean
-    ),
-  };
-  // Allow excluding entry points from build based on environment variable ENTRY_POINTS.
-  // If the env variable is defined and an entry point is not included, remove it from
-  // the webpack entry points.
-  if (isEnvDevelopment && envEntryPoints) {
-    if (!entryPointsList.includes('bundle')) {
-      delete teaWebAppEntryPoints.bundle;
-    }
-    if (!entryPointsList.includes('login')) {
-      delete teaWebAppEntryPoints.login;
-    }
-    if (!entryPointsList.includes('onboarding')) {
-      delete teaWebAppEntryPoints.onboarding;
-    }
-  }
-
-  const minifyOptions = isEnvProduction
-    ? {
-        minify: {
-          removeComments: true,
-          collapseWhitespace: true,
-          removeRedundantAttributes: true,
-          useShortDoctype: true,
-          removeEmptyAttributes: true,
-          removeStyleLinkTypeAttributes: true,
-          keepClosingSlash: true,
-          minifyJS: true,
-          minifyCSS: true,
-          minifyURLs: true,
-        },
-      }
-    : undefined;
-
-  const teaWebAppHtmlPlugins = [
-    makeHtmlPluginEntryForPage(
-      'bundle',
-      paths.appHtml,
-      'index.html',
-      minifyOptions
-    ),
-    makeHtmlPluginEntryForPage(
-      'login',
-      paths.appLoginHtml,
-      'login.html',
-      minifyOptions
-    ),
-    makeHtmlPluginEntryForPage(
-      'onboarding',
-      paths.appOnboardingHtml,
-      'onboarding.html',
-      minifyOptions
-    ),
-    makeHtmlPluginEntryForPage(
-      'verify-email',
-      paths.appVerifyEmailHtml,
-      'verify-email.html',
-      minifyOptions
-    ),
-
-    makeHtmlPluginEntryForBundle('bundle', 'static/js/bundle.js'),
-    makeHtmlPluginEntryForBundle('login', 'static/js/login.js'),
-    makeHtmlPluginEntryForBundle('onboarding', 'static/js/onboarding.js'),
-  ];
-  const teaWebAppManifestPlugins = shouldDisableManifestGeneration
-    ? []
-    : [
-        makeManifestPluginForBundle('bundle'),
-        makeManifestPluginForBundle('login'),
-        makeManifestPluginForBundle('onboarding'),
-      ];
-  // *** Text-Em-All Web App ***
 
   // Variable used for enabling profiling in Production
   // passed into alias object. Uses a flag if passed into the build command
@@ -390,7 +227,7 @@ module.exports = function (webpackEnv) {
       : isEnvDevelopment && 'cheap-module-source-map',
     // These are the "entry points" to our application.
     // This means they will be the "root" imports that are included in JS bundle.
-    entry: teaWebAppEntryPoints, // *** Text-Em-All Web App
+    entry: paths.appIndexJs,
     output: {
       // The build folder.
       path: paths.appBuild,
@@ -400,14 +237,13 @@ module.exports = function (webpackEnv) {
       // In development, it does not produce real files.
       filename: isEnvProduction
         ? 'static/js/[name].[contenthash:8].js'
-        : //   : isEnvDevelopment && 'static/js/bundle.js',
-          isEnvDevelopment && 'static/js/[name].js', // *** Text-Em-All Web App
+        : isEnvDevelopment && 'static/js/bundle.js',
       // There are also additional JS chunk files if you use code splitting.
       // Fix Conflict: Multiple assets emit to the same filename
       // https://stackoverflow.com/a/43028918/15194069
       chunkFilename: isEnvProduction
-        ? 'static/js/[id].[contenthash:8].chunk.js'
-        : isEnvDevelopment && 'static/js/[id].[contenthash:8].chunk.js',
+        ? 'static/js/[name].[contenthash:8].chunk.js'
+        : isEnvDevelopment && 'static/js/[name].chunk.js',
       assetModuleFilename: 'static/media/[name].[hash][ext]',
       // webpack uses `publicPath` to determine where the app is being served from.
       // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -814,7 +650,31 @@ module.exports = function (webpackEnv) {
     },
     plugins: [
       // Generates an `index.html` file with the <script> injected.
-      ...teaWebAppHtmlPlugins, // *** Text-Em-All Web App
+      new HtmlWebpackPlugin(
+        Object.assign(
+          {},
+          {
+            inject: true,
+            template: paths.appHtml,
+          },
+          isEnvProduction
+            ? {
+                minify: {
+                  removeComments: true,
+                  collapseWhitespace: true,
+                  removeRedundantAttributes: true,
+                  useShortDoctype: true,
+                  removeEmptyAttributes: true,
+                  removeStyleLinkTypeAttributes: true,
+                  keepClosingSlash: true,
+                  minifyJS: true,
+                  minifyCSS: true,
+                  minifyURLs: true,
+                },
+              }
+            : undefined
+        )
+      ),
       // Inlines the webpack runtime script. This script is too small to warrant
       // a network request.
       // https://github.com/facebook/create-react-app/issues/5358
@@ -860,7 +720,25 @@ module.exports = function (webpackEnv) {
       //   `index.html`
       // - "entrypoints" key: Array of files which are included in `index.html`,
       //   can be used to reconstruct the HTML if necessary
-      ...teaWebAppManifestPlugins, // *** Text-Em-All Web App
+      !shouldDisableManifestGeneration &&
+        new WebpackManifestPlugin({
+          fileName: 'asset-manifest.json',
+          publicPath: paths.publicUrlOrPath,
+          generate: (seed, files, entrypoints) => {
+            const manifestFiles = files.reduce((manifest, file) => {
+              manifest[file.name] = file.path;
+              return manifest;
+            }, seed);
+            const entrypointFiles = entrypoints.main.filter(
+              fileName => !fileName.endsWith('.map')
+            );
+
+            return {
+              files: manifestFiles,
+              entrypoints: entrypointFiles,
+            };
+          },
+        }),
       // Moment.js is an extremely popular library that bundles large locale files
       // by default due to how webpack interprets its code. This is a practical
       // solution that requires the user to opt into importing specific locales.
