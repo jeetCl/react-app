@@ -1,3 +1,7 @@
+## 8.5.3
+
+- Fix coalesceLocales to handle undefined paths better
+
 ## 8.5.2
 
 - Ignore eslint warnings during the `build` script

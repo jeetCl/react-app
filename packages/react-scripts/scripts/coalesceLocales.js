@@ -60,6 +60,8 @@ exports.coalesceLocales = paths => {
     keys: new Set(),
   };
   realList.forEach(p => {
+    if (!p) return
+    
     const dir = path.dirname(p);
     // console.log('dir', dir)
     const locales = fs
