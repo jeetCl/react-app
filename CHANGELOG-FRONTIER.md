@@ -1,3 +1,8 @@
+## 8.6.0
+
+- Add some logic in env.js to look for REACT_APP_ZION_UI_VERSION and REACT_APP_REACT_SCRIPTS_VERSION env vars and calculate
+  those versions based on the info in their respective package.json files
+
 ## 8.5.5
 
 - Fix proxy to work with Russian test user
