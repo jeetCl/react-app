@@ -12,23 +12,6 @@ const fs = require('fs')
 const path = require('path')
 const paths = require('./paths')
 
-let zionUiVersion
-try {
-  const resolvedZionUiPath = require.resolve('@fs/zion-ui')
-  const zionUiPackageJson = require(`${resolvedZionUiPath.split('@fs/zion-ui')[0]}@fs/zion-ui/package.json`)
-  zionUiVersion = zionUiPackageJson.version
-} catch (error) {
-  zionUiVersion = '-'
-}
-
-let reactScriptsVersion
-try {
-  const reactScriptsPackageJson = require('../package.json')
-  reactScriptsVersion = reactScriptsPackageJson.version
-} catch (error) {
-  reactScriptsVersion = '-'
-}
-
 // Make sure that including paths.js after env.js will read .env variables.
 delete require.cache[require.resolve('./paths')]
 
@@ -88,13 +71,7 @@ function getClientEnvironment(publicUrl) {
     .filter(key => REACT_APP.test(key))
     .reduce(
       (env, key) => {
-        if (key === 'REACT_APP_ZION_UI_VERSION') {
-          env[key] = zionUiVersion
-        } else if (key === 'REACT_APP_REACT_SCRIPTS_VERSION') {
-          env[key] = reactScriptsVersion
-        } else {
-          env[key] = process.env[key]
-        }
+        env[key] = process.env[key]
         return env
       },
       {
