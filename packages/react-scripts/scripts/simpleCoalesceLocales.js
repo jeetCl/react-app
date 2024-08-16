@@ -1,3 +1,7 @@
+/**
+ * This file is used specifically for cypress setup/configuration.
+ */
+
 'use strict'
 const jsonfile = require('jsonfile')
 const path = require('path')
