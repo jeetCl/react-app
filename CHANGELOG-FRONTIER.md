@@ -1,3 +1,7 @@
+## 8.7.4
+
+- Adding isLoggedIn to SERVER_DATA so that we can tell the difference between a logged in session vs an anonymous session.
+
 ## 8.7.0
 
 - Provide a simpleCoalesceLocales and simple-webpack.config.js files for use by cypress in apps. This speeds things up compared to using the
