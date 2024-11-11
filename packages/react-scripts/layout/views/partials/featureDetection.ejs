@@ -1,5 +1,28 @@
 if (Modernizr) {
   const unsupportedBrowserHeader = document.getElementById('unsupported-browser');
+
+  Modernizr.addTest('replaceAll', () => {
+      return typeof String.prototype.replaceAll === 'function';
+  });
+
+  Modernizr.addTest('privateFields', () => {
+    try {
+        class Test {
+            #privateField = 42;
+            getPrivateField() {
+                return this.#privateField;
+            }
+        }
+
+        const instance = new Test();
+        return instance.getPrivateField() === 42;
+    } catch (e) {
+        return false;
+    }
+  });
+
+  console.log(Modernizr);
+
   const outdatedFeatures = Object.keys(Modernizr).filter(feature => !Modernizr[feature]);
 
   if (unsupportedBrowserHeader) {
