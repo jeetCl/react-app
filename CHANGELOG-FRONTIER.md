@@ -1,3 +1,7 @@
+## 8.7.9
+
+- Add additional check for unsupported browser banner to avoid errors
+
 ## 8.7.8
 
 - Fix unsupported browser banner logic to avoid errors
