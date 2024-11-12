@@ -1,5 +1,8 @@
 {
     "minify": true,
+    "options": [
+      "addTest"
+    ],
     "feature-detects": [
       "test/customevent",
       "test/dom/intersection-observer",
