@@ -21,8 +21,6 @@ if (Modernizr) {
     }
   });
 
-  console.log(Modernizr);
-
   const outdatedFeatures = Object.keys(Modernizr).filter(feature => !Modernizr[feature]);
 
   if (unsupportedBrowserHeader) {
