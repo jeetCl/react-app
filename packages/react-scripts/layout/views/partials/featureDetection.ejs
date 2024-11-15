@@ -7,11 +7,11 @@ if (Modernizr) {
 
   Modernizr.addTest('privateFields', () => {
     try {
-    eval("class Test { #privateField; }");
-    return true;
-  } catch (e) {
-    return false;
-  }
+      eval("class Test { #privateField; }");
+      return true;
+    } catch (e) {
+      return false;
+    }
   });
 
   const outdatedFeatures = Object.keys(Modernizr).filter(feature => !Modernizr[feature]);

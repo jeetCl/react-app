@@ -1,3 +1,7 @@
+## 8.7.10
+
+- Feature detection for private class fields was erroring out before running the check, now it will be within `eval` so it will run even if the browser doesn't support it.
+
 ## 8.7.9
 
 - Add additional check for unsupported browser banner to avoid errors
