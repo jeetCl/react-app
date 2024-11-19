@@ -26,13 +26,17 @@ const setProxies = (app, customProxies = []) => {
   auth('/auth', app)
   console.log('\n/auth local proxy set up!')
 
+  const langRegex = '^\/[a-z]{2,3}(-[a-zA-Z0-9-]*)?' // Copied from DTM haproxy config MATCH_root_lang_path_with_slash acl
+
   // set default env target
   // prod auth keys don't exist in fs-config for security reasons, so only other alt-envs for now
   const target = process.env.BASE_URL
 
   const setProxy = proxyConfig => {
+    const langPathRegex = new RegExp(langRegex + proxyConfig.route)
     const options = {
       target,
+      pathFilter: (pathname) => pathname.startsWith(proxyConfig.route) || pathname.match(langPathRegex),
       changeOrigin: true,
       logLevel: 'debug',
       timeout: 5000,
