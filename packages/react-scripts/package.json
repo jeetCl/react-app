@@ -2,7 +2,7 @@
   "name": "@fs/react-scripts",
   "version": "8.8.0",
   "upstreamVersion": "5.0.1",
-  "description": "Testing Configuration and scripts for Create React App.",
+  "description": "Configuration and scripts for Create React App.",
   "repository": {
     "type": "git",
     "url": "https://github.com/fs-webdev/create-react-app.git",
