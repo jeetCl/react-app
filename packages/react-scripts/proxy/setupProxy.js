@@ -4,8 +4,6 @@ const { createProxyMiddleware } = require('http-proxy-middleware')
 require('dotenv').config()
 
 const setProxies = (app, customProxies = []) => {
-  // detect env
-  const env = process.env.TARGET_ENV || 'local'
 
   // bring in auth middleware once required keys are set
   const cookieParser = require('cookie-parser')
@@ -26,13 +24,17 @@ const setProxies = (app, customProxies = []) => {
   auth('/auth', app)
   console.log('\n/auth local proxy set up!')
 
+  const langRegex = '^\/[a-z]{2,3}(-[a-zA-Z0-9-]*)?' // Copied from DTM haproxy config MATCH_root_lang_path_with_slash acl
+
   // set default env target
   // prod auth keys don't exist in fs-config for security reasons, so only other alt-envs for now
   const target = process.env.BASE_URL
 
   const setProxy = proxyConfig => {
+    const langPathRegex = new RegExp(langRegex + proxyConfig.route)
     const options = {
       target,
+      pathFilter: (pathname) => pathname.startsWith(proxyConfig.route) || pathname.match(langPathRegex),
       changeOrigin: true,
       logLevel: 'debug',
       timeout: 5000,
@@ -46,7 +48,7 @@ const setProxies = (app, customProxies = []) => {
         // (e.g., type 'application/' works for 'application/x-gedcomx-v1+json' and 'application/json')
         if (req.headers.accept && req.headers.accept.indexOf(proxyConfig.accept) === 0) {
           // set up proxy middleware and use immediately
-          createProxyMiddleware(proxyConfig.route, options)(req, res, next)
+          createProxyMiddleware(options)(req, res, next)
         } else {
           // wrong accept type: don't proxy request
           next();
@@ -54,7 +56,7 @@ const setProxies = (app, customProxies = []) => {
       })
     }
     else {
-      app.use(createProxyMiddleware(proxyConfig.route, options))
+      app.use(createProxyMiddleware(options))
     }
   }
 

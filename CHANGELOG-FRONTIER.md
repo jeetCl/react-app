@@ -1,3 +1,8 @@
+## 8.8.0
+
+- Removed some proxies that are no longer needed, and scoped some others tighter to not conflict with localhost URLs
+- Update proxy tool with a pathFilter that looks for lang code in url
+
 ## 8.7.11
 
 - Feature detection for private class fields was erroring out before running the check, now it will be within `eval` so it will run even if the browser doesn't support it.
