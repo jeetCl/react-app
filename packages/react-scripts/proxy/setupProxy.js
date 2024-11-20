@@ -4,8 +4,6 @@ const { createProxyMiddleware } = require('http-proxy-middleware')
 require('dotenv').config()
 
 const setProxies = (app, customProxies = []) => {
-  // detect env
-  const env = process.env.TARGET_ENV || 'local'
 
   // bring in auth middleware once required keys are set
   const cookieParser = require('cookie-parser')
@@ -50,7 +48,7 @@ const setProxies = (app, customProxies = []) => {
         // (e.g., type 'application/' works for 'application/x-gedcomx-v1+json' and 'application/json')
         if (req.headers.accept && req.headers.accept.indexOf(proxyConfig.accept) === 0) {
           // set up proxy middleware and use immediately
-          createProxyMiddleware(proxyConfig.route, options)(req, res, next)
+          createProxyMiddleware(options)(req, res, next)
         } else {
           // wrong accept type: don't proxy request
           next();
@@ -58,7 +56,7 @@ const setProxies = (app, customProxies = []) => {
       })
     }
     else {
-      app.use(createProxyMiddleware(proxyConfig.route, options))
+      app.use(createProxyMiddleware(options))
     }
   }
 
