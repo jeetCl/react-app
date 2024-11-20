@@ -1,3 +1,7 @@
+## 8.7.11
+
+- Feature detection for private class fields was erroring out before running the check, now it will be within `eval` so it will run even if the browser doesn't support it.
+
 ## 8.7.10
 
 - Have jest configuration use browser-resolve for requires in splitio packages. Only affects jest tests, nothing else.
