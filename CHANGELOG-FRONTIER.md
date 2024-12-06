@@ -1,3 +1,9 @@
+## 8.8.1
+
+- Wrap the index-revision-replace code in a try/catch. Log the error message in the catch, but DON'T throw the error.
+  - By not throwing the error in the plugin, the already existing error logging will log the underlying issues as expected
+- add, (and commented out) a tap into afterCompile hook to check if errors exist. If so, then log those full error objects
+
 ## 8.8.0
 
 - Removed some proxies that are no longer needed, and scoped some others tighter to not conflict with localhost URLs
