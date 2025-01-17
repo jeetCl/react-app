@@ -1,3 +1,11 @@
+## 8.8.3
+
+- Add photos/apiHelper endpoint to proxy list
+
+## 8.8.2
+
+- Lots of stuff with isLoggedIn and session/user stuff. Ask Nick if you have questions
+
 ## 8.8.1
 
 - Wrap the index-revision-replace code in a try/catch. Log the error message in the catch, but DON'T throw the error.

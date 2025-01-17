@@ -16,8 +16,7 @@
 const proxies = [
   {
     route: '/ark',
-    accept:
-      'application/' /* 'application/x-gedcomx-v1+json', 'application/json', etc. */,
+    accept: 'application/' /* 'application/x-gedcomx-v1+json', 'application/json', etc. */,
   },
   {
     route: '/cis-web',
@@ -55,6 +54,9 @@ const proxies = [
   {
     route: '/service/',
   },
-];
+  {
+    route: '/photos/apiHelper',
+  },
+]
 
-module.exports = proxies;
+module.exports = proxies
