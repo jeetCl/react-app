@@ -1,5 +1,5 @@
 /*
- * This file is used specifically for cypress setup/configuration.
+ * This file is used specifically for cypress setup/configuration in apps.
  */
 'use strict'
 const path = require('path')
@@ -85,7 +85,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.mdx?$/,
+        test: /\.(mdx|map)?$/,
         loader: 'ignore-loader',
       },
       {
