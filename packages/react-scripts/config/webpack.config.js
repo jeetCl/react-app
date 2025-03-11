@@ -60,6 +60,7 @@ console.log(`In webpack.config from @fs/react-scripts version ${reactScriptsVers
 const getCacheIdentifier = require('react-dev-utils/getCacheIdentifier')
 // @remove-on-eject-end
 const createEnvironmentHash = require('./webpack/persistentCache/createEnvironmentHash')
+const InjectEntrypointsPlugin = require('./InjectEntrypointsPlugin.js')
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false'
@@ -140,8 +141,17 @@ module.exports = function (webpackEnv) {
   // common function to get style loaders
   const getStyleLoaders = (cssOptions, preProcessor) => {
     const loaders = [
-      isEnvDevelopment && require.resolve('style-loader'),
-      isEnvProduction && {
+      (isEnvDevelopment || process.env.INJECT_STYLES === 'true') && {
+        loader: require.resolve('style-loader'),
+        options: process.env.INJECT_STYLES === 'true' ? {
+          injectType: 'singletonStyleTag',
+          insert: function addToWindowObject(element) {
+            const _window = typeof window !== 'undefined' ? window : {}
+            _window['hfBundleStyles'] = element
+          }
+        } : {},
+      },
+      (isEnvProduction && !process.env.INJECT_STYLES) && {
         loader: MiniCssExtractPlugin.loader,
         // css is located in `static/css`, use '../../' to locate index.html folder
         // in production `paths.publicUrlOrPath` can be a relative path
@@ -731,7 +741,7 @@ module.exports = function (webpackEnv) {
       // a plugin that prints an error when you attempt to do this.
       // See https://github.com/facebook/create-react-app/issues/240
       isEnvDevelopment && new CaseSensitivePathsPlugin(),
-      isEnvProduction &&
+      (isEnvProduction && process.env.INJECT_STYLES !== 'true') &&
         new MiniCssExtractPlugin({
           // Options similar to the same options in webpackOptions.output
           // both options are optional
@@ -761,6 +771,11 @@ module.exports = function (webpackEnv) {
             entrypoints: entrypointFiles,
           }
         },
+      }),
+      // Inject the manifest entrypoint file names into the outputFile
+      process.env.INJECT_SCRIPTS === 'true' &&
+      new InjectEntrypointsPlugin({
+        outputFile: 'hf-inj-react-scripts.json',
       }),
       // Moment.js is an extremely popular library that bundles large locale files
       // by default due to how webpack interprets its code. This is a practical
