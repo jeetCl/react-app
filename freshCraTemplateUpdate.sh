@@ -6,7 +6,7 @@ ls -a
 
 # The order of these sed commands is kind of important. The last one of uncommenting all lines needs to occur after
 # removing comments explaining in english steps for replacing the binding path
-sed -i.bak 's/{{BINDING_PATH}}/fresh-cra-template.frontier/' blueprint.yml
+sed -i.bak 's/REPLACE_BINDING_PATH_IN_BLUEPRINT/fresh-cra-template.frontier/' blueprint.yml
 # https://stackoverflow.com/questions/5410757/delete-lines-in-a-text-file-that-contain-a-specific-string
 sed -i.bak '/Replace/d' blueprint.yml
 sed -i.bak '/See/d' blueprint.yml
