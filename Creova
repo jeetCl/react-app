@@ -1,0 +1,39 @@
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import { Server } from 'socket.io';
+import http from 'http';
+import { body, validationResult } from 'express-validator';
+import authRoutes from './routes/auth.js';
+import designRoutes from './routes/designs.js';
+import errorHandler from './middlewares/errorHandler.js';
+
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server, { cors: { origin: '*' } });
+
+// Config
+app.use(cors());
+app.use(express.json());
+app.use(errorHandler); // Global error handler
+
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/designs', designRoutes);
+
+// Socket.io Collaboration
+io.on('connection', (socket) => {
+  socket.on('design-update', (data) => {
+    try {
+      if (!data.designId || !data.content) throw new Error('Invalid update data');
+      socket.to(data.designId).emit('update', data.content);
+    } catch (error) {
+      socket.emit('error', error.message);
+    }
+  });
+});
+
+// Database
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => server.listen(3000, () => console.log('Server running')))
+  .catch(err => console.error('DB connection failed:', err));
