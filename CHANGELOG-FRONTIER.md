@@ -1,3 +1,8 @@
+## 8.10.0
+
+- Check coverage for combined cypress and jest tests
+- Show text and text-summary for combined cypress and jest tests and in color
+
 ## 8.9.1
 
 - Add colors for fr-test's jest tests
