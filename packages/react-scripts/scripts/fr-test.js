@@ -20,7 +20,7 @@ const mergeReports = ()=>{
   // merge reports
   execSync('npx nyc merge reports .nyc_output/out.json', {stdio: 'inherit'})
   // report the coverage
-  execSync(`npx nyc report --include 'src/**/*.{js,ts,tsx}' --report-dir coverage --reporter "lcov"`, {stdio: 'inherit'})
+  execSync("npx nyc report --include 'src/**/*.{js,ts,tsx}' --report-dir coverage --reporter lcov --reporter text --reporter text-summary --check-coverage --colors", {stdio: 'inherit'})
 }
 // dev ran npm test
 if(!process.env.CI){
