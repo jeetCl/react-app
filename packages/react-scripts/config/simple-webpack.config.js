@@ -35,6 +35,7 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
+              presets: babelConfig.presets,
               plugins: babelConfig.plugins,
             },
           },
@@ -49,6 +50,7 @@ module.exports = {
             loader: 'babel-loader',
             options: {
               plugins: [
+                '@emotion',
                 [
                   'istanbul',
                   {
@@ -77,7 +79,11 @@ module.exports = {
                   },
                 ],
               ],
-              presets: ['@babel/preset-react'],
+              presets: [
+                '@babel/preset-env',
+                '@babel/preset-react',
+                '@emotion/babel-preset-css-prop'
+              ],
               ignore: ['**/dist/*'],
               babelrc: false,
             },
