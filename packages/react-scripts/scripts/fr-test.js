@@ -47,7 +47,7 @@ if(cypressTestsExist){
 
 if(jestTestsExist){
   console.log('RUNNING JEST TESTS')
-  execSync('react-scripts test --coverage', { cwd: process.cwd(), stdio: 'inherit' })
+  execSync('react-scripts test --coverage --colors', { cwd: process.cwd(), stdio: 'inherit' })
 }
 
 // If both types exist, merge coverage reports

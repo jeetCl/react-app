@@ -1,3 +1,7 @@
+## 8.9.1
+
+- Add colors for fr-test's jest tests
+
 ## 8.9.0
 
 - Add options for injecting scripts and styles (for hf-inj-react)
