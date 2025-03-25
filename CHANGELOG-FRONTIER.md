@@ -1,3 +1,11 @@
+## 8.10.2
+
+- Support TypeScript Cypress tests in a TypeScript app
+
+## 8.10.1
+
+- Add support for emotion in cypress component tests
+
 ## 8.10.0
 
 - Check coverage for combined cypress and jest tests
