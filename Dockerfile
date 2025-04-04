@@ -14,7 +14,7 @@ RUN npm cache clean --force
 RUN npm install ajv@6 ajv-keywords@3 --legacy-peer-deps
 
 # Install other dependencies
-RUN npm install --legacy-peer-deps
+RUN npm install --legacy-peer-deps --ignore-scripts
 
 # Copy the rest of the application code
 COPY . .
