@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Copy package.json and lock files first (for better caching)
 COPY package*.json ./
-COPY .npmrc .npmrc
+#COPY .npmrc .npmrc
 
 # Optional: clean npm cache (helps with weird issues)
 RUN npm cache clean --force
