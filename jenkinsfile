@@ -1,0 +1,34 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Rachana-js/create-react-app.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t rachanajs/react-app .'
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                withDockerRegistry([credentialsId: 'docker-hub-credentials', url: '']) {
+                    sh 'docker push rachanajs/react-app'
+                }
+            }
+        }
+
+        stage('Deploy with Docker') {
+            steps {
+                sh '''
+                    docker ps -q --filter "ancestor=rachanajs/react-app" | xargs -r docker stop
+                    docker run -d -p 3000:3000 rachanajs/react-app
+                '''
+            }
+        }
+    }
+}
