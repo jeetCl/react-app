@@ -1,33 +1,38 @@
-# Stage 1: Build
-FROM node:18-alpine as build
+# Stage 1: Build React App
+FROM node:18-alpine AS build
 
-# Set working directory
+# Set working directory inside the container
 WORKDIR /app
 
-# Copy package.json and lock files first (for better caching)
+# Copy only package files for better layer caching
 COPY package*.json ./
-#COPY .npmrc .npmrc
 
-# Optional: clean npm cache (helps with weird issues)
+# Optional: clean npm cache
 RUN npm cache clean --force
 
-# Manually install ajv v6 and ajv-keywords v3 to avoid breaking changes
+# Install ajv v6 and ajv-keywords v3 to avoid breaking changes
 RUN npm install ajv@6 ajv-keywords@3 --legacy-peer-deps
 
-# Now copy the rest of the app
-COPY . .
-
-# Install remaining dependencies with legacy flag
+# Install other dependencies
 RUN npm install --legacy-peer-deps
 
-# Build the app
+# Copy the rest of the application code
+COPY . .
+
+# Build the React application
 RUN npm run build
 
-# Stage 2: Serve the build output
+# Stage 2: Serve with Nginx
 FROM nginx:alpine
 
-# Copy only the frontend build output
-COPY --from=build /app/packages/react-scripts/build /usr/share/nginx/html
+# Remove default nginx static files
+RUN rm -rf /usr/share/nginx/html/*
+
+# Copy build output from previous stage
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Copy custom nginx config if you have one (optional)
+# COPY nginx.conf /etc/nginx/nginx.conf
 
 # Expose port 80
 EXPOSE 80
