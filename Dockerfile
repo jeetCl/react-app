@@ -1,22 +1,23 @@
-# Use Node.js official image
-FROM node:18-alpine
+# Stage 1: Build
+FROM node:18-alpine as build
 
-# Set working directory
+# Set working dir
 WORKDIR /app
 
-# Copy package.json and install dependencies
-COPY package*.json ./
-RUN npm install
-
-# Copy the rest of the app
+# Copy entire repo
 COPY . .
 
-# Build the React app
+# Install workspace dependencies
+RUN npm install --legacy-peer-deps
+
+# Build using your monorepo script
 RUN npm run build
 
-# Use Nginx to serve the build
+# Stage 2: Serve the build output
 FROM nginx:alpine
-COPY --from=0 /app/build /usr/share/nginx/html
+
+# Copy only the frontend build (adjust path if different)
+COPY --from=build /app/packages/react-scripts/build /usr/share/nginx/html
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
