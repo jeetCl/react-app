@@ -17,14 +17,17 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 withDockerRegistry([credentialsId: 'docker-hub-credentials', url: '']) {
-                    sh 'docker push your-dockerhub-username/react-app'
+                    sh 'docker push rachanajs/react-app'
                 }
             }
         }
 
         stage('Deploy with Docker') {
             steps {
-                sh 'docker run -d -p 3000:3000 your-dockerhub-username/react-app'
+                sh '''
+                    docker ps -q --filter "ancestor=rachanajs/react-app" | xargs -r docker stop
+                    docker run -d -p 3000:3000 rachanajs/react-app
+                '''
             }
         }
     }
