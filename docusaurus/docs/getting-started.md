@@ -160,3 +160,91 @@ Builds the app for production to the `build` folder. It correctly bundles React 
 The build is minified and the filenames include the hashes.
 
 Your app is ready to be deployed.
+import React from "react";
+import { motion } from "framer-motion";
+
+export default function Home() {
+  return (
+    <div className="relative min-h-screen bg-black text-white overflow-hidden">
+      {/* Orqa fon video */}
+      <video
+        autoPlay
+        loop
+        muted
+        className="absolute top-0 left-0 w-full h-full object-cover opacity-20 z-0"
+      >
+        <source src="/bg-candlestick.mp4" type="video/mp4" />
+      </video>
+
+      {/* Matnlar va tugmalar */}
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen space-y-4 text-center px-4">
+        <motion.h1
+          className="text-3xl md:text-5xl font-bold"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          assalomu aleykum
+        </motion.h1>
+
+        <motion.h2
+          className="text-xl md:text-3xl font-bold text-blue-400"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+        >
+          momentumX group ga xush kelibsiz
+        </motion.h2>
+
+        <div className="space-y-2 mt-4">
+          {[
+            "Darsliklar Forex",
+            "Darsliklar Cripto",
+            "Biz bilan bog'lanish",
+            "Telegram kanal"
+          ].map((text, index) => (
+            <motion.a
+              key={index}
+              href="#"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 + index * 0.2, duration: 0.5 }}
+              className="block text-lg md:text-xl font-medium hover:text-blue-300 transition"
+            >
+              {text}
+            </motion.a>
+          ))}
+        </div>
+
+        <motion.p
+          className="mt-10 text-base md:text-lg max-w-xl text-gray-300"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.4, duration: 0.8 }}
+        >
+          Siz bizni tanlaganingiz uchun tashakkur. Bizda signal yoki pullik kurslar yo'q — faqat haqiqiy bilim, haqiqiy yondashuv. Har bir qaror sizning qo'lingizda, biz faqat yo‘l ko‘rsatamiz.
+        </motion.p>
+      </div>
+    </div>
+  );
+}npm start
+git init
+git add .
+git commit -m "initial commit"
+git branch -M main
+git remote add origin https://github.com/username/repository-name.git
+git push -u origin main
+npm install gh-pages --save-dev
+"homepage": "https://username.github.io/repository-name",
+"scripts": {
+  "predeploy": "npm run build",
+  "deploy": "gh-pages -d build"
+}
+npm run build
+npm run deploy
+https://momentumXgroup.github.io/repository-name
+npm run deploy
+
+
