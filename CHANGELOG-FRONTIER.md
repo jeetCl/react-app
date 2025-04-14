@@ -1,3 +1,7 @@
+## 8.10.4
+
+- Add @emotion/babel-plugin for cypress tests in apps
+
 ## 8.10.2
 
 - Support TypeScript Cypress tests in a TypeScript app
