@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.16.0",
-    "@emotion/babel-plugin": "^10.0.0",
+    "@emotion/babel-plugin": "^11.13.5",
     "@fs/auth-middleware": "^2.0.1",
     "@fs/babel-preset-frontier": "^5.0.0",
     "@fs/webpack-wci18n": "^1.0.0",
