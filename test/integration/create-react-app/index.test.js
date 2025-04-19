@@ -7,7 +7,6 @@ const { rmSync } = require('fs');
 
 const cli = require.resolve('create-react-app/index.js');
 
-// Increase the timeout for GitHub macOS runner
 jest.setTimeout(1000 * 60 * (process.env.RUNNER_OS === 'macOS' ? 10 : 5));
 
 const projectName = 'test-app';
@@ -30,10 +29,12 @@ const removeGenPath = () => {
   });
 };
 
-beforeEach(removeGenPath);
+beforeEach(() => {
+  console.log(`Cleaning up test directory: ${genPath}`);
+  removeGenPath();
+});
 afterAll(async () => {
   removeGenPath();
-  // Defer jest result output waiting for stdout to flush
   await new Promise(resolve => setTimeout(resolve, 100));
 });
 
@@ -60,20 +61,16 @@ const run = async (args, options) => {
 };
 
 const expectAllFiles = (arr1, arr2) =>
-  expect([...arr1].sort()).toEqual([...arr2].sort());
+  expect(new Set(arr1)).toEqual(new Set(arr2));
 
 describe('create-react-app', () => {
   it('check yarn installation', async () => {
     const { exitCode } = await execa('yarn', ['--version']);
-
-    // Assert for exit code
     expect(exitCode).toBe(0);
   });
 
   it('asks to supply an argument if none supplied', async () => {
     const { exitCode, stderr, files } = await run([], { reject: false });
-
-    // Assertions
     expect(exitCode).toBe(1);
     expect(stderr).toContain('Please specify the project directory');
     expect(files).toBe(null);
@@ -81,19 +78,12 @@ describe('create-react-app', () => {
 
   it('creates a project on supplying a name as the argument', async () => {
     const { exitCode, files } = await run([projectName], { cwd: __dirname });
-
-    // Assert for exit code
     expect(exitCode).toBe(0);
-
-    // Assert for the generated files
     expectAllFiles(files, generatedFiles);
   });
 
   it('warns about conflicting files in path', async () => {
-    // Create the temporary directory
     await mkdirp(genPath);
-
-    // Create a package.json file
     const pkgJson = join(genPath, 'package.json');
     writeFileSync(pkgJson, '{ "foo": "bar" }');
 
@@ -102,29 +92,17 @@ describe('create-react-app', () => {
       reject: false,
     });
 
-    // Assert for exit code
     expect(exitCode).toBe(1);
-
-    // Assert for the expected message
     expect(stdout).toContain(
       `The directory ${projectName} contains files that could conflict`
     );
-
-    // Existing file is still there
     expectAllFiles(files, ['package.json']);
   });
 
   it('creates a project in the current directory', async () => {
-    // Create temporary directory
     await mkdirp(genPath);
-
-    // Create a project in the current directory
     const { exitCode, files } = await run(['.'], { cwd: genPath });
-
-    // Assert for exit code
     expect(exitCode).toBe(0);
-
-    // Assert for the generated files
     expectAllFiles(files, generatedFiles);
   });
 
@@ -134,30 +112,52 @@ describe('create-react-app', () => {
       env: { npm_config_user_agent: 'yarn' },
     });
 
-    // Assert for exit code
     expect(exitCode).toBe(0);
-
-    // Assert for the generated files
     const generatedFilesWithYarn = generatedFiles.map(file =>
       file === 'package-lock.json' ? 'yarn.lock' : file
     );
-
     expectAllFiles(files, generatedFilesWithYarn);
   });
 
   it('creates a project based on the typescript template', async () => {
     const { exitCode, files } = await run(
       [projectName, '--template', 'typescript'],
-      {
-        cwd: __dirname,
-      }
+      { cwd: __dirname }
     );
 
-    // Assert for exit code
     expect(exitCode).toBe(0);
+    expect(files).toContain('tsconfig.json');
+  });
 
-    // Assert for the generated files
-    // TODO: why is there no tsconfig.json file on the template?
-    expectAllFiles(files, generatedFiles);
+  it('fails gracefully with an invalid template name', async () => {
+    const { exitCode, stderr } = await run(
+      [projectName, '--template', 'unknown-template'],
+      { cwd: __dirname, reject: false }
+    );
+
+    expect(exitCode).toBe(1);
+    expect(stderr).toContain('Could not find template');
+  });
+
+  it('fails with an invalid project name', async () => {
+    const { exitCode, stderr } = await run(['123invalid'], {
+      cwd: __dirname,
+      reject: false,
+    });
+
+    expect(exitCode).toBe(1);
+    expect(stderr).toContain('may not start with a number');
+  });
+
+  it('includes ESLint configuration by default', async () => {
+    const { files } = await run([projectName], { cwd: __dirname });
+    const hasEslintFile =
+      files.includes('.eslintrc.json') || files.includes('.eslintrc.js');
+    expect(hasEslintFile).toBe(true);
+  });
+
+  it('matches stdout snapshot when creating a project', async () => {
+    const { stdout } = await run([projectName], { cwd: __dirname });
+    expect(stdout).toMatchSnapshot();
   });
 });
