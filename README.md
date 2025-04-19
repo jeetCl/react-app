@@ -92,15 +92,14 @@ Documentation improvements
 
 See CONTRIBUTING.md for guidelines.
 
-Acknowledgements
+## Acknowledgements
+
 Create React App was made possible by contributions from:
-
-The React team
-
-Webpack contributors
-
-Babel maintainers
-
-Community contributors (full list)
+- The React team
+- Webpack contributors
+- Babel maintainers
+- Community contributors ([full list](https://github.com/facebook/create-react-app/graphs/contributors))
+The active link to view all contributors is:
+https://github.com/facebook/create-react-app/graphs/contributors
 
 Licensed under MIT - © Facebook
