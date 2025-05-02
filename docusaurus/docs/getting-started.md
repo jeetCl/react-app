@@ -1,4 +1,5 @@
----
+### welcome to Murtessaa Academy
+
 id: getting-started
 title: Getting Started
 ---
@@ -26,10 +27,16 @@ When you’re ready to deploy to production, create a minified bundle with `npm 
 <img src='https://cdn.jsdelivr.net/gh/facebook/create-react-app@27b42ac7efa018f2541153ab30d63180f5fa39e0/screencast.svg' width='600' alt='npm start' />
 </p>
 
+### `DORROBAA CREATING CENTER`
+
+☆to help you we are happy
+contact us on 
+https://my.secure.website/murteessaag/
+
 ### Get Started Immediately
 
 You **don’t** need to install or configure tools like webpack or Babel. They are preconfigured and hidden so that you can focus on the code.
-
+DORROBAA CREATING CENTER
 Create a project, and you’re good to go.
 
 ## Creating an App
@@ -160,3 +167,6 @@ Builds the app for production to the `build` folder. It correctly bundles React 
 The build is minified and the filenames include the hashes.
 
 Your app is ready to be deployed.
+### `more about platform:`
+developer:Murteessaa alaafii
+
