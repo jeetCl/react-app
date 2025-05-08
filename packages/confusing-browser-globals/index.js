@@ -40,6 +40,7 @@ module.exports = [
   'open',
   'opener',
   'opera',
+  'origin',
   'outerHeight',
   'outerWidth',
   'pageXOffset',
