@@ -3,40 +3,90 @@ id: getting-started
 title: Getting Started
 ---
 
-Create React App is an officially supported way to create single-page React
-applications. It offers a modern build setup with no configuration.
+While Create React App is an officially supported way to create single-page React
+applications, and  it offers a satisfactory build setup with no configuration, it is now recommended to use Vite.
 
 ## Quick Start
 
 ```sh
-npx create-react-app my-app
+npm create vite@latest my-app -- --template react
 cd my-app
-npm start
+npm install
+npm run dev
+
+Then open [http://localhost:5173/](http://localhost:5173/) to brovse your app.
+
+When you’re ready to deploy to production:
+
+Here's how you typically install dependencies, build the production version, and preview it locally:
+
+Install Dependencies: (You already did this, but it's the necessary first step if you were starting fresh or just cloned the repo).
+
+```sh
+npm install
 ```
+# or
+```sh
+yarn install
+```
+# or
+```sh
+pnpm install
+```
+Build the Production Version:
+This command triggers Vite to bundle and optimize your application's code and assets for production deployment.
 
-> If you've previously installed `create-react-app` globally via `npm install -g create-react-app`, we recommend you uninstall the package using `npm uninstall -g create-react-app` or `yarn global remove create-react-app` to ensure that `npx` always uses the latest version.
+```sh
+npm run build
+```
+# or
+```sh
+yarn build
+```
+# or
+```sh
+pnpm run build
+```
+What this does: Vite uses Rollup under the hood to bundle your code into highly optimized static files (HTML, CSS, JavaScript, assets). It performs minification, tree-shaking (removing unused code), and other optimizations to ensure the smallest possible file sizes and fastest loading times.
+Output: By default, the generated production files will be placed in a dist (or build) directory in the root of your project. This dist folder contains everything you need to deploy your application.
+Serve/Preview the Production Build Locally:
+You generally cannot just open the index.html file inside the dist folder directly in your browser. This is because modern Single Page Applications (SPAs) rely on a web server to handle routing and correctly serve the index.html file for various URLs.
 
-_([npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b) comes with npm 5.2+ and higher, see [instructions for older npm versions](https://gist.github.com/gaearon/4064d3c23a77c74a3614c498a8bb1c5f))_
+Vite provides a simple command to spin up a local static server specifically for testing your production build:
 
-Then open [http://localhost:3000/](http://localhost:3000/) to see your app.
+```sh
+npm run preview
+```
+# or
+```sh
+yarn preview
+```
+# or
+```sh
+pnpm run preview
+```
+What this does: This command starts a minimal HTTP server that serves the static files directly from your dist directory. This allows you to test the built version of your app locally before deploying it.
+Important: The npm run preview command is only for previewing the build locally. It is not designed for production use or handling high traffic.
+Deploy to Production:
+For actual production deployment, you need a static file hosting service or a web server configured to serve static files. You would take the entire contents of the dist folder and upload them to your hosting provider.
 
-When you’re ready to deploy to production, create a minified bundle with `npm run build`.
+Common production hosting options for Vite SPAs include:
 
-<p align='center'>
-<img src='https://cdn.jsdelivr.net/gh/facebook/create-react-app@27b42ac7efa018f2541153ab30d63180f5fa39e0/screencast.svg' width='600' alt='npm start' />
-</p>
+Static Hosting Services: Netlify, Vercel, Surge, GitHub Pages, GitLab Pages, Cloudflare Pages. These services are often zero-configuration for Vite apps.
+Cloud Storage + CDN: AWS S3 + CloudFront, Azure Blob Storage + CDN, Google Cloud Storage + Cloud CDN.
+Traditional Web Servers: Nginx, Apache, Caddy (configured to serve static files from the dist folder and often with a fallback to index.html for client-side routing).
+Azure Static Web Apps (specifically designed for hosting static sites like Vite apps).
+In summary:
 
-### Get Started Immediately
+Use npm run build to create the optimized static files (in the dist folder).
+Use npm run preview to serve those built files locally for testing purposes.
+Deploy the contents of the dist folder to a dedicated static hosting service or web server for production.
 
-You **don’t** need to install or configure tools like webpack or Babel. They are preconfigured and hidden so that you can focus on the code.
-
-Create a project, and you’re good to go.
-
-## Creating an App
+## Creating an App in a less efficient way, without using Vite
 
 **You’ll need to have Node >= 14 on your local development machine** (but it’s not required on the server). You can use [nvm](https://github.com/creationix/nvm#installation) (macOS/Linux) or [nvm-windows](https://github.com/coreybutler/nvm-windows#node-version-manager-nvm-for-windows) to switch Node versions between different projects.
 
-To create a new app, you may choose one of the following methods:
+To create a new app, in a less efficient way, without using Vite, you may choose one of the following methods:
 
 ### npx
 
