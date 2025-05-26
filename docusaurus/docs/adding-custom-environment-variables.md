@@ -2,7 +2,7 @@
 id: adding-custom-environment-variables
 title: Adding Custom Environment Variables
 sidebar_label: Environment Variables
----
+
 
 > Note: this feature is available with `react-scripts@0.2.3` and higher.
 
@@ -11,6 +11,8 @@ Your project can consume variables declared in your environment as if they were 
 > WARNING: Do not store any secrets (such as private API keys) in your React app!
 >
 > Environment variables are embedded into the build, meaning anyone can view them by inspecting your app's files.
+
+
 
 **The environment variables are embedded during the build time**. Since Create React App produces a static HTML/CSS/JS bundle, it can’t possibly read them at runtime. To read them at runtime, you would need to load HTML into memory on the server and replace placeholders in runtime, as [described here](title-and-meta-tags.md#injecting-data-from-the-server-into-the-page). Alternatively you can rebuild the app on the server anytime you change them.
 
