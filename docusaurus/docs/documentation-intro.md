@@ -8,7 +8,9 @@ Welcome to the Create React App documentation!
 
 ## Navigation
 
-You can find different topics in the table of contents. On desktop, you should see it in the left sidebar. On mobile, you should see it after pressing an icon with arrows in the top left corner.
+You can explore various topics using the table of contents:
+- **On desktop:** The navigation menu is available on the left sidebar.
+- **On mobile:** Tap the menu icon (☰ or ⇄ arrows) in the top left corner to view the navigation.
 
 ## Looking for React Docs?
 
