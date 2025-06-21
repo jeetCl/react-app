@@ -26,8 +26,26 @@
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //   /!\ DO NOT MODIFY THIS FILE /!\
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+const requiredNodeVersion = [18, 0, 0]; // Minimum: v18.0.0
 
-'use strict';
+const currentVersion = process.versions.node.split('.').map(Number);
+
+const isVersionCompatible =
+  currentVersion[0] > requiredNodeVersion[0] ||
+  (currentVersion[0] === requiredNodeVersion[0] &&
+    currentVersion[1] >= requiredNodeVersion[1]);
+
+if (!isVersionCompatible) {
+  console.error(
+    `\n❌ ERROR: Unsupported Node.js version ${process.version}.\n` +
+      `   Please upgrade to Node.js v${requiredNodeVersion.join(
+        '.'
+      )} or higher to use Create React App.\n`
+  );
+  process.exit(1);
+}
+
+('use strict');
 
 const https = require('https');
 const chalk = require('chalk');
