@@ -169,6 +169,12 @@ Check out [this guide](https://github.com/nitishdayal/cra_closer_look) for an ov
 
 The tradeoff is that **these tools are preconfigured to work in a specific way**. If your project needs more customization, you can ["eject"](https://facebook.github.io/create-react-app/docs/available-scripts#npm-run-eject) and customize it, but then you will need to maintain this configuration.
 
+## Placeholder for future API endpoints documentation
+
+- <add points here>
+- 
+- 
+
 ## Popular Alternatives
 
 Create React App is a great fit for:
