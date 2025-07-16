@@ -787,6 +787,7 @@ module.exports = function (webpackEnv) {
               syntactic: true,
             },
             mode: 'write-references',
+            memoryLimit: 4096,
             // profile: true,
           },
           issue: {
