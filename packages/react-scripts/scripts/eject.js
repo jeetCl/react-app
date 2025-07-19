@@ -57,7 +57,7 @@ function tryGitAdd(appPath) {
 console.log(
   chalk.cyan.bold(
     'NOTE: Create React App 2+ supports TypeScript, Sass, CSS Modules and more without ejecting: ' +
-      'https://reactjs.org/blog/2018/10/01/create-react-app-v2.html'
+    'https://reactjs.org/blog/2018/10/01/create-react-app-v2.html'
   )
 );
 console.log();
@@ -79,15 +79,15 @@ prompts({
       chalk.red(
         'This git repository has untracked files or uncommitted changes:'
       ) +
-        '\n\n' +
-        gitStatus
-          .split('\n')
-          .map(line => line.match(/ .*/g)[0].trim())
-          .join('\n') +
-        '\n\n' +
-        chalk.red(
-          'Remove untracked files, stash or commit any changes, and try again.'
-        )
+      '\n\n' +
+      gitStatus
+        .split('\n')
+        .map(line => line.match(/ .*/g)[0].trim())
+        .join('\n') +
+      '\n\n' +
+      chalk.red(
+        'Remove untracked files, stash or commit any changes, and try again.'
+      )
     );
     process.exit(1);
   }
@@ -101,9 +101,9 @@ prompts({
     if (fs.existsSync(path.join(appPath, file))) {
       console.error(
         `\`${file}\` already exists in your app folder. We cannot ` +
-          'continue as you would lose all the changes in that file or directory. ' +
-          'Please move or delete it (maybe make a copy for backup) and run this ' +
-          'command again.'
+        'continue as you would lose all the changes in that file or directory. ' +
+        'Please move or delete it (maybe make a copy for backup) and run this ' +
+        'command again.'
       );
       process.exit(1);
     }
@@ -146,6 +146,14 @@ prompts({
     fs.mkdirSync(path.join(appPath, folder), { recursive: true });
   });
 
+  const ownPackage = require(path.join(ownPath, 'package.json'));
+  const appPackage = require(path.join(appPath, 'package.json'));
+
+  const reactVersion =
+    appPackage.dependencies.react || appPackage.devDependencies?.react || '0.0.0';
+
+  const isReact17 = reactVersion.startsWith('17.');
+
   files.forEach(file => {
     let content = fs.readFileSync(file, 'utf8');
 
@@ -153,26 +161,35 @@ prompts({
     if (content.match(/\/\/ @remove-file-on-eject/)) {
       return;
     }
+
     content =
       content
-        // Remove dead code from .js files on eject
+        // Remove dead code
         .replace(
           /\/\/ @remove-on-eject-begin([\s\S]*?)\/\/ @remove-on-eject-end/gm,
           ''
         )
-        // Remove dead code from .applescript files on eject
         .replace(
           /-- @remove-on-eject-begin([\s\S]*?)-- @remove-on-eject-end/gm,
           ''
         )
         .trim() + '\n';
+
+    // ✅ Inject import React for React 17 if JSX is used
+    if (
+      isReact17 &&
+      file.endsWith('.js') &&
+      content.includes('<') && // crude JSX check
+      !content.includes("import React from 'react'")
+    ) {
+      content = `import React from 'react';\n` + content;
+    }
+
     console.log(`  Adding ${cyan(file.replace(ownPath, ''))} to the project`);
     fs.writeFileSync(file.replace(ownPath, appPath), content);
   });
-  console.log();
 
-  const ownPackage = require(path.join(ownPath, 'package.json'));
-  const appPackage = require(path.join(appPath, 'package.json'));
+  console.log();
 
   console.log(cyan('Updating the dependencies'));
   const ownPackageName = ownPackage.name;
