@@ -1,4 +1,9 @@
-# Information About iModel.js Specific Fork
+# @bentley/react-scripts
+
+> [!IMPORTANT]
+> The React team no longer recommends using Create React App (CRA) for new projects, and it is not actively maintained. For more information on the deprecation of CRA, see the [Creating a React App docs](https://react.dev/learn/creating-a-react-app). As such, this package has been deprecated in favor of using tools like [Vite](https://vite.dev/) or [Rspack](https://rspack.rs/) as the build tool for iTwin.js (aka iModel.js) applications.
+
+## Information About iModel.js Specific Fork
 
 This README is intended to cover the differences between the iModel.js specific fork and how it relates to the upstream of [Create-React-App](https://github.com/facebook/create-react-app).
 
