@@ -1,55 +1,99 @@
----
-id: supported-browsers-features
-title: Supported Browsers and Features
-sidebar_label: Supported Browsers and Features
----
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 
-## Supported Browsers
+public class ThreeBallGame extends JPanel implements ActionListener {
 
-By default, the generated project supports all modern browsers. Support for Internet Explorer 9, 10, and 11 requires polyfills. For a set of polyfills to support older browsers, use [react-app-polyfill](https://github.com/facebook/create-react-app/blob/main/packages/react-app-polyfill/README.md).
+    // മാത്തി ബോൾ
+    private int x1 = 50, y1 = 50;
+    private int xSpeed1 = 2, ySpeed1 = 3;
 
-## Supported Language Features
+    // എന്ന് ബോൾ
+    private int x2 = 150, y2 = 100;
+    private int xSpeed2 = 3, ySpeed2 = 2;
 
-This project supports a superset of the latest JavaScript standard. In addition to [ES6](https://github.com/lukehoban/es6features) syntax features, it also supports:
+    // ഐനു ബോൾ
+    private int x3 = 250, y3 = 150;
+    private int xSpeed3 = 2, ySpeed3 = 2;
 
-- [Exponentiation Operator](https://github.com/rwaldron/exponentiation-operator) (ES2016).
-- [Async/await](https://github.com/tc39/ecmascript-asyncawait) (ES2017).
-- [Object Rest/Spread Properties](https://github.com/tc39/proposal-object-rest-spread) (ES2018).
-- [Dynamic import()](https://github.com/tc39/proposal-dynamic-import) (stage 4 proposal)
-- [Class Fields and Static Properties](https://github.com/tc39/proposal-class-public-fields) (part of stage 3 proposal).
-- [JSX](https://facebook.github.io/react/docs/introducing-jsx.html), [Flow](./adding-flow) and [TypeScript](./adding-typescript).
+    private Timer timer;
 
-Learn more about [different proposal stages](https://tc39.github.io/process-document/).
+    public ThreeBallGame() {
+        setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        setBackground(Color.WHITE);
+        timer = new Timer(10, this);
+        timer.start();
+    }
 
-While we recommend using experimental proposals with some caution, Facebook heavily uses these features in the product code, so we intend to provide [codemods](https://medium.com/@cpojer/effective-javascript-codemods-5a6686bb46fb) if any of these proposals change in the future.
+    // മൂന്ന് ബോളുകളും അവയുടെ പേരുകളും വരയ്ക്കുന്നു
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
 
-Note that **this project includes no [polyfills](https://github.com/facebook/create-react-app/blob/main/packages/react-app-polyfill/README.md)** by default.
+        // മാത്തി ബോൾ
+        g.setColor(Color.RED);
+        g.fillOval(x1, y1, 30, 30);
+        g.setColor(Color.BLACK);
+        g.drawString("മാത്തി", x1 + 5, y1 + 20);
 
-If you use any other ES6+ features that need **runtime support** (such as `Array.from()` or `Symbol`), make sure you are [including the appropriate polyfills manually](https://github.com/facebook/create-react-app/blob/main/packages/react-app-polyfill/README.md), or that the browsers you are targeting already support them.
+        // എന്ന് ബോൾ
+        g.setColor(Color.GREEN);
+        g.fillOval(x2, y2, 30, 30);
+        g.setColor(Color.BLACK);
+        g.drawString("എന്ന്", x2 + 5, y2 + 20);
 
-## Configuring Supported Browsers
+        // ഐനു ബോൾ
+        g.setColor(Color.YELLOW);
+        g.fillOval(x3, y3, 30, 30);
+        g.setColor(Color.BLACK);
+        g.drawString("ഐനു", x3 + 5, y3 + 20);
+    }
 
-By default, the generated project includes a [`browserslist`](https://github.com/browserslist/browserslist) configuration in your `package.json` file to target a broad range of browsers based on global usage (`> 0.2%`) for production builds, and modern browsers for development. This gives a good development experience, especially when using language features such as async/await, but still provides high compatibility with many browsers in production.
+    // ഓരോ ബോളിന്റെയും സ്ഥാനം മാറ്റുകയും അതിരുകളിൽ നിന്ന് തിരിക്കുകയും ചെയ്യുന്നു
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // മാത്തി ബോളിന്റെ ചലനം
+        x1 += xSpeed1;
+        y1 += ySpeed1;
+        if (x1 + 30 > getWidth() || x1 < 0) {
+            xSpeed1 = -xSpeed1;
+        }
+        if (y1 + 30 > getHeight() || y1 < 0) {
+            ySpeed1 = -ySpeed1;
+        }
 
-The `browserslist` configuration controls the outputted JavaScript so that the emitted code will be compatible with the browsers specified. The `production` list will be used when creating a production build by running the `build` script, and the `development` list will be used when running the `start` script. You can use [https://browserl.ist](https://browserl.ist/?q=%3E+0.2%25%2C+not+dead%2C+not+op_mini+all) to see the browsers supported by your configured `browserslist`.
+        // എന്ന് ബോളിന്റെ ചലനം
+        x2 += xSpeed2;
+        y2 += ySpeed2;
+        if (x2 + 30 > getWidth() || x2 < 0) {
+            xSpeed2 = -xSpeed2;
+        }
+        if (y2 + 30 > getHeight() || y2 < 0) {
+            ySpeed2 = -ySpeed2;
+        }
 
-Here is an example `browserslist` that is specified in `package.json`:
+        // ഐനു ബോളിന്റെ ചലനം
+        x3 += xSpeed3;
+        y3 += ySpeed3;
+        if (x3 + 30 > getWidth() || x3 < 0) {
+            xSpeed3 = -xSpeed3;
+        }
+        if (y3 + 30 > getHeight() || y3 < 0) {
+            ySpeed3 = -ySpeed3;
+        }
 
-```json
-"browserslist": {
-  "production": [
-    ">0.2%",
-    "not dead",
-    "not op_mini all"
-  ],
-  "development": [
-    "last 1 chrome version",
-    "last 1 firefox version",
-    "last 1 safari version"
-  ]
+        repaint();
+    }
+
+    // പ്രോഗ്രാം പ്രവർത്തിപ്പിക്കാൻ
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Mallu - Three Balls");
+        ThreeBallGame gamePanel = new ThreeBallGame();
+        frame.add(gamePanel);
+        frame.setSize(500, 400);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
 }
-```
-
-> Note that this does not include polyfills automatically for you. You will still need to polyfill language features (see above) as needed based on the browsers you are supporting.
-
-> When editing the `browserslist` config, you may notice that your changes don't get picked up right away. This is due to an [issue in babel-loader](https://github.com/babel/babel-loader/issues/690) not detecting the change in your `package.json`. A quick solution is to delete the `node_modules/.cache` folder and try again.
+![1000044683](https://github.com/user-attachments/assets/4c24d2a7-5615-4ec9-8799-e76162f293a6)
+![1000044683](https://github.com/user-attachments/assets/6dbf1688-75d2-4f8f-a737-0900c739223d)
