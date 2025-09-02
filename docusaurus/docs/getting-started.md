@@ -101,10 +101,10 @@ yarn create react-app my-app
 
 ## Output
 
-Running any of these commands will create a directory called `my-app` inside the current folder. Inside that directory, it will generate the initial project structure and install the transitive dependencies:
+Running any of these commands will create a directory called `TAIWO-APP` inside the current folder. Inside that directory, it will generate the initial project structure and install the transitive dependencies:
 
 ```
-my-app
+TAIWO-APP
 ├── README.md
 ├── node_modules
 ├── package.json
